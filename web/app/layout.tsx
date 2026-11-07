@@ -7,7 +7,7 @@ const display = Bricolage_Grotesque({ variable: "--font-display", subsets: ["lat
 const body = Public_Sans({ variable: "--font-body", subsets: ["latin"] });
 
 export const metadata: Metadata = {
-  title: "Heads Up",
+  title: "HeadsUp",
   description: "See money surprises coming and get ready in time.",
 };
 

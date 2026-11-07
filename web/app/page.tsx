@@ -1,6 +1,6 @@
 "use client";
 
-import { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import { useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState } from "react";
 import { ArrowLeft, Menu, Zap } from "lucide-react";
 import { useAuth } from "@/components/auth-provider";
 import { Login } from "@/components/login";
@@ -9,6 +9,7 @@ import { BankSync } from "@/components/bank-sync";
 import { ForecastChart } from "@/components/forecast-chart";
 import { WarningCarousel, WarningSheet } from "@/components/warnings";
 import { NewsCarousel } from "@/components/news";
+import { playAudio } from "@/lib/voice";
 import { WhatIf } from "@/components/what-if";
 import { Button } from "@/components/ui/button";
 import { Sheet, SheetContent, SheetDescription, SheetHeader, SheetTitle } from "@/components/ui/sheet";
@@ -42,7 +43,7 @@ function HomeSkeleton() {
   return (
     <main className="pb-28" role="status" aria-label="Loading your 60 days">
       <div className="flex items-center justify-between px-5 pt-6">
-        <p className="font-display text-lg font-extrabold tracking-tight">Heads Up</p>
+        <p className="font-display text-lg font-extrabold tracking-tight">HeadsUp</p>
       </div>
       <div className="space-y-2.5 px-5 pt-4">
         <Bone className="h-8 w-4/5" />
@@ -74,6 +75,13 @@ function HomeSkeleton() {
 }
 
 const SYNC_KEY = "headsup-bank-synced";
+
+const ACTION_NAMES: Record<string, string> = {
+  profile_guess: "Filled in your answers",
+  news_summary: "Explained a news story",
+  voice_transcribe: "Listened to you",
+  whatif_voice: "Set up a what-if",
+};
 
 function App({ token, signOut: rawSignOut }: { token: string; signOut: () => Promise<void> }) {
   const client = useMemo(() => api(token), [token]);
@@ -113,6 +121,10 @@ function App({ token, signOut: rawSignOut }: { token: string; signOut: () => Pro
   const [activeId, setActiveId] = useState<string | null>(null);
   const [pointId, setPointId] = useState<string | null>(null);
   const [highlight, setHighlight] = useState<Label | null>(null);
+  const [past, setPast] = useState<{ date: string; balance: number }[]>([]);
+  const scroller = useRef<HTMLDivElement>(null);
+  const drag = useRef<{ x: number; left: number; moved: boolean } | null>(null);
+  const placed = useRef(false);
   const [busy, setBusy] = useState(false);
   const [whatIf, setWhatIf] = useState(false);
   const [menu, setMenu] = useState(false);
@@ -132,13 +144,22 @@ function App({ token, signOut: rawSignOut }: { token: string; signOut: () => Pro
   );
 
   const loadHome = useCallback(async () => {
-    const [f, w, n] = await Promise.all([client.forecast(), client.warnings(), client.news()]);
+    const [f, w, n, h] = await Promise.all([client.forecast(), client.warnings(), client.news(), client.history().catch(() => null)]);
     setForecast(f);
+    if (h) setPast(h.days);
     setWarnings(w.warnings);
     setNews(n.news);
   }, [client]);
 
+  useLayoutEffect(() => {
+    const el = scroller.current;
+    if (!el || placed.current || !past.length) return;
+    el.scrollLeft = el.scrollWidth - el.clientWidth - 44;
+    placed.current = true;
+  });
+
   useEffect(() => {
+    placed.current = false;
     window.scrollTo(0, 0);
   }, [view]);
 
@@ -247,7 +268,7 @@ function App({ token, signOut: rawSignOut }: { token: string; signOut: () => Pro
               <ArrowLeft className="size-4" aria-hidden /> Back to your 60 days
             </Button>
           ) : (
-            <p className="pt-2 font-display text-sm font-bold text-ink/60">Heads Up</p>
+            <p className="pt-2 font-display text-sm font-bold text-ink/60">HeadsUp</p>
           )}
           <h1 className="mt-1 font-display text-3xl font-bold">About you</h1>
           <p className="mt-2 text-[15px] text-muted-foreground">This helps us show only the changes that affect you. You can change it any time.</p>
@@ -270,35 +291,36 @@ function App({ token, signOut: rawSignOut }: { token: string; signOut: () => Pro
   const soon = warnings.filter((w) => w.in_window);
   const later = warnings.filter((w) => !w.in_window);
   const shocks = forecast.shocks ?? [];
+  const chartForecast: Forecast = past.length
+    ? { ...forecast, days: [...past.map((d) => ({ date: d.date, balance: d.balance, low: d.balance, high: d.balance, items: [] })), ...forecast.days] }
+    : forecast;
   const open = warnings.find((w) => w.id === openId) ?? null;
   const hold = !!open || whatIf || menu || log !== null || pointId !== null;
-  const plotted = warnings.filter((w) => w.in_window && !w.good_news);
 
   return (
     <main className="pb-28">
       <header className="flex items-center justify-between px-5 pt-6">
-        <p className="font-display text-lg font-extrabold tracking-tight">Heads Up</p>
+        <p className="font-display text-lg font-extrabold tracking-tight">HeadsUp</p>
         <Button variant="ghost" size="icon" aria-label="Menu" onClick={() => setMenu(true)}>
           <Menu className="size-5" />
         </Button>
       </header>
 
-      <section className="px-5 pt-4">
-        <h1 className="font-display text-[28px] font-bold leading-[1.1]">Your current account forecast</h1>
-        <p className="mt-1 text-sm text-muted-foreground">What we expect your balance to be each day for the next 60 days.</p>
-        {tight.length ? (
-          <h2 className="mt-4 font-display text-xl font-bold leading-tight">
-            Money gets tight from <span className="text-tight">{longDate(tight[0].start)}</span>
-          </h2>
-        ) : (
-          <h2 className="mt-4 font-display text-xl font-bold leading-tight text-safe">You stay above £50 for the next 60 days</h2>
-        )}
-        <p className="mt-1 text-[15px] text-muted-foreground">
-          You have {pounds(forecast.start_balance)} today. Lowest point:{" "}
-          <span className={cn("font-semibold", forecast.worst_day.balance < 50 ? "text-tight" : "text-ink")}>
-            {pounds(forecast.worst_day.balance)} on {longDate(forecast.worst_day.date)}
-          </span>
-          .
+      <section className="px-5 pt-5">
+        <p className="text-sm font-medium text-muted-foreground">{forecast.account?.name ?? "Your account"}</p>
+        <h1 className="mt-1 font-display font-extrabold leading-none tracking-tight tabular-nums" aria-label={`Balance ${pounds(forecast.start_balance, { pence: true })}`}>
+          <span className="text-[56px]">{pounds(Math.trunc(forecast.start_balance))}</span>
+          <span className="text-[28px] text-muted-foreground">.{Math.abs(Math.round((forecast.start_balance % 1) * 100)).toString().padStart(2, "0")}</span>
+        </h1>
+        <p className="mt-3 text-[15px]">
+          {tight.length ? (
+            <>
+              Money gets tight from <span className="font-semibold text-tight">{longDate(tight[0].start)}</span>. Lowest{" "}
+              <span className="whitespace-nowrap font-semibold text-tight">{pounds(forecast.worst_day.balance)}</span> on <span className="whitespace-nowrap">{shortDate(forecast.worst_day.date)}</span>.
+            </>
+          ) : (
+            <>You stay above £50 for the next 60 days.</>
+          )}
         </p>
         {shocks.map((s) => (
           <p key={s.id ?? s.date} className="mt-1 text-sm text-muted-foreground">
@@ -316,7 +338,6 @@ function App({ token, signOut: rawSignOut }: { token: string; signOut: () => Pro
       <div className="mt-4 flex gap-1 overflow-x-auto px-5 no-scrollbar" role="tablist" aria-label="Show changes on the graph">
         {TABS.map((t) => {
           const on = t.id === highlight;
-          const count = t.id ? plotted.filter((w) => w.label === t.id).length : plotted.length;
           return (
             <button
               key={t.text}
@@ -336,17 +357,54 @@ function App({ token, signOut: rawSignOut }: { token: string; signOut: () => Pro
                 />
               )}
               {t.text}
-              <span className={cn("rounded-full px-1.5 text-xs tabular-nums", on ? "bg-white/20" : "bg-mist")}>{count}</span>
             </button>
           );
         })}
       </div>
 
-      <section className="mt-2 px-2">
-        <ForecastChart forecast={forecast} warnings={warnings} highlight={highlight} onMarker={setOpenId} onMarkerHover={setPointId} activeId={activeId} height={260} shockDates={shocks.map((s) => s.date)} />
-        <p className="px-3 pt-1 text-xs text-muted-foreground">
-          The line is your expected balance. Dots are the changes in Coming up. Tap one to open it.
-        </p>
+      <section className="mt-2">
+        <div
+          ref={scroller}
+          className="no-scrollbar select-none overflow-x-auto overscroll-x-contain"
+          aria-label="Balance chart. Scroll sideways to see the past."
+          onPointerDown={(e) => {
+            if (e.pointerType !== "mouse" || !scroller.current) return;
+            drag.current = { x: e.clientX, left: scroller.current.scrollLeft, moved: false };
+          }}
+          onPointerMove={(e) => {
+            const d = drag.current;
+            if (!d || !scroller.current) return;
+            const dx = e.clientX - d.x;
+            if (!d.moved && Math.abs(dx) > 4) {
+              d.moved = true;
+              e.currentTarget.setPointerCapture(e.pointerId);
+            }
+            scroller.current.scrollLeft = d.left - dx;
+          }}
+          onPointerUp={() => {
+            setTimeout(() => (drag.current = null), 0);
+          }}
+          onClickCapture={(e) => {
+            if (drag.current?.moved) {
+              e.preventDefault();
+              e.stopPropagation();
+            }
+          }}
+        >
+          <div className="px-2" style={{ width: `${(chartForecast.days.length / Math.max(1, forecast.days.length)) * 100}%` }}>
+            <ForecastChart
+              forecast={chartForecast}
+              warnings={warnings}
+              highlight={highlight}
+              onMarker={setOpenId}
+              onMarkerHover={setPointId}
+              activeId={activeId}
+              height={260}
+              shockDates={shocks.map((s) => s.date)}
+              today={forecast.today}
+            />
+          </div>
+        </div>
       </section>
 
       <div aria-live="polite">
@@ -361,14 +419,21 @@ function App({ token, signOut: rawSignOut }: { token: string; signOut: () => Pro
       {later.length > 0 && (
         <section className="mt-7">
           <h2 className="px-5 pb-3 font-display text-xl font-bold">Later this year</h2>
-          <WarningCarousel label="Later this year" warnings={later} tight={[]} onOpen={setOpenId} paused={hold} interval={6500} />
+          <WarningCarousel label="Later this year" warnings={later} tight={[]} onOpen={setOpenId} paused={hold} autoplay={false} />
         </section>
       )}
 
       <section className="mt-7">
-        <h2 className="px-5 font-display text-xl font-bold">Other news for you</h2>
-        <p className="px-5 pb-3 text-sm text-muted-foreground">Advice and forecasts picked because they match your answers.</p>
-        <NewsCarousel news={news} paused={hold} />
+        <h2 className="px-5 pb-3 font-display text-xl font-bold">News for you</h2>
+        <NewsCarousel
+          news={news}
+          paused={hold}
+          say={async (n) => {
+            const r = await client.newsSummary(n.id);
+            const blob = await client.speak(r.summary);
+            return { text: r.summary, play: () => new Promise<void>((done) => void playAudio(blob, done).catch(() => done())) };
+          }}
+        />
       </section>
 
       <div className="fixed inset-x-0 bottom-0 z-10 mx-auto max-w-[440px] glass border-t border-white/60 px-5 py-3 shadow-[0_-8px_24px_-16px_rgba(20,33,61,0.25)] sm:bottom-6 sm:rounded-b-[28px]">
@@ -384,6 +449,12 @@ function App({ token, signOut: rawSignOut }: { token: string; signOut: () => Pro
         onOpenChange={setWhatIf}
         forecast={forecast}
         simulate={(b) => client.simulate(b)}
+        parse={(text) => client.parseWhatIf(text)}
+        transcribe={(audio) => client.transcribe(audio)}
+        say={async (text) => {
+          const blob = await client.speak(text);
+          await playAudio(blob);
+        }}
         confirm={async (s, withSaving) => {
           const r = await client.action({
             warning_id: "whatif",
@@ -410,7 +481,7 @@ function App({ token, signOut: rawSignOut }: { token: string; signOut: () => Pro
               About you
             </Button>
             <Button variant="ghost" className="justify-start" onClick={openLog}>
-              What the AI did
+              Agent&apos;s Actions
             </Button>
             <Button variant="ghost" className="justify-start" onClick={reset}>
               Clear my answers
@@ -425,14 +496,14 @@ function App({ token, signOut: rawSignOut }: { token: string; signOut: () => Pro
       <Sheet open={log !== null} onOpenChange={(o) => !o && setLog(null)}>
         <SheetContent side="bottom" className="mx-auto max-h-[80dvh] max-w-[440px] overflow-y-auto rounded-t-[22px] no-scrollbar">
           <SheetHeader>
-            <SheetTitle className="font-display text-xl">What the AI did</SheetTitle>
-            <SheetDescription>Every time the app asks the AI something, it shows here with the reason.</SheetDescription>
+            <SheetTitle className="font-display text-xl">Agent&apos;s Actions</SheetTitle>
+            <SheetDescription>What the agent did for you, newest first.</SheetDescription>
           </SheetHeader>
           <ul className="divide-y px-4 pb-6">
             {log?.length ? (
               log.map((e, i) => (
                 <li key={i} className="py-3 text-sm">
-                  <p className="font-semibold">{e.tool === "profile_guess" ? "Guessed your About you answers" : e.tool}</p>
+                  <p className="font-semibold">{ACTION_NAMES[e.tool] ?? "Did something for you"}</p>
                   <p className="text-muted-foreground">{e.reason}</p>
                   <p className="mt-0.5 text-xs text-muted-foreground">{new Date(e.created_at).toLocaleString("en-GB")}</p>
                 </li>

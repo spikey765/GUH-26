@@ -1,28 +1,28 @@
 "use client";
 
 import { useCallback } from "react";
-import { BadgeCheck, Check, ChevronRight, ExternalLink, History, TrendingUp, X } from "lucide-react";
+import { BadgeCheck, Check, ExternalLink, History, TrendingUp, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Sheet, SheetClose, SheetContent, SheetDescription, SheetHeader, SheetTitle } from "@/components/ui/sheet";
 import { Carousel } from "@/components/carousel";
 import type { Warning } from "@/lib/types";
-import { dayNum, longDate, monthShort, pounds, shortDate, whenText } from "@/lib/format";
+import { longDate, pounds, shortDate, whenText } from "@/lib/format";
 import { cn } from "@/lib/utils";
 
 const LABELS = {
-  confirmed: { text: "Confirmed", short: "Officially announced", help: "The company or regulator has announced it.", icon: BadgeCheck, band: "bg-confirmed text-white" },
-  likely: { text: "Likely", short: "Based on past years", help: "Based on what happened in past years.", icon: History, band: "bg-likely text-ink" },
-  forecast: { text: "Forecast", short: "An expert's estimate", help: "A named expert's estimate. It could change.", icon: TrendingUp, band: "bg-forecast text-white" },
+  confirmed: { text: "Confirmed", short: "Officially announced", help: "The company or regulator has announced it.", icon: BadgeCheck, band: "text-confirmed", dot: "bg-confirmed" },
+  likely: { text: "Likely", short: "Based on past years", help: "Based on what happened in past years.", icon: History, band: "text-likely", dot: "bg-likely" },
+  forecast: { text: "Forecast", short: "An expert's estimate", help: "A named expert's estimate. It could change.", icon: TrendingUp, band: "text-forecast", dot: "bg-forecast" },
 } as const;
 
 export function StatusBand({ label, className, children }: { label: Warning["label"]; className?: string; children?: React.ReactNode }) {
   const l = LABELS[label];
   const Icon = l.icon;
   return (
-    <div className={cn("flex items-center gap-2 px-4 py-2.5", l.band, className)}>
-      <Icon className="size-5 shrink-0" aria-hidden />
-      <p className="text-sm font-extrabold uppercase tracking-wider">{l.text}</p>
-      <p className="ml-auto text-xs font-medium opacity-90">{l.short}</p>
+    <div className={cn("flex items-center gap-2 border-b bg-card px-4 py-2.5", className)}>
+      <Icon className={cn("size-4 shrink-0", l.band)} aria-hidden />
+      <p className="text-sm font-semibold text-ink">{l.text}</p>
+      <p className="ml-auto text-xs text-muted-foreground">{l.short}</p>
       {children}
     </div>
   );
@@ -35,51 +35,35 @@ function inTight(w: Warning, tight: { start: string; end: string }[]) {
 }
 
 function SourceLink({ w }: { w: Warning }) {
-  if (!w.source_url)
-    return (
-      <p className="min-w-0 text-sm text-muted-foreground">
-        <span className="font-semibold text-ink">Based on your payments.</span> {w.source_name}
-      </p>
-    );
+  if (!w.source_url) return <p className="text-sm text-muted-foreground">Based on your payments. {w.source_name}</p>;
   return (
-    <a
-      href={w.source_url}
-      target="_blank"
-      rel="noreferrer"
-      className="inline-flex min-w-0 items-center gap-1.5 rounded-full bg-primary/10 px-3 py-1.5 text-sm font-semibold text-primary hover:bg-primary/15"
-    >
-      <span className="truncate">Read the source: {w.source_name}</span>
-      <ExternalLink className="size-3.5 shrink-0" aria-hidden />
+    <a href={w.source_url} target="_blank" rel="noreferrer" className="inline-flex items-center gap-1 text-sm font-medium underline underline-offset-4">
+      {w.source_name} <ExternalLink className="size-3.5" aria-hidden />
     </a>
   );
 }
 
 function WarningCard({ w, hot, onOpen }: { w: Warning; hot: boolean; onOpen: () => void }) {
+  const l = LABELS[w.label];
   return (
-    <article className="flex h-full flex-col overflow-hidden rounded-xl border bg-card shadow-sm">
-      <StatusBand label={w.label} />
-      <button onClick={onOpen} className="flex flex-1 items-start gap-4 px-4 py-4 text-left transition-colors hover:bg-mist/50">
-        <div className={cn("flex w-14 shrink-0 flex-col items-center rounded-md py-2", hot ? "bg-tight text-white" : "bg-mist text-ink")}>
-          <span className="font-display text-2xl font-bold leading-none">{dayNum(w.effective_date)}</span>
-          <span className="text-xs">{monthShort(w.effective_date)}</span>
+    <article className="h-full overflow-hidden rounded-xl border border-black/10 bg-card">
+      <button onClick={onOpen} className="flex h-full w-full flex-col p-4 text-left transition-colors hover:bg-mist/40">
+        <div className="flex items-center gap-2 text-xs font-medium text-muted-foreground">
+          <span aria-hidden className={cn("size-2 rounded-full", l.dot)} />
+          {l.text}
+          <span className="ml-auto">{shortDate(w.effective_date)}</span>
         </div>
-        <div className="min-w-0 flex-1">
-          <p className="font-display text-lg font-bold leading-tight">{w.title}</p>
-          <p className={cn("mt-1 font-semibold", w.good_news ? "text-safe" : hot ? "text-tight" : "text-ink")}>{w.headline || whenText(w.days_away)}</p>
-          <p className="mt-0.5 text-sm text-muted-foreground">{whenText(w.days_away)}</p>
+        <p className="mt-2 font-display text-lg font-bold leading-tight">{w.title}</p>
+        <p className={cn("mt-1 font-semibold", w.good_news ? "text-safe" : hot ? "text-tight" : "text-ink")}>{w.headline || whenText(w.days_away)}</p>
+        <p className="mt-auto pt-2 text-sm text-muted-foreground">
+          {whenText(w.days_away)}
           {w.confirmed && (
-            <p className="mt-1.5 inline-flex items-center gap-1 text-sm font-medium text-safe">
-              <Check className="size-4" aria-hidden /> You said yes
-            </p>
+            <span className="ml-2 inline-flex items-center gap-1 font-medium text-safe">
+              <Check className="size-3.5" aria-hidden /> You said yes
+            </span>
           )}
-        </div>
+        </p>
       </button>
-      <div className="flex items-center justify-between gap-3 border-t px-4 py-3">
-        <SourceLink w={w} />
-        <button onClick={onOpen} className="inline-flex shrink-0 items-center text-sm font-semibold text-ink underline-offset-4 hover:underline">
-          Details <ChevronRight className="size-4" aria-hidden />
-        </button>
-      </div>
     </article>
   );
 }
@@ -90,6 +74,7 @@ export function WarningCarousel({
   tight,
   onOpen,
   paused,
+  autoplay = true,
   interval,
   onActive,
   focusId,
@@ -99,6 +84,7 @@ export function WarningCarousel({
   tight: { start: string; end: string }[];
   onOpen: (id: string) => void;
   paused?: boolean;
+  autoplay?: boolean;
   interval?: number;
   onActive?: (id: string) => void;
   focusId?: string | null;
@@ -106,7 +92,7 @@ export function WarningCarousel({
   const report = useCallback((i: number) => warnings[i] && onActive?.(warnings[i].id), [warnings, onActive]);
   if (!warnings.length) return <p className="px-5 text-sm text-muted-foreground">Nothing coming up that matches you.</p>;
   return (
-    <Carousel label={label} paused={paused} interval={interval} onIndexChange={onActive ? report : undefined} focus={focusId ? warnings.findIndex((w) => w.id === focusId) : null}>
+    <Carousel label={label} paused={paused} autoplay={autoplay} interval={interval} onIndexChange={onActive ? report : undefined} focus={focusId ? warnings.findIndex((w) => w.id === focusId) : null}>
       {warnings.map((w) => (
         <WarningCard key={w.id} w={w} hot={w.in_window && !w.good_news && inTight(w, tight)} onOpen={() => onOpen(w.id)} />
       ))}

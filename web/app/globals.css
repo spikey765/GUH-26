@@ -55,7 +55,7 @@
   --maybe-soft: #f8ecd6;
   --line: #d6dce6;
   --confirmed: #15803d;
-  --likely: #38bdf8;
+  --likely: #7c6bd6;
   --forecast: #ea580c;
 
   --background: #f6f8fb;
@@ -108,10 +108,10 @@
     -webkit-tap-highlight-color: transparent;
     touch-action: manipulation;
   }
-  button:not(:disabled), [role="button"] {
+  [data-slot="button"]:not(:disabled) {
     transition: transform 160ms cubic-bezier(0.2, 0, 0, 1), background-color 160ms ease, color 160ms ease, opacity 160ms ease;
   }
-  button:not(:disabled):active, [role="button"]:active {
+  [data-slot="button"]:not(:disabled):active {
     transform: scale(0.97);
     transition-duration: 80ms;
   }
@@ -130,7 +130,7 @@
       animation-duration: 0.01ms !important;
       transition-duration: 0.01ms !important;
     }
-    button:active, [role="button"]:active, article:has(> button:active) {
+    [data-slot="button"]:active, article:has(> button:active) {
       transform: none !important;
     }
   }

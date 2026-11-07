@@ -185,3 +185,52 @@ def rule_based_guess(transactions: list[dict]) -> dict:
         "energy_payment": g("Direct debit" if by_cat["energy"] else None, "high", "Your energy company takes the same amount each month by direct debit.", ev(by_cat["energy"], 2)),
     }
     return out
+
+
+async def summarise_news(item: dict) -> str:
+    text = f"Title: {item['title']}\nSource: {item['source_name']}\nDate: {item['date']}\nSummary: {item['summary']}\nWhy it matters: {item.get('why', '')}"
+    gemini = client()
+    interaction = await asyncio.wait_for(
+        gemini.aio.interactions.create(
+            model=ai_config.MODEL,
+            input=[{"type": "text", "text": ai_config.NEWS_SUMMARY_PROMPT + "\n\n" + text}],
+            generation_config={"thinking_level": ai_config.THINKING_LEVEL},
+        ),
+        timeout=ai_config.TIMEOUT_SECONDS,
+    )
+    return (interaction.output_text or "").strip()
+
+
+class WhatIfParse(BaseModel):
+    label: str
+    amount_gbp: Optional[float]
+    date: str
+
+
+async def parse_whatif(text: str, today, last, default) -> dict:
+    prompt = ai_config.WHATIF_PARSE_PROMPT.format(today=today.isoformat(), last=last.isoformat(), default=default.isoformat())
+    gemini = client()
+    interaction = await asyncio.wait_for(
+        gemini.aio.interactions.create(
+            model=ai_config.MODEL,
+            input=[{"type": "text", "text": prompt + "\n\nThe user said: " + text}],
+            generation_config={"thinking_level": ai_config.THINKING_LEVEL},
+            response_format={"type": "text", "mime_type": "application/json", "schema": WhatIfParse.model_json_schema()},
+        ),
+        timeout=ai_config.TIMEOUT_SECONDS,
+    )
+    return WhatIfParse.model_validate_json(interaction.output_text).model_dump()
+
+
+async def summarise_page(item: dict, page_text: str | None, facts: str) -> str:
+    source = f"Web page text from {item['source_name']} ({item['source_url']}):\n{page_text}" if page_text else f"The web page could not be read. Use this short note from {item['source_name']} instead:\n{item['title']}. {item['summary']}"
+    gemini = client()
+    interaction = await asyncio.wait_for(
+        gemini.aio.interactions.create(
+            model=ai_config.MODEL,
+            input=[{"type": "text", "text": ai_config.NEWS_SUMMARY_PROMPT + "\n\nFacts about them:\n" + facts + "\n\n" + source}],
+            generation_config={"thinking_level": ai_config.THINKING_LEVEL},
+        ),
+        timeout=ai_config.TIMEOUT_SECONDS,
+    )
+    return (interaction.output_text or "").strip()

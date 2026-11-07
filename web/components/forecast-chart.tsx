@@ -1,6 +1,6 @@
 "use client";
 
-import { useId, useMemo, useState } from "react";
+import { useId, useMemo, useRef, useState } from "react";
 import {
   CartesianGrid,
   ComposedChart,
@@ -47,41 +47,49 @@ type PinProps = {
 };
 
 function Pin({ cx = 0, cy = 0, title, label, active, hovered, picked, faded, onClick, onHover }: PinProps) {
-  const filled = active || hovered || picked;
-  const colour = picked ? LABEL_COLOUR[label] : "var(--ink)";
+  const colour = LABEL_COLOUR[label];
+  const pointer = useRef<string>("mouse");
   return (
     <g
-      onClick={onClick}
-      onMouseEnter={() => onHover(true)}
-      onMouseLeave={() => onHover(false)}
+      onPointerDown={(e) => {
+        pointer.current = e.pointerType;
+      }}
+      onClick={() => {
+        if (pointer.current !== "mouse" && !hovered && !active) {
+          onHover(true);
+          setTimeout(() => onHover(false), 6000);
+          return;
+        }
+        if (pointer.current !== "mouse") onHover(false);
+        onClick?.();
+      }}
+      onMouseEnter={() => pointer.current === "mouse" && onHover(true)}
+      onMouseLeave={() => pointer.current === "mouse" && onHover(false)}
       style={{ cursor: onClick ? "pointer" : "default", opacity: faded && !hovered ? 0.25 : 1, transition: "opacity 180ms ease" }}
       role={onClick ? "button" : undefined}
       aria-label={title}
     >
-      <circle cx={cx} cy={cy} r={16} fill="transparent" />
+      <circle cx={cx} cy={cy} r={20} fill="transparent" />
       <circle
         cx={cx}
         cy={cy}
-        r={hovered ? 10 : picked ? 7.5 : active ? 6 : 4.5}
-        fill={filled ? colour : "#fff"}
-        stroke={filled ? "#fff" : "var(--ink)"}
-        strokeWidth={filled ? 2.5 : 2}
+        r={hovered ? 10 : picked ? 8.5 : active ? 8 : 6.5}
+        fill={colour}
+        stroke="#fff"
+        strokeWidth={2.5}
         style={{ transition: "r 180ms ease, fill 180ms ease" }}
       />
     </g>
   );
 }
 
-function ChartTip({ active, payload }: TooltipProps<number, string>) {
+function ChartTip({ active, payload, past, today }: TooltipProps<number, string> & { past?: boolean; today?: string }) {
   if (!active || !payload?.length) return null;
-  const p = payload[0].payload as { date: string; balance: number; band: [number, number]; items: { label: string; gbp: number }[] };
+  const p = payload[0].payload as { date: string; balance: number; items: { label: string; gbp: number }[] };
   return (
     <div className="max-w-[220px] rounded-md border bg-card px-3 py-2 text-sm shadow-sm">
       <p className="font-semibold">{longDate(p.date)}</p>
-      <p className={p.balance < 50 ? "text-tight" : "text-safe"}>{pounds(p.balance)} expected</p>
-      <p className="text-xs text-muted-foreground">
-        Between {pounds(p.band[0])} and {pounds(p.band[1])}
-      </p>
+      <p className={p.balance < 50 ? "text-tight" : "text-safe"}>{pounds(p.balance)} {past || (today && p.date < today) ? "balance" : "expected"}</p>
       {p.items.length > 0 && (
         <ul className="mt-1 border-t pt-1 text-xs">
           {p.items.slice(0, 4).map((i, n) => (
@@ -106,6 +114,8 @@ export function ForecastChart({
   onMarkerHover,
   activeId,
   highlight = null,
+  past = false,
+  today,
 }: {
   forecast: Forecast;
   ghost?: Forecast;
@@ -116,6 +126,8 @@ export function ForecastChart({
   onMarkerHover?: (id: string | null) => void;
   activeId?: string | null;
   highlight?: Label | null;
+  past?: boolean;
+  today?: string;
 }) {
   const gid = useId().replace(/:/g, "");
   const [hoverId, setHoverId] = useState<string | null>(null);
@@ -125,7 +137,6 @@ export function ForecastChart({
       forecast.days.map((d, i) => ({
         date: d.date,
         balance: d.balance,
-        band: [d.low, d.high] as [number, number],
         ghost: ghost?.days[i]?.balance,
         items: d.items,
       })),
@@ -169,9 +180,11 @@ export function ForecastChart({
             tick={{ fontSize: 11, fill: "#56627a" }}
             axisLine={false}
             tickLine={false}
-            width={48}
+            width={today ? 0 : 48}
+            hide={!!today}
           />
           <ReferenceLine y={0} stroke="#56627a" strokeOpacity={0.5} />
+          {today && <ReferenceLine x={today} stroke="var(--ink)" strokeOpacity={0.35} strokeDasharray="2 3" label={{ value: "Today", position: "insideTopLeft", fontSize: 11, fontWeight: 600, fill: "var(--ink)" }} />}
           <ReferenceLine y={threshold} stroke="var(--tight)" strokeDasharray="4 4" strokeOpacity={0.7} label={{ value: "£50 safety line", position: "insideBottomRight", fontSize: 10, fill: "var(--tight)" }} />
           {ghost && <Line dataKey="ghost" stroke="#8a94a8" strokeDasharray="4 4" strokeWidth={1.5} dot={false} isAnimationActive={false} activeDot={false} />}
           <Line
@@ -181,7 +194,7 @@ export function ForecastChart({
             strokeWidth={2.5}
             strokeLinecap="round"
             dot={false}
-            animationDuration={500}
+            isAnimationActive={false}
             activeDot={{ r: 4, stroke: "#56627a", strokeWidth: 1.5, fill: "#fff" }}
           />
           {markers.map((m) => (
@@ -209,7 +222,7 @@ export function ForecastChart({
           {shockDates.filter((s) => byDate.has(s)).map((s, i) => (
             <ReferenceDot key={`${s}-${i}`} x={s} y={byDate.get(s)!} r={7} fill="var(--tight)" stroke="#fff" strokeWidth={2} />
           ))}
-          <Tooltip content={<ChartTip />} cursor={false} />
+          <Tooltip content={<ChartTip past={past} today={today} />} cursor={false} />
         </ComposedChart>
       </ResponsiveContainer>
     </div>

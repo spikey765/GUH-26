@@ -107,7 +107,7 @@ def has_category(transactions, cat):
 
 def applies(event, profile, transactions):
     cond = event.get("applies_if", {})
-    if cond.get("school_age_children") and not school_age(profile):
+    if cond.get("school_age_children") and not school_age(profile) and not has_category(transactions, "school_meals"):
         return False
     if "transaction_category" in cond and not has_category(transactions, cond["transaction_category"]):
         return False
@@ -160,10 +160,15 @@ def event_cost(event, profile, transactions, recurring, events_by_cat):
         sign = 1 if bill["is_income"] else -1
         return {"kind": "monthly", "monthly_gbp": gbp(monthly), "direction": "up" if sign > 0 else "cost", "bill": bill, "per_payment": gbp(base * event["change_value"] / 100)}
     if per == "child_per_weekday":
-        kids = len(school_age(profile))
+        known = len(school_age(profile))
+        kids = known or 1
         days = weekdays_between(eff, d(event["end_date"]))
         total = kids * event["change_value"] * len(days)
-        return {"kind": "spread", "total_gbp": gbp(total), "days": [x.isoformat() for x in days], "direction": "cost", "detail": f"{kids} children x £{event['change_value']:.0f} x {len(days)} days"}
+        if known:
+            detail = f"{kids} {'child' if kids == 1 else 'children'} x £{event['change_value']:.0f} x {len(days)} days"
+        else:
+            detail = f"£{event['change_value']:.0f} x {len(days)} days for each child. Add your children's ages in About you for your total."
+        return {"kind": "spread", "total_gbp": gbp(total), "days": [x.isoformat() for x in days], "direction": "cost", "detail": detail, "per_child": not known}
     if per == "from_last_year":
         cat = event["estimate_category"]
         last_year = [t for t in transactions if t["category"] == cat]
@@ -210,6 +215,8 @@ def headline(event, cost):
         return f"£{cost['monthly_gbp']:.0f} {word}"
     if cost["kind"] == "monthly_fixed":
         return f"£{cost['monthly_gbp']:.2f} more a month"
+    if cost.get("per_child"):
+        return f"About £{cost['total_gbp']:.0f} extra for each child"
     return f"About £{cost['total_gbp']:.0f} extra"
 
 

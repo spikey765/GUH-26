@@ -43,6 +43,7 @@ export type Forecast = {
   worst_day: { date: string; balance: number };
   tight_weeks: { start: string; end: string; lowest_gbp: number }[];
   shocks?: Shock[];
+  account?: { name: string; as_of: string };
 };
 
 export type Shock = { amount_gbp: number; date: string; label: string; weekly_gbp?: number | null; id?: number };
@@ -103,6 +104,8 @@ export type NewsItem = {
   source_name: string;
   source_url: string;
   picture: "school" | "zap" | "flame" | "chart" | "map" | "clock" | "gift" | "calculator";
+  image?: string | null;
+  fit?: "yours" | "general" | "not_you";
 };
 
 export type AgentEvent ={ tool: string; reason: string; created_at: string };

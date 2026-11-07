@@ -3,7 +3,7 @@
 ## In one sentence
 Our app warns people on tight budgets about money surprises before they hit, like bill rises, school holidays and winter heating, and helps them get ready in time.
 
-Working name: Heads Up.
+Working name: HeadsUp.
 
 ## Who it's for
 People with irregular pay and no savings. Our demo user is a care worker on a zero-hours contract, paid weekly, a single parent with two school-age children, on Universal Credit, renting in Manchester.

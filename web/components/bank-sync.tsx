@@ -34,7 +34,7 @@ export function BankSync({ onDone }: { onDone: () => void }) {
 
   return (
     <main className="flex min-h-dvh flex-col px-6 pb-10 pt-16 sm:min-h-[calc(100dvh-3rem)]" role="status" aria-live="polite">
-      <p className="font-display text-lg font-extrabold tracking-tight">Heads Up</p>
+      <p className="font-display text-lg font-extrabold tracking-tight">HeadsUp</p>
 
       <div className="mt-10 flex items-center gap-3">
         <span className="flex size-12 items-center justify-center rounded-xl bg-ink text-white">
@@ -48,7 +48,7 @@ export function BankSync({ onDone }: { onDone: () => void }) {
 
       <h1 className="mt-8 font-display text-3xl font-bold leading-tight">Syncing with your bank</h1>
       <p className="mt-2 text-[15px] text-muted-foreground">
-        You allowed Heads Up to read your Example Bank app. We can only read your payments. We can&apos;t move money.
+        You allowed HeadsUp to read your Example Bank app. We can only read your payments. We can&apos;t move money.
       </p>
 
       <div className="mt-6 h-1.5 overflow-hidden rounded-full bg-mist">

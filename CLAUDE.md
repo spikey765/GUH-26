@@ -3,7 +3,7 @@
 GreatUniHack 2026, Manchester, 7 Nov. Hard submit 18:00. NatWest challenge. Judges score the demo, not code completeness. Dummy data is allowed.
 
 ## Product
-The app warns people on tight budgets about money surprises before they hit, like bill rises, school holidays and winter heating, and helps them get ready in time. Working name: Heads Up. Team plan: PLAN.md.
+The app warns people on tight budgets about money surprises before they hit, like bill rises, school holidays and winter heating, and helps them get ready in time. Working name: HeadsUp. Team plan: PLAN.md.
 
 Own branding, could sit inside a bank app. No NatWest logos or copied styling.
 

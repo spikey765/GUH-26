@@ -1,6 +1,8 @@
 "use client";
 
-import { useState } from "react";
+import { useRef, useState } from "react";
+import { Loader2, Mic, Square } from "lucide-react";
+import { canRecord, startRecording } from "@/lib/voice";
 import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
@@ -21,40 +23,117 @@ function addDays(iso: string, n: number) {
   return d.toISOString().slice(0, 10);
 }
 
+function spoken(n: number) {
+  const v = Math.round(Math.abs(n));
+  return n < 0 ? `minus £${v}` : `£${v}`;
+}
+
+function resultSentence(s: Simulation) {
+  const when = longDate(s.shock.date);
+  const head = `On ${when} you'd have ${spoken(s.after.on_date)} instead of ${spoken(s.before.on_date)}.`;
+  const tail = s.suggestion.weekly_gbp > 0 ? ` Put £${s.suggestion.weekly_gbp} a week aside for ${s.suggestion.weeks} weeks and it's covered.` : " It's less than a week away, so there's no time to save for it.";
+  return head + tail;
+}
+
 export function WhatIf({
   open,
   onOpenChange,
   forecast,
   simulate,
+  parse,
+  say,
+  transcribe,
   confirm,
 }: {
   open: boolean;
   onOpenChange: (o: boolean) => void;
   forecast: Forecast;
   simulate: (b: { amount_gbp: number; date: string; label: string }) => Promise<Simulation>;
+  parse?: (text: string) => Promise<{ label: string; amount_gbp: number | null; date: string }>;
+  say?: (text: string) => Promise<void>;
+  transcribe?: (audio: Blob) => Promise<{ text: string }>;
   confirm: (s: Simulation, withSaving: boolean) => Promise<void>;
 }) {
   const [label, setLabel] = useState(PRESETS[0].label);
   const [amount, setAmount] = useState(String(PRESETS[0].amount));
   const [date, setDate] = useState(addDays(forecast.today, 33));
   const [sim, setSim] = useState<Simulation | null>(null);
+  const [mic, setMic] = useState<"idle" | "recording" | "thinking">("idle");
+  const [heard, setHeard] = useState<string | null>(null);
+  const [typed, setTyped] = useState("");
+  const recorder = useRef<{ stop: () => Promise<Blob> } | null>(null);
   const [busy, setBusy] = useState(false);
   const [err, setErr] = useState<string | null>(null);
   const min = forecast.today;
   const max = forecast.days[forecast.days.length - 1].date;
 
-  async function run(e: React.FormEvent) {
-    e.preventDefault();
+  async function runWith(l: string, a: string, d: string, aloud = false) {
     setErr(null);
-    const n = Number(amount);
+    const n = Number(a);
     if (!n || n <= 0) return setErr("Enter how much it would cost.");
     setBusy(true);
     try {
-      setSim(await simulate({ amount_gbp: n, date, label: label.trim() || "Unexpected cost" }));
+      const s = await simulate({ amount_gbp: n, date: d, label: l.trim() || "Unexpected cost" });
+      setSim(s);
+      if (aloud && say) void say(resultSentence(s)).catch(() => {});
     } catch (e) {
       setErr(e instanceof Error ? e.message : "That didn't work. Try again.");
     } finally {
       setBusy(false);
+    }
+  }
+
+  function run(e: React.FormEvent) {
+    e.preventDefault();
+    void runWith(label, amount, date);
+  }
+
+  async function handleWords(text: string) {
+    if (!parse) return;
+    setHeard(text);
+    setMic("thinking");
+    try {
+      const r = await parse(text);
+      setLabel(r.label);
+      setDate(r.date);
+      setMic("idle");
+      if (r.amount_gbp) {
+        setAmount(String(r.amount_gbp));
+        await runWith(r.label, String(r.amount_gbp), r.date, true);
+      } else {
+        setAmount("");
+        setErr("How much would it cost? Type the amount, then tap Show me.");
+      }
+    } catch (e) {
+      setMic("idle");
+      setErr(e instanceof Error ? e.message : "We didn't understand that. Try again.");
+    }
+  }
+
+  async function voice() {
+    if (!transcribe) return;
+    setErr(null);
+    if (mic === "recording" && recorder.current) {
+      const r = recorder.current;
+      recorder.current = null;
+      setMic("thinking");
+      try {
+        const audio = await r.stop();
+        const { text } = await transcribe(audio);
+        await handleWords(text);
+      } catch (e) {
+        setMic("idle");
+        setErr(e instanceof Error ? e.message : "We didn't catch that. Try again or type it.");
+      }
+      return;
+    }
+    setHeard(null);
+    try {
+      recorder.current = await startRecording();
+      setMic("recording");
+    } catch (e) {
+      setMic("idle");
+      setErr(e instanceof Error ? e.message : "The microphone didn't start. Type it instead.");
     }
   }
 
@@ -90,6 +169,39 @@ export function WhatIf({
 
         {!sim ? (
           <form onSubmit={run} className="space-y-4">
+            {parse && (
+              <div className="space-y-2 rounded-lg bg-mist p-3">
+                {transcribe && canRecord() && (
+                  <button type="button" onClick={voice} disabled={mic === "thinking" || busy} className="flex w-full items-center gap-3 text-left disabled:opacity-80">
+                    <span className={`grid size-11 shrink-0 place-items-center rounded-full text-white ${mic === "recording" ? "bg-tight motion-safe:animate-pulse" : "bg-ink"}`}>
+                      {mic === "thinking" ? <Loader2 className="size-5 animate-spin" aria-hidden /> : mic === "recording" ? <Square className="size-4" aria-hidden /> : <Mic className="size-5" aria-hidden />}
+                    </span>
+                    <span>
+                      <span className="block font-semibold">{mic === "recording" ? "Listening. Tap to stop" : mic === "thinking" ? "Working it out..." : "Say it"}</span>
+                      <span className="block text-sm text-muted-foreground">{heard ? `"${heard}"` : "For example: my car fails its MOT on 10 December, about £350"}</span>
+                    </span>
+                  </button>
+                )}
+                <div className="flex gap-2">
+                  <Input
+                    aria-label="Or type it"
+                    placeholder="Or type it"
+                    value={typed}
+                    onChange={(e) => setTyped(e.target.value)}
+                    onKeyDown={(e) => {
+                      if (e.key === "Enter" && typed.trim().length > 1) {
+                        e.preventDefault();
+                        void handleWords(typed.trim());
+                      }
+                    }}
+                    className="h-10 bg-card"
+                  />
+                  <Button type="button" variant="outline" className="h-10 bg-card" disabled={typed.trim().length < 2 || mic !== "idle" || busy} onClick={() => void handleWords(typed.trim())}>
+                    Go
+                  </Button>
+                </div>
+              </div>
+            )}
             <div className="flex flex-wrap gap-2">
               {PRESETS.map((p) => (
                 <button

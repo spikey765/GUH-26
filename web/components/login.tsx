@@ -48,9 +48,7 @@ export function Login() {
   return (
     <main className="flex min-h-dvh flex-col px-6 pb-10 pt-14 sm:min-h-[calc(100dvh-3rem)]">
       <h1 className="font-display text-[56px] font-extrabold leading-[0.9] tracking-tight text-ink">
-        Heads
-        <br />
-        Up
+        HeadsUp
       </h1>
       <p className="mt-5 max-w-[30ch] text-lg leading-snug text-ink">See money surprises before they hit.</p>
       <p className="mt-2 max-w-[34ch] text-[15px] leading-relaxed text-muted-foreground">

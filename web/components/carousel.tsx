@@ -1,7 +1,7 @@
 "use client";
 
 import { Children, useCallback, useEffect, useRef, useState } from "react";
-import { ChevronLeft, ChevronRight, Pause, Play } from "lucide-react";
+import { ChevronLeft, ChevronRight } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 export function Carousel({
@@ -9,6 +9,7 @@ export function Carousel({
   children,
   interval = 6000,
   paused = false,
+  autoplay = true,
   onIndexChange,
   focus,
 }: {
@@ -16,6 +17,7 @@ export function Carousel({
   children: React.ReactNode;
   interval?: number;
   paused?: boolean;
+  autoplay?: boolean;
   onIndexChange?: (i: number) => void;
   focus?: number | null;
 }) {
@@ -23,7 +25,7 @@ export function Carousel({
   const n = items.length;
   const track = useRef<HTMLDivElement>(null);
   const [index, setIndex] = useState(0);
-  const [stopped, setStopped] = useState(false);
+  const stopped = !autoplay;
   const [hover, setHover] = useState(false);
   const [visible, setVisible] = useState(false);
   const [reduced, setReduced] = useState(false);
@@ -111,16 +113,6 @@ export function Carousel({
               />
             ))}
           </div>
-          {!reduced && (
-            <button
-              type="button"
-              aria-label={stopped ? "Start moving" : "Stop moving"}
-              onClick={() => setStopped(!stopped)}
-              className="grid size-8 place-items-center rounded-full border bg-card text-ink hover:bg-mist"
-            >
-              {stopped ? <Play className="size-3.5" aria-hidden /> : <Pause className="size-3.5" aria-hidden />}
-            </button>
-          )}
           <button type="button" aria-label="Next" onClick={() => go(index + 1)} className="grid size-8 place-items-center rounded-full border bg-card text-ink hover:bg-mist">
             <ChevronRight className="size-4" aria-hidden />
           </button>

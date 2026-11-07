@@ -13,7 +13,8 @@
         "benefit": "Universal Credit",
         "school_age_children": true
       },
-      "picture": "school"
+      "picture": "school",
+      "image": "https://www.gov.uk/assets/frontend/govuk-opengraph-image-4196a4d6333cf92aaf720047f56cfd91b3532d7635fc21ebcf0d5897df6b5f77.png"
     },
     {
       "id": "price-cap-announce",
@@ -27,7 +28,8 @@
       "applies_if": {
         "energy_payment": "Direct debit"
       },
-      "picture": "zap"
+      "picture": "zap",
+      "image": "https://www.ofgem.gov.uk/sites/default/files/styles/uncropped_large/public/2023-08/energy-price-cap-explained.jpg?itok=2qoyMHF9"
     },
     {
       "id": "warm-home-discount",
@@ -41,7 +43,8 @@
       "applies_if": {
         "benefit": "Universal Credit"
       },
-      "picture": "flame"
+      "picture": "flame",
+      "image": "https://www.gov.uk/assets/frontend/govuk-opengraph-image-4196a4d6333cf92aaf720047f56cfd91b3532d7635fc21ebcf0d5897df6b5f77.png"
     },
     {
       "id": "boe-forecast",
@@ -51,8 +54,9 @@
       "summary": "The Bank of England's latest report says how fast it expects prices to rise next year. Food and energy prices matter most for your budget.",
       "why": "Most of your spending goes on food, energy and bills.",
       "source_name": "Bank of England",
-      "source_url": "https://www.bankofengland.co.uk/monetary-policy-report",
-      "picture": "chart"
+      "source_url": "https://www.bankofengland.co.uk/monetary-policy",
+      "picture": "chart",
+      "image": "https://www.bankofengland.co.uk/-/media/boe/images/banners/banner-39.jpg?h=300&w=1440&hash=E3A3960D5968D4EE8EEEFC60D54AF104"
     },
     {
       "id": "manchester-help",
@@ -66,7 +70,8 @@
       "applies_if": {
         "area": "Manchester"
       },
-      "picture": "map"
+      "picture": "map",
+      "image": null
     },
     {
       "id": "uc-hours-change",
@@ -81,7 +86,8 @@
         "benefit": "Universal Credit",
         "contract_type": "Zero-hours"
       },
-      "picture": "clock"
+      "picture": "clock",
+      "image": "https://www.gov.uk/assets/frontend/govuk-opengraph-image-4196a4d6333cf92aaf720047f56cfd91b3532d7635fc21ebcf0d5897df6b5f77.png"
     },
     {
       "id": "christmas-budget",
@@ -92,7 +98,8 @@
       "why": "Your tightest weeks are around Christmas.",
       "source_name": "MoneyHelper",
       "source_url": "https://www.moneyhelper.org.uk/en/everyday-money/budgeting/budget-planner",
-      "picture": "gift"
+      "picture": "gift",
+      "image": null
     },
     {
       "id": "benefits-check",
@@ -103,7 +110,8 @@
       "why": "Your pay changes every week, so what you can get may change too.",
       "source_name": "GOV.UK",
       "source_url": "https://www.gov.uk/benefits-calculators",
-      "picture": "calculator"
+      "picture": "calculator",
+      "image": "https://www.gov.uk/assets/frontend/govuk-opengraph-image-4196a4d6333cf92aaf720047f56cfd91b3532d7635fc21ebcf0d5897df6b5f77.png"
     }
   ]
 }
