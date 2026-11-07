@@ -17,12 +17,20 @@ export type ProfileField = Exclude<keyof Profile, "guessed_by_ai">;
 
 export type Transaction = { id: string; date: string; merchant: string; amount_gbp: number; category: string };
 
+export type Evidence = { date: string; description: string; amount_gbp: number };
+
 export type Guess = {
   value: string | number | number[] | string[] | null;
   reason: string;
-  transaction_ids: string[];
-  transactions: Transaction[];
+  evidence: Evidence[];
   confidence: "high" | "medium" | "low";
+};
+
+export type GuessResult = {
+  guesses: Partial<Record<ProfileField, Guess>>;
+  source: "gemini" | "rules";
+  input: "statement" | "account";
+  dropped_evidence: number;
 };
 
 export type DayPoint = { date: string; balance: number; low: number; high: number; items: { label: string; gbp: number }[] };

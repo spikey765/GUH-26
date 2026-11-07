@@ -2,7 +2,7 @@ import json
 import datetime as dt
 from typing import Optional
 
-from fastapi import Depends, FastAPI, HTTPException
+from fastapi import Depends, FastAPI, File, HTTPException, UploadFile
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel, Field
 
@@ -10,6 +10,7 @@ import ai
 import ai_config
 import forecast as F
 import settings
+import statement
 import store
 from auth import current_user
 
@@ -25,7 +26,6 @@ TX = load("transactions.json")
 EVENTS = load("events.json")
 COUNCIL_TAX = load("council_tax.json")
 TRANSACTIONS = TX["transactions"]
-TX_BY_ID = {t["id"]: t for t in TRANSACTIONS}
 
 app = FastAPI(title="Heads Up API")
 app.add_middleware(CORSMiddleware, allow_origins=settings.WEB_ORIGINS, allow_methods=["*"], allow_headers=["*"])
@@ -83,7 +83,7 @@ def public(warnings):
 
 @app.get("/health")
 def health():
-    return {"ok": True, "auth": "supabase" if settings.SUPABASE_ON else "demo", "ai": "claude" if settings.AI_ON else "rules", "model": ai_config.MODEL, "today": settings.TODAY.isoformat()}
+    return {"ok": True, "auth": "supabase" if settings.SUPABASE_ON else "demo", "ai": ai_config.PROVIDER if settings.AI_ON else "rules", "model": ai_config.MODEL, "today": settings.TODAY.isoformat()}
 
 
 @app.get("/profile")
@@ -98,24 +98,50 @@ async def put_profile(body: Profile, user=Depends(current_user)):
     return {"profile": saved, "source": "saved"}
 
 
+ACCOUNT_LINES = [{"id": t["id"], "date": t["date"], "description": t["merchant"], "amount_gbp": t["amount_gbp"]} for t in TRANSACTIONS]
+MAX_PDF_BYTES = 10 * 1024 * 1024
+
+
 @app.post("/profile/guess")
-async def guess_profile(user=Depends(current_user)):
+async def guess_profile(file: Optional[UploadFile] = File(default=None), user=Depends(current_user)):
+    pdf_bytes = None
+    if file is not None:
+        pdf_bytes = await file.read(MAX_PDF_BYTES + 1)
+        if len(pdf_bytes) > MAX_PDF_BYTES:
+            raise HTTPException(413, "That file is too big. Use a PDF under 10 MB.")
+        try:
+            text = statement.extract_text(pdf_bytes)
+        except statement.NotAStatement as e:
+            raise HTTPException(422, str(e))
+        lines = statement.parse_transactions(text)
+        if not text.strip():
+            raise HTTPException(422, "We couldn't find any text in that PDF. Try a statement downloaded from your bank's app.")
+        rule_input = statement.as_account_transactions(lines)
+        what = f"a {len(pdf_bytes) // 1024} KB statement with {len(lines)} transactions"
+    else:
+        text, lines, rule_input = "", ACCOUNT_LINES, TRANSACTIONS
+        what = f"{len(TRANSACTIONS)} account transactions"
+
+    def verify(item):
+        return statement.verify_evidence(item, lines, text)
+
     used = "rules"
     if settings.AI_ON:
         try:
-            guesses, meta = await ai.guess_profile(TRANSACTIONS)
-            used = "claude"
-            await store.log_event(user, "profile_guess", f"{meta['model']} read {len(TRANSACTIONS)} transactions ({meta['input_tokens']} tokens in, {meta['output_tokens']} out) and guessed {len(guesses)} fields")
+            raw = await ai.ask_gemini(pdf_bytes, TRANSACTIONS)
+            used = "gemini"
         except Exception as e:
-            await store.log_event(user, "profile_guess", f"Claude call failed ({type(e).__name__}); used the rule-based guesser instead")
-            guesses = ai.rule_based_guess(TRANSACTIONS)
+            raw = ai.rule_based_guess(rule_input)
+            await store.log_event(user, "profile_guess", f"Gemini call failed ({type(e).__name__}) on {what}; used simple rules instead")
     else:
-        guesses = ai.rule_based_guess(TRANSACTIONS)
-        await store.log_event(user, "profile_guess", f"No Claude API key set; rule-based guesser read {len(TRANSACTIONS)} transactions and guessed {len(guesses)} fields")
-    for g in guesses.values():
-        g["transactions"] = [TX_BY_ID[i] for i in g.get("transaction_ids", []) if i in TX_BY_ID]
-        g["transaction_ids"] = [t["id"] for t in g["transactions"]]
-    return {"guesses": guesses, "source": used}
+        raw = ai.rule_based_guess(rule_input)
+    guesses, dropped = ai.apply_guardrails(raw, verify)
+    ai.fix_pay_range(guesses, lines)
+    filled = sum(1 for g in guesses.values() if g["value"] not in (None, []))
+    who = f"{ai_config.MODEL}" if used == "gemini" else "Simple rules (no Gemini key)" if not settings.AI_ON else "Simple rules"
+    if used == "gemini" or not settings.AI_ON:
+        await store.log_event(user, "profile_guess", f"{who} read {what}. Filled {filled} of {len(guesses)} fields. Dropped {dropped} evidence lines not found in the source.")
+    return {"guesses": guesses, "source": used, "input": "statement" if pdf_bytes is not None else "account", "dropped_evidence": dropped}
 
 
 @app.get("/forecast")

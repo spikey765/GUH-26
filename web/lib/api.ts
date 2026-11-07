@@ -1,4 +1,4 @@
-import type { AgentEvent, Forecast, Guess, Profile, ProfileField, Simulation, Warning } from "./types";
+import type { AgentEvent, Forecast, GuessResult, Profile, Simulation, Warning } from "./types";
 
 const BASE = process.env.NEXT_PUBLIC_API_URL ?? "http://localhost:8000";
 
@@ -11,9 +11,10 @@ export class ApiError extends Error {
 async function call<T>(token: string, path: string, init: RequestInit = {}): Promise<T> {
   let res: Response;
   try {
+    const json = !(init.body instanceof FormData);
     res = await fetch(`${BASE}${path}`, {
       ...init,
-      headers: { "Content-Type": "application/json", Authorization: `Bearer ${token}`, ...(init.headers ?? {}) },
+      headers: { ...(json ? { "Content-Type": "application/json" } : {}), Authorization: `Bearer ${token}`, ...(init.headers ?? {}) },
     });
   } catch {
     throw new ApiError(0, "Can't reach the Heads Up server. Check it is running on " + BASE);
@@ -29,7 +30,12 @@ export const api = (token: string) => ({
   health: () => call<{ auth: string; ai: string; model: string; today: string }>(token, "/health"),
   getProfile: () => call<{ profile: Profile; source: "saved" | "default" }>(token, "/profile"),
   putProfile: (p: Profile) => call<{ profile: Profile }>(token, "/profile", { method: "PUT", body: JSON.stringify(p) }),
-  guessProfile: () => call<{ guesses: Record<ProfileField, Guess>; source: "claude" | "rules" }>(token, "/profile/guess", { method: "POST" }),
+  guessProfile: (file?: File | Blob) => {
+    if (!file) return call<GuessResult>(token, "/profile/guess", { method: "POST" });
+    const form = new FormData();
+    form.append("file", file, file instanceof File ? file.name : "statement.pdf");
+    return call<GuessResult>(token, "/profile/guess", { method: "POST", body: form });
+  },
   forecast: () => call<Forecast>(token, "/forecast"),
   warnings: () => call<{ warnings: Warning[] }>(token, "/warnings"),
   simulate: (body: { amount_gbp: number; date: string; label: string }) =>

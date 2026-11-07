@@ -143,7 +143,7 @@ function App({ token, signOut }: { token: string; signOut: () => Promise<void> }
         </header>
         <AboutForm
           initial={profile}
-          onGuess={() => client.guessProfile()}
+          onGuess={(f) => client.guessProfile(f)}
           onSave={async (p) => {
             const r = await client.putProfile(p);
             setProfile(r.profile);
