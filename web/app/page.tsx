@@ -24,6 +24,45 @@ export default function Page() {
   return <App token={token} signOut={signOut} />;
 }
 
+function Bone({ className }: { className?: string }) {
+  return <div className={cn("animate-pulse rounded-md bg-mist", className)} />;
+}
+
+function HomeSkeleton() {
+  return (
+    <main className="pb-28" role="status" aria-label="Loading your 60 days">
+      <div className="flex items-center justify-between px-5 pt-6">
+        <p className="font-display text-lg font-extrabold tracking-tight">Heads Up</p>
+      </div>
+      <div className="space-y-2.5 px-5 pt-4">
+        <Bone className="h-8 w-4/5" />
+        <Bone className="h-8 w-3/5" />
+        <Bone className="mt-3 h-4 w-11/12" />
+      </div>
+      <div className="relative mx-2 mt-5 h-[230px] overflow-hidden rounded-lg bg-mist/60">
+        <svg viewBox="0 0 400 230" preserveAspectRatio="none" className="absolute inset-0 h-full w-full animate-pulse" aria-hidden>
+          <path d="M0 150 C 40 120, 70 60, 110 70 S 170 140, 210 120 S 280 50, 320 80 S 370 170, 400 160" fill="none" stroke="var(--line)" strokeWidth="5" strokeLinecap="round" />
+        </svg>
+        <p className="absolute inset-x-0 bottom-3 text-center text-sm text-muted-foreground">Working out your next 60 days...</p>
+      </div>
+      <div className="mt-8 px-5">
+        <Bone className="h-6 w-32" />
+      </div>
+      <ul className="mt-3 divide-y border-y">
+        {[0, 1, 2].map((i) => (
+          <li key={i} className="flex items-center gap-4 px-5 py-4">
+            <Bone className="h-12 w-12 shrink-0" />
+            <div className="flex-1 space-y-2">
+              <Bone className="h-4 w-3/4" />
+              <Bone className="h-3.5 w-1/2" />
+            </div>
+          </li>
+        ))}
+      </ul>
+    </main>
+  );
+}
+
 function App({ token, signOut }: { token: string; signOut: () => Promise<void> }) {
   const client = useMemo(() => api(token), [token]);
   const [view, setView] = useState<View>("loading");
@@ -131,7 +170,7 @@ function App({ token, signOut }: { token: string; signOut: () => Promise<void> }
       </main>
     );
 
-  if (view === "loading") return <p className="p-6 pt-16 text-muted-foreground">Loading your 60 days</p>;
+  if (view === "loading") return <HomeSkeleton />;
 
   if (view === "about")
     return (

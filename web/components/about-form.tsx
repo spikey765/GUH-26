@@ -1,7 +1,7 @@
 "use client";
 
-import { useRef, useState } from "react";
-import { Check, FileText, Landmark, Sparkles, Upload, X } from "lucide-react";
+import { useEffect, useRef, useState } from "react";
+import { Check, FileText, Landmark, Loader2, Pencil, Sparkles, Upload, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
@@ -88,7 +88,13 @@ function Why({ guess }: { guess: Guess }) {
 
 type Answer = "yes" | "no" | "edited";
 
-function Decide({ id, answer, onDecide, blank }: { id: string; answer?: Answer; onDecide: (a: Answer | undefined) => void; blank: boolean }) {
+function showValue(v: Guess["value"]) {
+  if (Array.isArray(v)) return v.join(", ");
+  if (typeof v === "number") return `£${v}`;
+  return v ?? "";
+}
+
+function Decide({ id, answer, onDecide, blank, was }: { id: string; answer?: Answer; onDecide: (a: Answer | undefined) => void; blank: boolean; was: string }) {
   if (!answer)
     return (
       <div id={id} className="mt-2 flex items-center gap-2 rounded-md bg-maybe-soft px-3 py-2">
@@ -101,24 +107,96 @@ function Decide({ id, answer, onDecide, blank }: { id: string; answer?: Answer; 
         </Button>
       </div>
     );
+  const changed = answer === "edited" || (answer === "no" && !blank);
+  const undo = (light: boolean) => (
+    <button type="button" className={cn("shrink-0 text-sm underline underline-offset-4", light ? "text-white/80 hover:text-white" : "text-muted-foreground")} onClick={() => onDecide(undefined)}>
+      Undo
+    </button>
+  );
+  if (changed)
+    return (
+      <div id={id} className="mt-2 flex items-start gap-2.5 rounded-md bg-ink px-3 py-2.5 text-white animate-in fade-in-0 zoom-in-95">
+        <Pencil className="mt-0.5 size-4 shrink-0" aria-hidden />
+        <div className="min-w-0 flex-1 text-sm">
+          <p className="font-semibold">Changed by you</p>
+          {was && <p className="text-white/75">We guessed &quot;{was}&quot;. We&apos;ll use your answer.</p>}
+        </div>
+        {undo(true)}
+      </div>
+    );
+  if (answer === "no")
+    return (
+      <div id={id} className="mt-2 flex items-center gap-2.5 rounded-md border-2 border-maybe bg-maybe-soft px-3 py-2 text-sm animate-in fade-in-0">
+        <X className="size-4 shrink-0 text-maybe" aria-hidden />
+        <p className="flex-1 font-medium">Cleared. Please fill this in.</p>
+        {undo(false)}
+      </div>
+    );
   return (
-    <div id={id} className="mt-1.5 flex items-center gap-3 text-sm">
-      {answer === "yes" && (
-        <span className="inline-flex items-center gap-1 font-medium text-safe">
-          <Check className="size-4" aria-hidden /> You said this is right
-        </span>
-      )}
-      {answer === "no" && <span className="font-medium text-maybe">{blank ? "Cleared. Please fill this in." : "Changed by you"}</span>}
-      {answer === "edited" && <span className="font-medium text-ink">Changed by you</span>}
-      <button type="button" className="text-muted-foreground underline underline-offset-4" onClick={() => onDecide(undefined)}>
-        Undo
-      </button>
+    <div id={id} className="mt-2 flex items-center gap-2.5 rounded-md bg-safe-soft px-3 py-2 text-sm animate-in fade-in-0">
+      <Check className="size-4 shrink-0 text-safe" aria-hidden />
+      <p className="flex-1 font-medium text-safe">You said this is right</p>
+      {undo(false)}
     </div>
   );
 }
 
 function Missing() {
   return <p className="mt-1.5 text-sm text-maybe">Not on your statement. Please fill this in.</p>;
+}
+
+const STEPS = {
+  statement: ["Opening your statement", "Finding your pay and benefits", "Finding your rent and bills", "Checking each answer against your statement"],
+  account: ["Opening 12 months of payments", "Finding your pay and benefits", "Finding your rent and bills", "Checking each answer against your payments"],
+};
+const STEP_AT = [0, 1500, 3500, 6000];
+
+function Reading({ kind }: { kind: "account" | "statement" }) {
+  const [ms, setMs] = useState(0);
+  useEffect(() => {
+    const start = Date.now();
+    const t = setInterval(() => setMs(Date.now() - start), 200);
+    return () => clearInterval(t);
+  }, []);
+  const step = STEP_AT.filter((at) => ms >= at).length - 1;
+  const pct = 95 * (1 - Math.exp(-ms / 4500));
+  return (
+    <div className="py-4" role="status" aria-live="polite">
+      <div className="flex items-center gap-3">
+        <div className="relative flex size-12 shrink-0 items-center justify-center rounded-lg bg-mist">
+          <FileText className="size-6 text-ink" aria-hidden />
+          <span className="absolute inset-x-1.5 top-2 h-0.5 rounded bg-safe/70 motion-safe:animate-[scan_1.6s_ease-in-out_infinite]" aria-hidden />
+        </div>
+        <div>
+          <p className="font-display text-lg font-bold leading-tight">{kind === "statement" ? "Reading your statement..." : "Reading your payments..."}</p>
+          <p className="text-sm text-muted-foreground">This usually takes about 10 seconds.</p>
+        </div>
+      </div>
+      <div className="mt-4 h-1.5 overflow-hidden rounded-full bg-mist">
+        <div className="h-full rounded-full bg-ink transition-[width] duration-200 ease-out" style={{ width: `${pct}%` }} />
+      </div>
+      <ol className="mt-4 space-y-2.5">
+        {STEPS[kind].map((label, i) => {
+          const state = i < step ? "done" : i === step ? "now" : "next";
+          return (
+            <li key={label} className={cn("flex items-center gap-2.5 text-sm transition-colors", state === "next" ? "text-muted-foreground/60" : "text-ink")}>
+              {state === "done" ? (
+                <span className="flex size-5 items-center justify-center rounded-full bg-safe text-white animate-in zoom-in-50">
+                  <Check className="size-3" aria-hidden />
+                </span>
+              ) : state === "now" ? (
+                <Loader2 className="size-5 animate-spin text-ink" aria-hidden />
+              ) : (
+                <span className="size-5 rounded-full border-2 border-line" aria-hidden />
+              )}
+              <span className={state === "now" ? "font-semibold" : ""}>{label}</span>
+            </li>
+          );
+        })}
+      </ol>
+      {ms > 12000 && <p className="mt-4 rounded-md bg-maybe-soft px-3 py-2 text-sm animate-in fade-in-0">This is taking longer than usual. Hang on, it&apos;s nearly there.</p>}
+    </div>
+  );
 }
 
 function FillDialog({
@@ -177,11 +255,7 @@ function FillDialog({
         </DialogHeader>
 
         {busy ? (
-          <div className="flex flex-col items-center gap-3 py-10 text-center" role="status" aria-live="polite">
-            <FileText className="size-10 animate-pulse text-ink" aria-hidden />
-            <p className="font-display text-lg font-bold">{busy === "statement" ? "Reading your statement..." : "Reading your payments..."}</p>
-            <p className="text-sm text-muted-foreground">This takes about 10 seconds.</p>
-          </div>
+          <Reading kind={busy} />
         ) : (
           <div className="space-y-3">
             <button
@@ -276,6 +350,9 @@ export function AboutForm({
   const fields = Object.keys(guesses) as ProfileField[];
   const filled = fields.filter((k) => !isEmpty(guesses[k]!.value));
   const pending = filled.filter((k) => !answer[k]);
+  const checked = filled.length - pending.length;
+  const [tried, setTried] = useState(false);
+  const pendingMsg = tried && pending.length ? `Tap Yes or No on ${pending.length} more answer${pending.length === 1 ? "" : "s"} first.` : null;
 
   function set<K extends ProfileField>(k: K, v: Profile[K]) {
     setP((x) => ({ ...x, [k]: v }));
@@ -307,6 +384,7 @@ export function AboutForm({
     setP({ ...next, guessed_by_ai: true });
     setGuesses(r.guesses);
     setAnswer({});
+    setTried(false);
     setResult({ source: r.source, input: r.input, dropped_evidence: r.dropped_evidence });
     setWhy(new Set());
     window.scrollTo({ top: 0 });
@@ -315,7 +393,7 @@ export function AboutForm({
   async function save(e: React.FormEvent) {
     e.preventDefault();
     if (pending.length) {
-      setErr(`Tap Yes or No on ${pending.length} more answer${pending.length === 1 ? "" : "s"} first.`);
+      setTried(true);
       document.getElementById(`decide-${pending[0]}`)?.scrollIntoView({ block: "center", behavior: "smooth" });
       return;
     }
@@ -339,7 +417,7 @@ export function AboutForm({
     const blank = current === null || current === "" || (Array.isArray(current) && current.length === 0);
     return (
       <>
-        {isEmpty(g.value) ? blank && <Missing /> : <Decide id={`decide-${k}`} answer={answer[k]} onDecide={(a) => decide(k, a)} blank={blank} />}
+        {isEmpty(g.value) ? blank && <Missing /> : <Decide id={`decide-${k}`} answer={answer[k]} onDecide={(a) => decide(k, a)} blank={blank} was={showValue(g.value)} />}
         {why.has(k) && <Why guess={g} />}
       </>
     );
@@ -348,7 +426,7 @@ export function AboutForm({
   const field = "h-11 bg-card text-base";
 
   return (
-    <form onSubmit={save} className="space-y-7 px-5 pb-28 pt-2">
+    <form onSubmit={save} className={cn("space-y-7 px-5 pt-2", guessed ? "pb-48" : "pb-28")}>
       {guessed && result ? (
         <div className="rounded-lg bg-safe-soft p-4">
           <p className="font-semibold">
@@ -443,7 +521,24 @@ export function AboutForm({
       </fieldset>
 
       <div className="fixed inset-x-0 bottom-0 z-10 mx-auto max-w-[440px] border-t bg-background/95 px-5 py-3 backdrop-blur sm:bottom-6 sm:rounded-b-[28px]">
-        {err && <p role="alert" className="mb-2 text-sm text-tight">{err}</p>}
+        {guessed && filled.length > 0 && (
+          <div className="mb-2.5" aria-live="polite">
+            <div className="flex justify-between text-xs font-medium">
+              <span>
+                {checked} of {filled.length} answers checked
+              </span>
+              <span className={pending.length ? "text-maybe" : "text-safe"}>{pending.length ? `${pending.length} left` : "All done"}</span>
+            </div>
+            <div className="mt-1 h-1.5 overflow-hidden rounded-full bg-mist">
+              <div className="h-full rounded-full bg-safe transition-[width] duration-300" style={{ width: `${(checked / filled.length) * 100}%` }} />
+            </div>
+          </div>
+        )}
+        {(pendingMsg || err) && (
+          <p role="alert" className="mb-2 text-sm text-tight">
+            {pendingMsg ?? err}
+          </p>
+        )}
         <Button type="submit" className="h-12 w-full text-base" disabled={saving}>
           {saving ? "Saving" : pending.length ? `Check ${pending.length} more` : guessed ? "Looks right" : "Save and see my 60 days"}
         </Button>
