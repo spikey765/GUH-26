@@ -42,8 +42,10 @@ export type Forecast = {
   days: DayPoint[];
   worst_day: { date: string; balance: number };
   tight_weeks: { start: string; end: string; lowest_gbp: number }[];
-  shocks?: { amount_gbp: number; date: string; label: string; weekly_gbp?: number }[];
+  shocks?: Shock[];
 };
+
+export type Shock = { amount_gbp: number; date: string; label: string; weekly_gbp?: number | null; id?: number };
 
 export type Suggestion = {
   type: "weekly_save" | "free_help" | "info";
@@ -77,11 +79,18 @@ export type Warning = {
   confirmed: boolean;
 };
 
+type Day = { date: string; balance: number };
+
+export type SimView = { on_date: number; lowest_after: Day; worst_day: Day; tight_weeks: { start: string; end: string; lowest_gbp: number }[] };
+
 export type Simulation = {
-  shock: { amount_gbp: number; date: string; label: string };
-  before: { worst_day: { date: string; balance: number } };
+  shock: Shock;
+  before: SimView;
+  after: SimView;
+  with_saving: SimView;
   forecast: Forecast;
-  suggestion: { weekly_gbp: number; weeks: number; worst_after_saving: { date: string; balance: number } };
+  saving_forecast: Forecast;
+  suggestion: { weekly_gbp: number; weeks: number; total_gbp: number; too_soon: boolean };
 };
 
 export type AgentEvent = { tool: string; reason: string; created_at: string };

@@ -42,6 +42,7 @@ export const api = (token: string) => ({
     call<Simulation>(token, "/simulate", { method: "POST", body: JSON.stringify(body) }),
   action: (body: { warning_id: string; confirmed: boolean; amount_gbp?: number; date?: string; label?: string; weekly_gbp?: number }) =>
     call<{ forecast: Forecast; warnings: Warning[] }>(token, "/actions", { method: "POST", body: JSON.stringify(body) }),
-  resetActions: () => call<{ ok: boolean }>(token, "/actions", { method: "DELETE" }),
+  removeWhatIf: (id: number) => call<{ forecast: Forecast; warnings: Warning[] }>(token, `/whatif/${id}`, { method: "DELETE" }),
+  resetActions:() => call<{ ok: boolean }>(token, "/actions", { method: "DELETE" }),
   agentLog: () => call<{ events: AgentEvent[] }>(token, "/agent-log"),
 });

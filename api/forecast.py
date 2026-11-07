@@ -324,10 +324,11 @@ def project(balance, recurring, transactions, warnings, today, actions, shocks=(
             put(d(s["credit_date"]), s["credit_gbp"], label=s["title"])
 
     for sh in shocks:
-        put(d(sh["date"]), -sh["amount_gbp"], label=sh["label"])
+        put(d(sh["date"]), -sh["amount_gbp"], label=f"What if: {sh['label']}")
         if sh.get("weekly_gbp"):
+            weeks = (d(sh["date"]) - today).days // 7
             x = today
-            while x < min(d(sh["date"]), end):
+            while x < min(today + timedelta(days=weeks * 7), end):
                 put(x, sh["weekly_gbp"] / 7)
                 x += timedelta(days=1)
 
@@ -356,10 +357,22 @@ def project(balance, recurring, transactions, warnings, today, actions, shocks=(
     }
 
 
-def weekly_to_stay_safe(base_forecast, shocked, today, shock_date):
-    lowest = min(p["balance"] for p in shocked["days"])
-    shortfall = TIGHT_GBP - lowest
-    if shortfall <= 0:
-        return 0
-    weeks = weeks_until(today, min(shock_date, d(shocked["worst_day"]["date"])))
-    return math.ceil(shortfall / weeks)
+def balance_on(forecast, day):
+    iso = day.isoformat()
+    return next((p["balance"] for p in forecast["days"] if p["date"] == iso), None)
+
+
+def lowest_from(forecast, day):
+    iso = day.isoformat()
+    after = [p for p in forecast["days"] if p["date"] >= iso]
+    p = min(after, key=lambda p: p["balance"])
+    return {"date": p["date"], "balance": p["balance"]}
+
+
+def saving_plan(amount, today, shock_date):
+    days = (shock_date - today).days
+    weeks = days // 7
+    if weeks < 1:
+        return {"weekly_gbp": 0, "weeks": 0, "total_gbp": 0, "too_soon": True}
+    weekly = math.ceil(amount / weeks)
+    return {"weekly_gbp": weekly, "weeks": weeks, "total_gbp": weekly * weeks, "too_soon": False}

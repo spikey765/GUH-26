@@ -107,3 +107,8 @@
   0%, 100% { transform: translateY(0); opacity: 0.4; }
   50% { transform: translateY(28px); opacity: 1; }
 }
+
+@keyframes sync {
+  0% { transform: translateX(-100%); }
+  100% { transform: translateX(300%); }
+}

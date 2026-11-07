@@ -74,7 +74,9 @@ async def state_for(user):
 
 
 def run_forecast(warnings, recurring, actions, shocks):
-    return F.project(TX["account"]["balance_gbp"], recurring, TRANSACTIONS, warnings, settings.TODAY, actions, shocks)
+    result = F.project(TX["account"]["balance_gbp"], recurring, TRANSACTIONS, warnings, settings.TODAY, actions, shocks)
+    result["shocks"] = [s for s in shocks if s.get("id") is not None]
+    return result
 
 
 def public(warnings):
@@ -149,7 +151,6 @@ async def get_forecast(user=Depends(current_user)):
     _, actions, shocks, warnings, recurring = await state_for(user)
     result = run_forecast(warnings, recurring, actions, shocks)
     result["recurring"] = recurring
-    result["shocks"] = shocks
     return result
 
 
@@ -172,14 +173,25 @@ async def simulate(body: Shock, user=Depends(current_user)):
     base = run_forecast(warnings, recurring, actions, shocks)
     shock = {"amount_gbp": body.amount_gbp, "date": body.date.isoformat(), "label": body.label}
     shocked = run_forecast(warnings, recurring, actions, [*shocks, shock])
-    weekly = F.weekly_to_stay_safe(base, shocked, settings.TODAY, body.date)
-    weeks = F.weeks_until(settings.TODAY, body.date)
-    with_saving = run_forecast(warnings, recurring, actions, [*shocks, {**shock, "weekly_gbp": weekly}]) if weekly else shocked
+    plan = F.saving_plan(body.amount_gbp, settings.TODAY, body.date)
+    saved = run_forecast(warnings, recurring, actions, [*shocks, {**shock, "weekly_gbp": plan["weekly_gbp"]}]) if plan["weekly_gbp"] else shocked
+
+    def view(f):
+        return {
+            "on_date": F.balance_on(f, body.date),
+            "lowest_after": F.lowest_from(f, body.date),
+            "worst_day": f["worst_day"],
+            "tight_weeks": f["tight_weeks"],
+        }
+
     return {
         "shock": shock,
-        "before": {"worst_day": base["worst_day"], "tight_weeks": base["tight_weeks"]},
+        "before": view(base),
+        "after": view(shocked),
+        "with_saving": view(saved),
         "forecast": shocked,
-        "suggestion": {"weekly_gbp": weekly, "weeks": weeks, "worst_after_saving": with_saving["worst_day"]},
+        "saving_forecast": saved,
+        "suggestion": plan,
     }
 
 
@@ -199,6 +211,13 @@ async def post_action(body: ActionIn, user=Depends(current_user)):
         w = next((w for w in warnings if w["id"] == body.warning_id), None)
         weekly = w["suggestion"].get("weekly_gbp") if w else None
         await store.add_action(user, body.warning_id, "yes" if body.confirmed else "no", weekly)
+    _, actions, shocks, warnings, recurring = await state_for(user)
+    return {"forecast": run_forecast(warnings, recurring, actions, shocks), "warnings": public(warnings)}
+
+
+@app.delete("/whatif/{action_id}")
+async def remove_whatif(action_id: int, user=Depends(current_user)):
+    await store.delete_whatif(user, action_id)
     _, actions, shocks, warnings, recurring = await state_for(user)
     return {"forecast": run_forecast(warnings, recurring, actions, shocks), "warnings": public(warnings)}
 

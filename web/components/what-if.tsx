@@ -10,9 +10,9 @@ import type { Forecast, Simulation } from "@/lib/types";
 import { longDate, pounds } from "@/lib/format";
 
 const PRESETS = [
-  { label: "Boiler repair", amount: 300 },
-  { label: "Car repair", amount: 250 },
-  { label: "School shoes", amount: 60 },
+  { label: "Car fails its MOT", amount: 350 },
+  { label: "School uniform", amount: 120 },
+  { label: "NHS dentist", amount: 76 },
 ];
 
 function addDays(iso: string, n: number) {
@@ -32,10 +32,10 @@ export function WhatIf({
   onOpenChange: (o: boolean) => void;
   forecast: Forecast;
   simulate: (b: { amount_gbp: number; date: string; label: string }) => Promise<Simulation>;
-  confirm: (s: Simulation) => Promise<void>;
+  confirm: (s: Simulation, withSaving: boolean) => Promise<void>;
 }) {
-  const [label, setLabel] = useState("Boiler repair");
-  const [amount, setAmount] = useState("300");
+  const [label, setLabel] = useState(PRESETS[0].label);
+  const [amount, setAmount] = useState(String(PRESETS[0].amount));
   const [date, setDate] = useState(addDays(forecast.today, 33));
   const [sim, setSim] = useState<Simulation | null>(null);
   const [busy, setBusy] = useState(false);
@@ -58,11 +58,11 @@ export function WhatIf({
     }
   }
 
-  async function yes() {
+  async function yes(withSaving: boolean) {
     if (!sim) return;
     setBusy(true);
     try {
-      await confirm(sim);
+      await confirm(sim, withSaving);
       setSim(null);
       onOpenChange(false);
     } catch (e) {
@@ -129,27 +129,36 @@ export function WhatIf({
           </form>
         ) : (
           <div className="space-y-4">
-            <ForecastChart forecast={sim.forecast} ghost={forecast} height={170} extraMarker={{ date: sim.shock.date, label: sim.shock.label }} />
+            <ForecastChart forecast={sim.forecast} ghost={forecast} height={170} shockDates={[sim.shock.date]} />
             <p className="text-[15px] leading-relaxed">
-              A {pounds(sim.shock.amount_gbp)} {sim.shock.label.toLowerCase()} on {longDate(sim.shock.date)} takes your lowest day from{" "}
-              <strong>{pounds(sim.before.worst_day.balance)}</strong> to{" "}
-              <strong className={sim.forecast.worst_day.balance < 50 ? "text-tight" : ""}>{pounds(sim.forecast.worst_day.balance)}</strong> on {longDate(sim.forecast.worst_day.date)}.
+              On {longDate(sim.shock.date)} you&apos;d have{" "}
+              <strong className={sim.after.on_date < 50 ? "text-tight" : ""}>{pounds(sim.after.on_date)}</strong> instead of <strong>{pounds(sim.before.on_date)}</strong>.
+              {Math.round(sim.after.worst_day.balance) !== Math.round(sim.before.worst_day.balance) && (
+                <>
+                  {" "}Your lowest day would be <strong className="text-tight">{pounds(sim.after.worst_day.balance)}</strong> on {longDate(sim.after.worst_day.date)}.
+                </>
+              )}
             </p>
             {weekly > 0 ? (
               <div className="rounded-lg border-2 border-ink p-4">
                 <p className="font-display text-lg font-bold">Put £{weekly} a week aside</p>
                 <p className="mt-1 text-sm">
-                  Start now and keep going for {sim.suggestion.weeks} weeks. Your lowest day would be {pounds(sim.suggestion.worst_after_saving.balance)}.
+                  {sim.suggestion.weeks} weeks of £{weekly} is {pounds(sim.suggestion.total_gbp)}. That covers the {pounds(sim.shock.amount_gbp)}.
                 </p>
               </div>
             ) : (
-              <p className="rounded-md bg-safe-soft px-3 py-2 text-sm">You would stay above £50. No need to change anything.</p>
+              <p className="rounded-md bg-maybe-soft px-3 py-2 text-sm">This is less than a week away, so there&apos;s no time to save for it.</p>
             )}
             {err && <p role="alert" className="text-sm text-tight">{err}</p>}
             <div className="space-y-2">
-              <Button className="h-12 w-full text-base" disabled={busy} onClick={yes}>
+              <Button className="h-12 w-full text-base" disabled={busy} onClick={() => yes(weekly > 0)}>
                 {busy ? "Saving" : weekly > 0 ? `Yes, put £${weekly} a week aside` : "Add it to my 60 days"}
               </Button>
+              {weekly > 0 && (
+                <Button variant="outline" className="h-11 w-full" disabled={busy} onClick={() => yes(false)}>
+                  Add it without saving
+                </Button>
+              )}
               <Button variant="ghost" className="h-11 w-full" disabled={busy} onClick={() => setSim(null)}>
                 Try something else
               </Button>

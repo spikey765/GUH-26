@@ -47,14 +47,14 @@ export function ForecastChart({
   forecast,
   ghost,
   warnings = [],
-  extraMarker,
+  shockDates = [],
   height = 230,
   onMarker,
 }: {
   forecast: Forecast;
   ghost?: Forecast;
   warnings?: Warning[];
-  extraMarker?: { date: string; label: string };
+  shockDates?: string[];
   height?: number;
   onMarker?: (id: string) => void;
 }) {
@@ -136,9 +136,9 @@ export function ForecastChart({
               style={{ cursor: onMarker ? "pointer" : "default" }}
             />
           ))}
-          {extraMarker && byDate.has(extraMarker.date) && (
-            <ReferenceDot x={extraMarker.date} y={byDate.get(extraMarker.date)!} r={7} fill="var(--tight)" stroke="#fff" strokeWidth={2} />
-          )}
+          {shockDates.filter((s) => byDate.has(s)).map((s, i) => (
+            <ReferenceDot key={`${s}-${i}`} x={s} y={byDate.get(s)!} r={7} fill="var(--tight)" stroke="#fff" strokeWidth={2} />
+          ))}
           <Tooltip content={<ChartTip />} cursor={{ stroke: "var(--ink)", strokeOpacity: 0.2 }} />
         </ComposedChart>
       </ResponsiveContainer>

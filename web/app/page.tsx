@@ -1,10 +1,11 @@
 "use client";
 
 import { useCallback, useEffect, useMemo, useState } from "react";
-import { Menu } from "lucide-react";
+import { Menu, Zap } from "lucide-react";
 import { useAuth } from "@/components/auth-provider";
 import { Login } from "@/components/login";
 import { AboutForm } from "@/components/about-form";
+import { BankSync } from "@/components/bank-sync";
 import { ForecastChart } from "@/components/forecast-chart";
 import { WarningList, WarningSheet } from "@/components/warnings";
 import { WhatIf } from "@/components/what-if";
@@ -12,7 +13,7 @@ import { Button } from "@/components/ui/button";
 import { Sheet, SheetContent, SheetDescription, SheetHeader, SheetTitle } from "@/components/ui/sheet";
 import { api, ApiError } from "@/lib/api";
 import type { AgentEvent, Forecast, Profile, Warning } from "@/lib/types";
-import { longDate, pounds } from "@/lib/format";
+import { longDate, pounds, shortDate } from "@/lib/format";
 import { cn } from "@/lib/utils";
 
 type View = "loading" | "about" | "home";
@@ -63,9 +64,34 @@ function HomeSkeleton() {
   );
 }
 
-function App({ token, signOut }: { token: string; signOut: () => Promise<void> }) {
+const SYNC_KEY = "headsup-bank-synced";
+
+function App({ token, signOut: rawSignOut }: { token: string; signOut: () => Promise<void> }) {
   const client = useMemo(() => api(token), [token]);
+  const [synced, setSynced] = useState<boolean | null>(null);
   const [view, setView] = useState<View>("loading");
+
+  useEffect(() => {
+    let done = false;
+    try {
+      done = sessionStorage.getItem(SYNC_KEY) === "1";
+    } catch {}
+    setSynced(done);
+  }, []);
+
+  const finishSync = useCallback(() => {
+    try {
+      sessionStorage.setItem(SYNC_KEY, "1");
+    } catch {}
+    setSynced(true);
+  }, []);
+
+  const signOut = useCallback(() => {
+    try {
+      sessionStorage.removeItem(SYNC_KEY);
+    } catch {}
+    return rawSignOut();
+  }, [rawSignOut]);
   const [profile, setProfile] = useState<Profile | null>(null);
   const [forecast, setForecast] = useState<Forecast | null>(null);
   const [warnings, setWarnings] = useState<Warning[]>([]);
@@ -149,6 +175,20 @@ function App({ token, signOut }: { token: string; signOut: () => Promise<void> }
     }
   }
 
+  async function removeShock(id: number) {
+    setBusy(true);
+    try {
+      const r = await client.removeWhatIf(id);
+      flash(forecast, r.forecast);
+      setForecast(r.forecast);
+      setWarnings(r.warnings);
+    } catch (e) {
+      handle(e);
+    } finally {
+      setBusy(false);
+    }
+  }
+
   async function reset() {
     setMenu(false);
     try {
@@ -170,6 +210,8 @@ function App({ token, signOut }: { token: string; signOut: () => Promise<void> }
       </main>
     );
 
+  if (synced === null) return null;
+  if (!synced) return <BankSync onDone={finishSync} />;
   if (view === "loading") return <HomeSkeleton />;
 
   if (view === "about")
@@ -197,6 +239,7 @@ function App({ token, signOut }: { token: string; signOut: () => Promise<void> }
   const tight = forecast.tight_weeks;
   const soon = warnings.filter((w) => w.in_window);
   const later = warnings.filter((w) => !w.in_window);
+  const shocks = forecast.shocks ?? [];
   const open = warnings.find((w) => w.id === openId) ?? null;
 
   return (
@@ -223,10 +266,21 @@ function App({ token, signOut }: { token: string; signOut: () => Promise<void> }
           </span>
           .
         </p>
+        {shocks.map((s) => (
+          <p key={s.id ?? s.date} className="mt-1 text-sm text-muted-foreground">
+            <span className="mr-1.5 inline-block size-2 rounded-full bg-tight align-middle" aria-hidden />
+            Includes your what-if: {s.label}, {pounds(s.amount_gbp)} on {shortDate(s.date)}.{" "}
+            {s.id != null && (
+              <button className="underline underline-offset-4" disabled={busy} onClick={() => removeShock(s.id!)}>
+                Remove
+              </button>
+            )}
+          </p>
+        ))}
       </section>
 
       <section className="mt-4 px-2">
-        <ForecastChart forecast={forecast} warnings={warnings} onMarker={setOpenId} />
+        <ForecastChart forecast={forecast} warnings={warnings} onMarker={setOpenId} shockDates={shocks.map((s) => s.date)} />
         <p className="px-3 pt-1 text-xs text-muted-foreground">
           The line is what we expect. The grey band shows good and bad weeks for pay. Dots are changes coming up. Tap one to see it.
         </p>
@@ -249,8 +303,8 @@ function App({ token, signOut }: { token: string; signOut: () => Promise<void> }
       )}
 
       <div className="fixed inset-x-0 bottom-0 z-10 mx-auto max-w-[440px] border-t bg-background/95 px-5 py-3 backdrop-blur sm:bottom-6 sm:rounded-b-[28px]">
-        <Button className="h-12 w-full text-base" onClick={() => setWhatIf(true)}>
-          What if?
+        <Button className="h-12 w-full gap-2 text-base" onClick={() => setWhatIf(true)}>
+          <Zap className="size-5" aria-hidden /> What if? Add a surprise cost
         </Button>
       </div>
 
@@ -261,14 +315,14 @@ function App({ token, signOut }: { token: string; signOut: () => Promise<void> }
         onOpenChange={setWhatIf}
         forecast={forecast}
         simulate={(b) => client.simulate(b)}
-        confirm={async (s) => {
+        confirm={async (s, withSaving) => {
           const r = await client.action({
             warning_id: "whatif",
             confirmed: true,
             amount_gbp: s.shock.amount_gbp,
             date: s.shock.date,
             label: s.shock.label,
-            weekly_gbp: s.suggestion.weekly_gbp,
+            weekly_gbp: withSaving ? s.suggestion.weekly_gbp : 0,
           });
           flash(forecast, r.forecast);
           setForecast(r.forecast);

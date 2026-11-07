@@ -8,6 +8,7 @@ import settings
 _profiles: dict[str, dict] = {}
 _actions: dict[str, list[dict]] = {}
 _events: dict[str, list[dict]] = {}
+_next_id = 0
 
 PROFILE_FIELDS = ["job_type", "contract_type", "pay_frequency", "pay_min_gbp", "pay_max_gbp", "adults", "children_ages", "benefits", "housing", "area", "energy_payment", "guessed_by_ai"]
 
@@ -66,12 +67,23 @@ async def list_actions(user):
 async def add_action(user, warning_id, action, weekly_gbp=None):
     row = {"warning_id": warning_id, "action": action, "weekly_gbp": weekly_gbp, "confirmed_at": _now()}
     if not settings.SUPABASE_ON:
-        _actions.setdefault(user["id"], []).append(row)
+        global _next_id
+        _next_id += 1
+        _actions.setdefault(user["id"], []).append({**row, "id": _next_id})
         return row
     async with httpx.AsyncClient(timeout=10) as c:
         r = await c.post(_rest("actions"), headers={**_user_headers(user), "Prefer": "return=minimal"}, json={**row, "user_id": user["id"]})
         r.raise_for_status()
     return row
+
+
+async def delete_whatif(user, action_id: int):
+    if not settings.SUPABASE_ON:
+        _actions[user["id"]] = [a for a in _actions.get(user["id"], []) if not (a["warning_id"] == "whatif" and a["id"] == action_id)]
+        return
+    async with httpx.AsyncClient(timeout=10) as c:
+        r = await c.delete(_rest(f"actions?id=eq.{action_id}&warning_id=eq.whatif&user_id=eq.{user['id']}"), headers=_user_headers(user))
+        r.raise_for_status()
 
 
 async def clear_actions(user):
@@ -87,7 +99,7 @@ def fold_actions(rows):
     state, shocks = {}, []
     for row in rows:
         if row["warning_id"] == "whatif":
-            shocks.append({**json.loads(row["action"]), "weekly_gbp": row.get("weekly_gbp")})
+            shocks.append({**json.loads(row["action"]), "weekly_gbp": row.get("weekly_gbp"), "id": row.get("id")})
         else:
             state[row["warning_id"]] = {"confirmed": row["action"] == "yes", "weekly_gbp": row.get("weekly_gbp")}
     return state, shocks
