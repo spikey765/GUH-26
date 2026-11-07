@@ -1,111 +1,96 @@
 # GUH'26 plan
 
-NatWest challenge: AI-powered financial inclusion and resilience.
+## In one sentence
+Our app warns people on tight budgets about money surprises before they hit, like bill rises, school holidays and winter heating, and helps them get ready in time.
 
-## The idea in one line
-A money forecast that sees bill changes coming. It reads trusted UK sources, keeps only the changes that hit your own bills, puts them on your next 60 days, and tells you what to do now.
-
-Pitch line: "Your bank sees April coming for you."
+Working name: Heads Up.
 
 ## Who it's for
-Amira, 31, Greater Manchester. Zero-hours care worker, single parent. Weekly pay that changes with her shifts, plus Universal Credit. She has no buffer, so a £6 rise she didn't see coming is a real problem.
+People with irregular pay and no savings. Our demo user is a care worker on a zero-hours contract, paid weekly, a single parent with two school-age children, on Universal Credit, renting in Manchester.
 
 ## The problem
-- Bill rises are announced months ahead (energy price cap, April rises for council tax, water, mobile and broadband), but nobody connects them to her bills.
-- Her council tax bill says the rise is 4.99% and nothing else. Finding out why means digging through council budget papers.
-- Banks show what she already spent. Nothing shows what's coming.
+Most costs that hurt them are announced or happen every year: energy price changes, April bill rises, school holidays when free school meals stop, winter heating, once-a-year bills. Nobody tells them in time. Their bank only shows what's already gone.
 
-## What we build
-1. **Timeline.** Her balance for the next 60 days with a low/high band. Event markers. The dip in red.
-2. **Event card.** What changes, when, her pound impact, a confidence badge, the source, why she is seeing it (her matched transactions), past changes, and one action.
-3. **Council tax explainer (hero feature).** "Why did my council tax go up?" Breaks the rise down by part of the bill (council, adult social care, mayor's police and fire precepts), says what the extra money pays for, shows past rises, estimates next April.
-4. **Action.** One tap to set aside £x a week, move a bill date, check Warm Home Discount or a social tariff, or contact the bank's support team. Always a confirm step.
-5. **Ingest.** Paste a news article. The agent turns it into an event card and the timeline updates live. This is the AI moment in the demo.
+## How it works
+1. They log in and fill in a short "About you" form: job, pay, household, benefits, housing. Or they tap "Fill it in for me" and the AI guesses from their transactions, showing why for each guess. They check every answer.
+2. The app shows their balance for the next 60 days, with tight weeks in red.
+3. Each upcoming change that affects them gets a warning: what, when, how much for them, how sure we are, and the source.
+4. Each warning comes with one thing to do now, like putting £9 a week aside or signing up for free holiday meals. Nothing happens unless they say yes.
+5. "Why did my council tax go up?" explains where the extra money goes.
+6. "What if?" lets them add a shock, like a £300 boiler repair, and see if they'd cope.
 
-Confidence badges:
-- **Confirmed:** the figure is announced.
-- **Forecast:** a named forecaster's estimate.
-- **Likely pattern:** based on past changes, with that history shown.
+## Dummy data
+All data is made up and stored as files in the backend. We don't call any real bank or news APIs. The only real services are login (Supabase) and the AI (Claude). This saves us hours.
 
-## Rules we don't break
-- Code does the maths. The AI reads sources, matches, explains and plans. It never makes up a figure.
-- She only sees events that affect her.
-- Every card shows its source.
-- Plain English, simpler-words toggle, large text, voice read-out.
-- No loans or credit offers. Free support first. Nothing changes without her confirming.
-- Trusted sources only: Ofgem, Ofcom, Ofwat, Bank of England, gov.uk, councils, GMCA, providers, BBC, MoneySavingExpert, Which?.
+## Can the AI work out someone's situation from their statements?
+Partly, and fast enough for today because we write the dummy transactions ourselves. Universal Credit payments, a care agency paying different amounts each week, school meal top-ups and rent payments all give strong clues. The AI reads the transactions and fills in the form with a reason for each answer.
 
-## How it scores
-| Criterion | Our answer |
-| --- | --- |
-| Customer focus | One real persona, only her bills, reading age 9 to 11, voice |
-| Innovation | Turns announcements into personal pound figures on a forecast; explains council tax rises nobody explains |
-| Social impact | Hits hardest for people with no slack; free support first; no credit |
-| AI and data | Live article ingest, matching, plain-English explanation; badges show how sure we are |
-| Feasibility | Uses data a bank already holds plus public announcements |
+It can't be trusted alone. Guesses about family or benefits can be wrong, and people should decide what the app knows about them. So the form comes first and always works on its own. "Fill it in for me" is an extra, and the user confirms every answer.
 
-## 3-minute demo
-1. 20s: Amira's week. "She found out about these rises when the money left her account."
-2. 40s: Timeline. Red dip in April. Tap it: three changes land together, £37 a month.
-3. 40s: Council tax card. "Why did it go up?" Breakdown, what it pays for, past rises.
-4. 40s: Paste a fresh energy news article. A new card appears, the timeline moves.
-5. 30s: She confirms "set aside £9 a week". The dip turns green. Show the source links and the log of what the agent did.
-6. 10s: "Your bank sees April coming for you."
+## The demo (3 minutes): "December is coming"
+1. Last December, school broke up, heating went up and Christmas came in the same few weeks. The money was gone before they noticed.
+2. Log in. Tap "Fill it in for me". The form fills itself, with reasons.
+3. The 60-day view: a red patch in late December.
+4. Tap the school holiday warning: dates, extra cost, free holiday meals.
+5. The January energy change: "£6 more a month for you from 1 January".
+6. "What if my boiler breaks?" The red gets worse. The app suggests £9 a week from now.
+7. Say yes. The red turns green.
+8. If time: "Why did my council tax go up?"
 
-## Scope
-Must: timeline, event cards, council tax explainer, one action with confirm, seeded persona, 8 to 10 real events.
-Should: live article ingest, simpler-words toggle, voice read-out.
-Could: employer watch, deploy to a public URL, more personas.
+## What we must finish
+Must have:
+- login
+- "About you" form
+- 60-day view
+- warnings with one suggestion each
+- the yes step
+- "What if?"
+- dummy data files
 
-## Timeline (today)
-| Time | Milestone |
-| --- | --- |
-| 14:00 | P4 at the NatWest workshop. Everyone else building against mock data |
-| 15:00 | API contract served with mock JSON; frontend renders it |
-| 16:00 | Real seed, real forecast, real events wired in |
-| 16:30 | Feature freeze. Only demo-path fixes after this |
-| 17:00 | Deployed, backup demo video recorded |
-| 17:30 | `/devpost` draft, final rehearsal |
-| 18:00 | Submitted |
+Nice to have:
+- "Fill it in for me"
+- council tax explainer
+- paste a news article to make a warning
+- read it out loud
 
 ## Who does what
 
-### P1: Frontend
-- Next.js app: timeline chart, event cards, council tax explainer screen, action confirm, ingest box.
-- Use the frontend-design skill. Mobile-sized layout; the demo runs as a phone screen.
-- Build against `web/src/mocks/*.json` until the API is ready, then switch.
-- Owns how it looks. Judges score this.
+### Person 1: the screens
+Login, the form, the 60-day view, warnings, "What if?" and the yes step. Uses the dummy files directly at first so they never wait on the backend. Makes it look good.
 
-### P2: Backend and forecast
-- FastAPI app, Supabase schema, `/seed`.
-- Forecast engine: find recurring income and bills in history, project 60 days, low/high band, apply matched events.
-- Event matching: transaction categories to event categories.
-- Serves the API contract below. Writes the mock JSON first so P1 isn't blocked.
+### Person 2: the data and backend
+Writes the dummy files: the user's profile, 12 months of transactions, 8 to 10 upcoming changes and the council tax breakdown. Builds the server that works out the 60 days and matches changes to the user. Sets up Supabase login.
 
-### P3: AI agent
-- Claude tool-calling loop with `agent_events` logging.
-- Ingest: article text to structured event with badge, using only figures in the source.
-- Explanations: plain English, simpler-words mode.
-- Council tax explainer: council budget papers to a per-precept breakdown and what the money funds.
-- Guardrails: no invented numbers, no credit advice, confirm before actions.
+### Person 3: the AI
+"Fill it in for me" from transactions, plain-words explanations, suggestions and the council tax explanation. Makes sure the AI never invents numbers and always asks before acting.
 
-### P4: Data, research and pitch
-- `api/events.json`: 8 to 10 real events with `/add-event`, every one with a source.
-- Council tax data for Manchester: last 3 years of rises by precept and what the council said it funds.
-- Attend the NatWest workshop at 14:00; bring back what they want to see.
-- Pitch script, slides, backup demo video, Devpost via `/devpost`.
-- Voice read-out with ElevenLabs if time.
+### Person 4: research and pitch
+Gives Person 2 realistic figures and sources for the upcoming changes and council tax. Goes to the NatWest workshop at 14:00. Writes the pitch and slides, records a backup demo video and writes the Devpost.
 
-## API contract (agree before 14:00)
-| Method | Path | Returns |
-| --- | --- | --- |
-| GET | `/forecast?customer_id=` | `{days: [{date, balance, low, high}], dip: {date, amount}}` |
-| GET | `/events?customer_id=` | `[{id, title, effective_date, impact_gbp, badge, source_name, source_url, matched_transactions, history, action}]` |
-| GET | `/council-tax?customer_id=` | `{total_rise_pct, parts: [{name, rise_gbp, funds}], history, next_april: {estimate_pct, badge}}` |
-| POST | `/ingest` `{text}` | new event card |
-| POST | `/explain` `{event_id, simpler}` | `{text}` |
-| POST | `/actions` `{event_id, action, confirmed}` | `{ok, new_forecast}` |
-| GET | `/agent-log?customer_id=` | `[{time, tool, reason}]` |
+## Today
+| Time | Goal |
+| --- | --- |
+| 14:15 | Agree the data format below |
+| 15:00 | Dummy files done, screens showing them |
+| 16:00 | Server and AI connected |
+| 16:30 | Stop adding features. Only fix the demo |
+| 17:00 | Backup video recorded |
+| 17:30 | Devpost written, practise the pitch |
+| 18:00 | Submit |
 
-## Nice to have: ElevenLabs track
-Their prize wants voice at the core, not bolted on. That would mean Amira talks to her coach ("why is my council tax going up?") and hears the answer, in her own language. Only enter if voice becomes the main way to use the app. A read-out button alone won't win it.
+## For the developers
+| Request | Gives back |
+| --- | --- |
+| `GET /profile` / `PUT /profile` | The "About you" answers |
+| `POST /profile/guess` | AI guesses for each field, with the transactions behind each one |
+| `GET /forecast` | Balance for each of the next 60 days, low and high, worst day |
+| `GET /warnings` | Warnings that apply to this user |
+| `POST /simulate {amount_gbp, date, label}` | 60 days with the shock added, weekly saving suggestion |
+| `POST /actions {warning_id, confirmed}` | Updated 60 days |
+| `GET /council-tax` | Rise by part of the bill, what each pays for, past rises |
+| `GET /agent-log` | What the AI did and why |
+
+Dummy files live in `api/data/`. Details are in CLAUDE.md.
+
+## ElevenLabs prize
+Only worth entering if voice becomes the main way to use the app, like asking out loud "Why is my council tax going up?" and hearing the answer. A read-out button won't win it.

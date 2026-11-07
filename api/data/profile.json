@@ -1,0 +1,19 @@
+{
+  "job_type": "Care worker",
+  "contract_type": "Zero-hours",
+  "pay_frequency": "Weekly",
+  "pay_min_gbp": 180,
+  "pay_max_gbp": 420,
+  "adults": 1,
+  "children_ages": [
+    7,
+    11
+  ],
+  "benefits": [
+    "Universal Credit",
+    "Child Benefit"
+  ],
+  "housing": "Private renting",
+  "area": "Manchester",
+  "energy_payment": "Direct debit"
+}

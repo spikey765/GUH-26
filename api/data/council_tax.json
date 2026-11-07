@@ -1,0 +1,49 @@
+{
+  "area": "Manchester",
+  "band": "A",
+  "year": "2026/27",
+  "discount": "25% single person discount",
+  "parts": [
+    {
+      "name": "Manchester City Council",
+      "amount_2025": 1012.4,
+      "amount_2026": 1053.8,
+      "pays_for": "Bins, roads, libraries, parks, children's services and housing help."
+    },
+    {
+      "name": "Adult social care",
+      "amount_2025": 168.2,
+      "amount_2026": 177.1,
+      "pays_for": "Care at home and in care homes for older and disabled people. This part can only be spent on care."
+    },
+    {
+      "name": "Mayor's police",
+      "amount_2025": 188.2,
+      "amount_2026": 197.4,
+      "pays_for": "Greater Manchester Police officers and staff."
+    },
+    {
+      "name": "Mayor's fire and general",
+      "amount_2025": 75.3,
+      "amount_2026": 79.6,
+      "pays_for": "Fire and rescue, plus mayoral projects like buses."
+    }
+  ],
+  "history": [
+    {
+      "year": "2024/25",
+      "rise_percent": 4.99
+    },
+    {
+      "year": "2025/26",
+      "rise_percent": 4.99
+    },
+    {
+      "year": "2026/27",
+      "rise_percent": 4.99
+    }
+  ],
+  "next_april_rise_percent": 4.99,
+  "source_name": "Manchester City Council council tax charges",
+  "source_url": "https://www.manchester.gov.uk/info/200006/council_tax"
+}

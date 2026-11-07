@@ -1,0 +1,3089 @@
+{
+  "account": {
+    "name": "Everyday account",
+    "balance_gbp": 260.0,
+    "as_of": "2026-11-07"
+  },
+  "transactions": [
+    {
+      "id": "t0001",
+      "date": "2025-11-07",
+      "merchant": "Brightcare Homecare Ltd",
+      "amount_gbp": 221.5,
+      "category": "income"
+    },
+    {
+      "id": "t0002",
+      "date": "2025-11-08",
+      "merchant": "Aldi",
+      "amount_gbp": -53.17,
+      "category": "groceries"
+    },
+    {
+      "id": "t0003",
+      "date": "2025-11-10",
+      "merchant": "HMRC Child Benefit",
+      "amount_gbp": 173.2,
+      "category": "benefit"
+    },
+    {
+      "id": "t0004",
+      "date": "2025-11-10",
+      "merchant": "Kidzone after-school club",
+      "amount_gbp": -30.0,
+      "category": "childcare"
+    },
+    {
+      "id": "t0005",
+      "date": "2025-11-10",
+      "merchant": "ParentPay school meals",
+      "amount_gbp": -7.5,
+      "category": "school_meals"
+    },
+    {
+      "id": "t0006",
+      "date": "2025-11-11",
+      "merchant": "Tesco",
+      "amount_gbp": -53.67,
+      "category": "groceries"
+    },
+    {
+      "id": "t0007",
+      "date": "2025-11-12",
+      "merchant": "Primark",
+      "amount_gbp": -9.37,
+      "category": "shopping"
+    },
+    {
+      "id": "t0008",
+      "date": "2025-11-13",
+      "merchant": "Shell",
+      "amount_gbp": -29.8,
+      "category": "fuel"
+    },
+    {
+      "id": "t0009",
+      "date": "2025-11-14",
+      "merchant": "Brightcare Homecare Ltd",
+      "amount_gbp": 330.5,
+      "category": "income"
+    },
+    {
+      "id": "t0010",
+      "date": "2025-11-14",
+      "merchant": "DWP Universal Credit",
+      "amount_gbp": 781.0,
+      "category": "benefit"
+    },
+    {
+      "id": "t0011",
+      "date": "2025-11-15",
+      "merchant": "Aldi",
+      "amount_gbp": -48.94,
+      "category": "groceries"
+    },
+    {
+      "id": "t0012",
+      "date": "2025-11-15",
+      "merchant": "Manchester City Council",
+      "amount_gbp": -118.0,
+      "category": "council_tax"
+    },
+    {
+      "id": "t0013",
+      "date": "2025-11-17",
+      "merchant": "Kidzone after-school club",
+      "amount_gbp": -30.0,
+      "category": "childcare"
+    },
+    {
+      "id": "t0014",
+      "date": "2025-11-17",
+      "merchant": "ParentPay school meals",
+      "amount_gbp": -7.5,
+      "category": "school_meals"
+    },
+    {
+      "id": "t0015",
+      "date": "2025-11-18",
+      "merchant": "Aldi",
+      "amount_gbp": -53.19,
+      "category": "groceries"
+    },
+    {
+      "id": "t0016",
+      "date": "2025-11-20",
+      "merchant": "Shell",
+      "amount_gbp": -25.49,
+      "category": "fuel"
+    },
+    {
+      "id": "t0017",
+      "date": "2025-11-20",
+      "merchant": "Tellmo Mobile",
+      "amount_gbp": -15.0,
+      "category": "mobile"
+    },
+    {
+      "id": "t0018",
+      "date": "2025-11-21",
+      "merchant": "Brightcare Homecare Ltd",
+      "amount_gbp": 307.0,
+      "category": "income"
+    },
+    {
+      "id": "t0019",
+      "date": "2025-11-22",
+      "merchant": "Aldi",
+      "amount_gbp": -46.35,
+      "category": "groceries"
+    },
+    {
+      "id": "t0020",
+      "date": "2025-11-22",
+      "merchant": "Fibrewave Broadband",
+      "amount_gbp": -27.0,
+      "category": "broadband"
+    },
+    {
+      "id": "t0021",
+      "date": "2025-11-24",
+      "merchant": "Kidzone after-school club",
+      "amount_gbp": -30.0,
+      "category": "childcare"
+    },
+    {
+      "id": "t0022",
+      "date": "2025-11-24",
+      "merchant": "ParentPay school meals",
+      "amount_gbp": -9.0,
+      "category": "school_meals"
+    },
+    {
+      "id": "t0023",
+      "date": "2025-11-25",
+      "merchant": "Tesco",
+      "amount_gbp": -58.14,
+      "category": "groceries"
+    },
+    {
+      "id": "t0024",
+      "date": "2025-11-27",
+      "merchant": "Shell",
+      "amount_gbp": -24.78,
+      "category": "fuel"
+    },
+    {
+      "id": "t0025",
+      "date": "2025-11-28",
+      "merchant": "Brightcare Homecare Ltd",
+      "amount_gbp": 338.0,
+      "category": "income"
+    },
+    {
+      "id": "t0026",
+      "date": "2025-11-28",
+      "merchant": "Northside Lettings",
+      "amount_gbp": -900.0,
+      "category": "rent"
+    },
+    {
+      "id": "t0027",
+      "date": "2025-11-29",
+      "merchant": "Aldi",
+      "amount_gbp": -59.75,
+      "category": "groceries"
+    },
+    {
+      "id": "t0028",
+      "date": "2025-12-01",
+      "merchant": "Kidzone after-school club",
+      "amount_gbp": -30.0,
+      "category": "childcare"
+    },
+    {
+      "id": "t0029",
+      "date": "2025-12-01",
+      "merchant": "ParentPay school meals",
+      "amount_gbp": -9.0,
+      "category": "school_meals"
+    },
+    {
+      "id": "t0030",
+      "date": "2025-12-02",
+      "merchant": "Tesco",
+      "amount_gbp": -55.39,
+      "category": "groceries"
+    },
+    {
+      "id": "t0031",
+      "date": "2025-12-03",
+      "merchant": "Ember Energy",
+      "amount_gbp": -112.0,
+      "category": "energy"
+    },
+    {
+      "id": "t0032",
+      "date": "2025-12-03",
+      "merchant": "Home Bargains",
+      "amount_gbp": -18.65,
+      "category": "shopping"
+    },
+    {
+      "id": "t0033",
+      "date": "2025-12-04",
+      "merchant": "Shell",
+      "amount_gbp": -28.09,
+      "category": "fuel"
+    },
+    {
+      "id": "t0034",
+      "date": "2025-12-05",
+      "merchant": "Brightcare Homecare Ltd",
+      "amount_gbp": 378.0,
+      "category": "income"
+    },
+    {
+      "id": "t0035",
+      "date": "2025-12-06",
+      "merchant": "Smyths Toys",
+      "amount_gbp": -64.0,
+      "category": "christmas"
+    },
+    {
+      "id": "t0036",
+      "date": "2025-12-06",
+      "merchant": "Tesco",
+      "amount_gbp": -49.51,
+      "category": "groceries"
+    },
+    {
+      "id": "t0037",
+      "date": "2025-12-06",
+      "merchant": "United Utilities",
+      "amount_gbp": -38.0,
+      "category": "water"
+    },
+    {
+      "id": "t0038",
+      "date": "2025-12-08",
+      "merchant": "HMRC Child Benefit",
+      "amount_gbp": 173.2,
+      "category": "benefit"
+    },
+    {
+      "id": "t0039",
+      "date": "2025-12-08",
+      "merchant": "Kidzone after-school club",
+      "amount_gbp": -30.0,
+      "category": "childcare"
+    },
+    {
+      "id": "t0040",
+      "date": "2025-12-08",
+      "merchant": "ParentPay school meals",
+      "amount_gbp": -9.0,
+      "category": "school_meals"
+    },
+    {
+      "id": "t0041",
+      "date": "2025-12-09",
+      "merchant": "Tesco",
+      "amount_gbp": -57.27,
+      "category": "groceries"
+    },
+    {
+      "id": "t0042",
+      "date": "2025-12-10",
+      "merchant": "Home Bargains",
+      "amount_gbp": -10.55,
+      "category": "shopping"
+    },
+    {
+      "id": "t0043",
+      "date": "2025-12-11",
+      "merchant": "Shell",
+      "amount_gbp": -29.64,
+      "category": "fuel"
+    },
+    {
+      "id": "t0044",
+      "date": "2025-12-12",
+      "merchant": "Brightcare Homecare Ltd",
+      "amount_gbp": 253.5,
+      "category": "income"
+    },
+    {
+      "id": "t0045",
+      "date": "2025-12-13",
+      "merchant": "Argos",
+      "amount_gbp": -85.0,
+      "category": "christmas"
+    },
+    {
+      "id": "t0046",
+      "date": "2025-12-13",
+      "merchant": "Tesco",
+      "amount_gbp": -55.7,
+      "category": "groceries"
+    },
+    {
+      "id": "t0047",
+      "date": "2025-12-14",
+      "merchant": "DWP Universal Credit",
+      "amount_gbp": 781.0,
+      "category": "benefit"
+    },
+    {
+      "id": "t0048",
+      "date": "2025-12-15",
+      "merchant": "Kidzone after-school club",
+      "amount_gbp": -30.0,
+      "category": "childcare"
+    },
+    {
+      "id": "t0049",
+      "date": "2025-12-15",
+      "merchant": "Manchester City Council",
+      "amount_gbp": -118.0,
+      "category": "council_tax"
+    },
+    {
+      "id": "t0050",
+      "date": "2025-12-15",
+      "merchant": "ParentPay school meals",
+      "amount_gbp": -6.0,
+      "category": "school_meals"
+    },
+    {
+      "id": "t0051",
+      "date": "2025-12-16",
+      "merchant": "Aldi",
+      "amount_gbp": -50.43,
+      "category": "groceries"
+    },
+    {
+      "id": "t0052",
+      "date": "2025-12-18",
+      "merchant": "Shell",
+      "amount_gbp": -25.44,
+      "category": "fuel"
+    },
+    {
+      "id": "t0053",
+      "date": "2025-12-18",
+      "merchant": "Smyths Toys",
+      "amount_gbp": -42.0,
+      "category": "christmas"
+    },
+    {
+      "id": "t0054",
+      "date": "2025-12-19",
+      "merchant": "Brightcare Homecare Ltd",
+      "amount_gbp": 304.0,
+      "category": "income"
+    },
+    {
+      "id": "t0055",
+      "date": "2025-12-20",
+      "merchant": "Aldi",
+      "amount_gbp": -71.22,
+      "category": "groceries"
+    },
+    {
+      "id": "t0056",
+      "date": "2025-12-20",
+      "merchant": "Tellmo Mobile",
+      "amount_gbp": -15.0,
+      "category": "mobile"
+    },
+    {
+      "id": "t0057",
+      "date": "2025-12-20",
+      "merchant": "Tesco",
+      "amount_gbp": -96.0,
+      "category": "groceries"
+    },
+    {
+      "id": "t0058",
+      "date": "2025-12-22",
+      "merchant": "Fibrewave Broadband",
+      "amount_gbp": -27.0,
+      "category": "broadband"
+    },
+    {
+      "id": "t0059",
+      "date": "2025-12-23",
+      "merchant": "Aldi",
+      "amount_gbp": -73.38,
+      "category": "groceries"
+    },
+    {
+      "id": "t0060",
+      "date": "2025-12-23",
+      "merchant": "Aldi",
+      "amount_gbp": -58.0,
+      "category": "groceries"
+    },
+    {
+      "id": "t0061",
+      "date": "2025-12-23",
+      "merchant": "Cash machine",
+      "amount_gbp": -20.0,
+      "category": "cash"
+    },
+    {
+      "id": "t0062",
+      "date": "2025-12-23",
+      "merchant": "Primark",
+      "amount_gbp": -45.0,
+      "category": "christmas"
+    },
+    {
+      "id": "t0063",
+      "date": "2025-12-25",
+      "merchant": "Esso",
+      "amount_gbp": -27.32,
+      "category": "fuel"
+    },
+    {
+      "id": "t0064",
+      "date": "2025-12-26",
+      "merchant": "Brightcare Homecare Ltd",
+      "amount_gbp": 194.0,
+      "category": "income"
+    },
+    {
+      "id": "t0065",
+      "date": "2025-12-26",
+      "merchant": "Cash machine",
+      "amount_gbp": -20.0,
+      "category": "cash"
+    },
+    {
+      "id": "t0066",
+      "date": "2025-12-27",
+      "merchant": "Aldi",
+      "amount_gbp": -73.8,
+      "category": "groceries"
+    },
+    {
+      "id": "t0067",
+      "date": "2025-12-28",
+      "merchant": "Northside Lettings",
+      "amount_gbp": -900.0,
+      "category": "rent"
+    },
+    {
+      "id": "t0068",
+      "date": "2025-12-30",
+      "merchant": "Lidl",
+      "amount_gbp": -81.24,
+      "category": "groceries"
+    },
+    {
+      "id": "t0069",
+      "date": "2025-12-31",
+      "merchant": "Primark",
+      "amount_gbp": -22.89,
+      "category": "shopping"
+    },
+    {
+      "id": "t0070",
+      "date": "2026-01-01",
+      "merchant": "Shell",
+      "amount_gbp": -21.01,
+      "category": "fuel"
+    },
+    {
+      "id": "t0071",
+      "date": "2026-01-02",
+      "merchant": "Brightcare Homecare Ltd",
+      "amount_gbp": 293.0,
+      "category": "income"
+    },
+    {
+      "id": "t0072",
+      "date": "2026-01-03",
+      "merchant": "Ember Energy",
+      "amount_gbp": -112.0,
+      "category": "energy"
+    },
+    {
+      "id": "t0073",
+      "date": "2026-01-03",
+      "merchant": "Tesco",
+      "amount_gbp": -79.26,
+      "category": "groceries"
+    },
+    {
+      "id": "t0074",
+      "date": "2026-01-04",
+      "merchant": "Domino's",
+      "amount_gbp": -17.01,
+      "category": "takeaway"
+    },
+    {
+      "id": "t0075",
+      "date": "2026-01-05",
+      "merchant": "HMRC Child Benefit",
+      "amount_gbp": 173.2,
+      "category": "benefit"
+    },
+    {
+      "id": "t0076",
+      "date": "2026-01-06",
+      "merchant": "Aldi",
+      "amount_gbp": -47.03,
+      "category": "groceries"
+    },
+    {
+      "id": "t0077",
+      "date": "2026-01-06",
+      "merchant": "United Utilities",
+      "amount_gbp": -38.0,
+      "category": "water"
+    },
+    {
+      "id": "t0078",
+      "date": "2026-01-08",
+      "merchant": "Esso",
+      "amount_gbp": -26.12,
+      "category": "fuel"
+    },
+    {
+      "id": "t0079",
+      "date": "2026-01-09",
+      "merchant": "Brightcare Homecare Ltd",
+      "amount_gbp": 246.5,
+      "category": "income"
+    },
+    {
+      "id": "t0080",
+      "date": "2026-01-10",
+      "merchant": "Tesco",
+      "amount_gbp": -47.7,
+      "category": "groceries"
+    },
+    {
+      "id": "t0081",
+      "date": "2026-01-12",
+      "merchant": "Kidzone after-school club",
+      "amount_gbp": -30.0,
+      "category": "childcare"
+    },
+    {
+      "id": "t0082",
+      "date": "2026-01-12",
+      "merchant": "ParentPay school meals",
+      "amount_gbp": -9.0,
+      "category": "school_meals"
+    },
+    {
+      "id": "t0083",
+      "date": "2026-01-13",
+      "merchant": "Tesco",
+      "amount_gbp": -54.73,
+      "category": "groceries"
+    },
+    {
+      "id": "t0084",
+      "date": "2026-01-14",
+      "merchant": "DWP Universal Credit",
+      "amount_gbp": 808.0,
+      "category": "benefit"
+    },
+    {
+      "id": "t0085",
+      "date": "2026-01-14",
+      "merchant": "Primark",
+      "amount_gbp": -23.66,
+      "category": "shopping"
+    },
+    {
+      "id": "t0086",
+      "date": "2026-01-15",
+      "merchant": "Esso",
+      "amount_gbp": -27.78,
+      "category": "fuel"
+    },
+    {
+      "id": "t0087",
+      "date": "2026-01-15",
+      "merchant": "Manchester City Council",
+      "amount_gbp": -118.0,
+      "category": "council_tax"
+    },
+    {
+      "id": "t0088",
+      "date": "2026-01-16",
+      "merchant": "Brightcare Homecare Ltd",
+      "amount_gbp": 206.5,
+      "category": "income"
+    },
+    {
+      "id": "t0089",
+      "date": "2026-01-17",
+      "merchant": "Tesco",
+      "amount_gbp": -54.97,
+      "category": "groceries"
+    },
+    {
+      "id": "t0090",
+      "date": "2026-01-19",
+      "merchant": "Kidzone after-school club",
+      "amount_gbp": -30.0,
+      "category": "childcare"
+    },
+    {
+      "id": "t0091",
+      "date": "2026-01-19",
+      "merchant": "ParentPay school meals",
+      "amount_gbp": -9.0,
+      "category": "school_meals"
+    },
+    {
+      "id": "t0092",
+      "date": "2026-01-20",
+      "merchant": "Lidl",
+      "amount_gbp": -58.36,
+      "category": "groceries"
+    },
+    {
+      "id": "t0093",
+      "date": "2026-01-20",
+      "merchant": "Tellmo Mobile",
+      "amount_gbp": -15.0,
+      "category": "mobile"
+    },
+    {
+      "id": "t0094",
+      "date": "2026-01-21",
+      "merchant": "B&M",
+      "amount_gbp": -17.06,
+      "category": "shopping"
+    },
+    {
+      "id": "t0095",
+      "date": "2026-01-22",
+      "merchant": "Esso",
+      "amount_gbp": -24.6,
+      "category": "fuel"
+    },
+    {
+      "id": "t0096",
+      "date": "2026-01-22",
+      "merchant": "Fibrewave Broadband",
+      "amount_gbp": -27.0,
+      "category": "broadband"
+    },
+    {
+      "id": "t0097",
+      "date": "2026-01-23",
+      "merchant": "Brightcare Homecare Ltd",
+      "amount_gbp": 230.0,
+      "category": "income"
+    },
+    {
+      "id": "t0098",
+      "date": "2026-01-24",
+      "merchant": "Tesco",
+      "amount_gbp": -59.99,
+      "category": "groceries"
+    },
+    {
+      "id": "t0099",
+      "date": "2026-01-25",
+      "merchant": "Just Eat",
+      "amount_gbp": -17.56,
+      "category": "takeaway"
+    },
+    {
+      "id": "t0100",
+      "date": "2026-01-26",
+      "merchant": "Kidzone after-school club",
+      "amount_gbp": -30.0,
+      "category": "childcare"
+    },
+    {
+      "id": "t0101",
+      "date": "2026-01-26",
+      "merchant": "ParentPay school meals",
+      "amount_gbp": -9.0,
+      "category": "school_meals"
+    },
+    {
+      "id": "t0102",
+      "date": "2026-01-27",
+      "merchant": "Lidl",
+      "amount_gbp": -57.43,
+      "category": "groceries"
+    },
+    {
+      "id": "t0103",
+      "date": "2026-01-28",
+      "merchant": "Northside Lettings",
+      "amount_gbp": -900.0,
+      "category": "rent"
+    },
+    {
+      "id": "t0104",
+      "date": "2026-01-29",
+      "merchant": "Shell",
+      "amount_gbp": -24.9,
+      "category": "fuel"
+    },
+    {
+      "id": "t0105",
+      "date": "2026-01-30",
+      "merchant": "Brightcare Homecare Ltd",
+      "amount_gbp": 339.5,
+      "category": "income"
+    },
+    {
+      "id": "t0106",
+      "date": "2026-01-31",
+      "merchant": "Aldi",
+      "amount_gbp": -59.46,
+      "category": "groceries"
+    },
+    {
+      "id": "t0107",
+      "date": "2026-02-02",
+      "merchant": "HMRC Child Benefit",
+      "amount_gbp": 173.2,
+      "category": "benefit"
+    },
+    {
+      "id": "t0108",
+      "date": "2026-02-02",
+      "merchant": "Kidzone after-school club",
+      "amount_gbp": -30.0,
+      "category": "childcare"
+    },
+    {
+      "id": "t0109",
+      "date": "2026-02-02",
+      "merchant": "ParentPay school meals",
+      "amount_gbp": -9.0,
+      "category": "school_meals"
+    },
+    {
+      "id": "t0110",
+      "date": "2026-02-03",
+      "merchant": "Aldi",
+      "amount_gbp": -54.69,
+      "category": "groceries"
+    },
+    {
+      "id": "t0111",
+      "date": "2026-02-03",
+      "merchant": "Ember Energy",
+      "amount_gbp": -112.0,
+      "category": "energy"
+    },
+    {
+      "id": "t0112",
+      "date": "2026-02-04",
+      "merchant": "B&M",
+      "amount_gbp": -17.57,
+      "category": "shopping"
+    },
+    {
+      "id": "t0113",
+      "date": "2026-02-05",
+      "merchant": "Esso",
+      "amount_gbp": -21.22,
+      "category": "fuel"
+    },
+    {
+      "id": "t0114",
+      "date": "2026-02-06",
+      "merchant": "Brightcare Homecare Ltd",
+      "amount_gbp": 376.0,
+      "category": "income"
+    },
+    {
+      "id": "t0115",
+      "date": "2026-02-06",
+      "merchant": "United Utilities",
+      "amount_gbp": -38.0,
+      "category": "water"
+    },
+    {
+      "id": "t0116",
+      "date": "2026-02-07",
+      "merchant": "Aldi",
+      "amount_gbp": -55.58,
+      "category": "groceries"
+    },
+    {
+      "id": "t0117",
+      "date": "2026-02-08",
+      "merchant": "Domino's",
+      "amount_gbp": -18.05,
+      "category": "takeaway"
+    },
+    {
+      "id": "t0118",
+      "date": "2026-02-09",
+      "merchant": "Kidzone after-school club",
+      "amount_gbp": -30.0,
+      "category": "childcare"
+    },
+    {
+      "id": "t0119",
+      "date": "2026-02-09",
+      "merchant": "ParentPay school meals",
+      "amount_gbp": -6.0,
+      "category": "school_meals"
+    },
+    {
+      "id": "t0120",
+      "date": "2026-02-10",
+      "merchant": "Aldi",
+      "amount_gbp": -50.4,
+      "category": "groceries"
+    },
+    {
+      "id": "t0121",
+      "date": "2026-02-11",
+      "merchant": "Cash machine",
+      "amount_gbp": -20.0,
+      "category": "cash"
+    },
+    {
+      "id": "t0122",
+      "date": "2026-02-12",
+      "merchant": "Cash machine",
+      "amount_gbp": -20.0,
+      "category": "cash"
+    },
+    {
+      "id": "t0123",
+      "date": "2026-02-12",
+      "merchant": "Shell",
+      "amount_gbp": -24.97,
+      "category": "fuel"
+    },
+    {
+      "id": "t0124",
+      "date": "2026-02-13",
+      "merchant": "Brightcare Homecare Ltd",
+      "amount_gbp": 217.5,
+      "category": "income"
+    },
+    {
+      "id": "t0125",
+      "date": "2026-02-13",
+      "merchant": "Cash machine",
+      "amount_gbp": -20.0,
+      "category": "cash"
+    },
+    {
+      "id": "t0126",
+      "date": "2026-02-14",
+      "merchant": "Aldi",
+      "amount_gbp": -69.8,
+      "category": "groceries"
+    },
+    {
+      "id": "t0127",
+      "date": "2026-02-14",
+      "merchant": "DWP Universal Credit",
+      "amount_gbp": 805.0,
+      "category": "benefit"
+    },
+    {
+      "id": "t0128",
+      "date": "2026-02-17",
+      "merchant": "Lidl",
+      "amount_gbp": -67.77,
+      "category": "groceries"
+    },
+    {
+      "id": "t0129",
+      "date": "2026-02-19",
+      "merchant": "Esso",
+      "amount_gbp": -28.24,
+      "category": "fuel"
+    },
+    {
+      "id": "t0130",
+      "date": "2026-02-20",
+      "merchant": "Brightcare Homecare Ltd",
+      "amount_gbp": 248.0,
+      "category": "income"
+    },
+    {
+      "id": "t0131",
+      "date": "2026-02-20",
+      "merchant": "Tellmo Mobile",
+      "amount_gbp": -15.0,
+      "category": "mobile"
+    },
+    {
+      "id": "t0132",
+      "date": "2026-02-21",
+      "merchant": "Aldi",
+      "amount_gbp": -77.02,
+      "category": "groceries"
+    },
+    {
+      "id": "t0133",
+      "date": "2026-02-22",
+      "merchant": "Fibrewave Broadband",
+      "amount_gbp": -27.0,
+      "category": "broadband"
+    },
+    {
+      "id": "t0134",
+      "date": "2026-02-23",
+      "merchant": "Kidzone after-school club",
+      "amount_gbp": -30.0,
+      "category": "childcare"
+    },
+    {
+      "id": "t0135",
+      "date": "2026-02-23",
+      "merchant": "ParentPay school meals",
+      "amount_gbp": -7.5,
+      "category": "school_meals"
+    },
+    {
+      "id": "t0136",
+      "date": "2026-02-24",
+      "merchant": "Aldi",
+      "amount_gbp": -50.05,
+      "category": "groceries"
+    },
+    {
+      "id": "t0137",
+      "date": "2026-02-26",
+      "merchant": "Esso",
+      "amount_gbp": -26.51,
+      "category": "fuel"
+    },
+    {
+      "id": "t0138",
+      "date": "2026-02-27",
+      "merchant": "Brightcare Homecare Ltd",
+      "amount_gbp": 282.5,
+      "category": "income"
+    },
+    {
+      "id": "t0139",
+      "date": "2026-02-28",
+      "merchant": "Aldi",
+      "amount_gbp": -47.58,
+      "category": "groceries"
+    },
+    {
+      "id": "t0140",
+      "date": "2026-02-28",
+      "merchant": "Northside Lettings",
+      "amount_gbp": -900.0,
+      "category": "rent"
+    },
+    {
+      "id": "t0141",
+      "date": "2026-03-01",
+      "merchant": "Just Eat",
+      "amount_gbp": -18.78,
+      "category": "takeaway"
+    },
+    {
+      "id": "t0142",
+      "date": "2026-03-02",
+      "merchant": "Cash machine",
+      "amount_gbp": -20.0,
+      "category": "cash"
+    },
+    {
+      "id": "t0143",
+      "date": "2026-03-02",
+      "merchant": "HMRC Child Benefit",
+      "amount_gbp": 173.2,
+      "category": "benefit"
+    },
+    {
+      "id": "t0144",
+      "date": "2026-03-02",
+      "merchant": "Kidzone after-school club",
+      "amount_gbp": -30.0,
+      "category": "childcare"
+    },
+    {
+      "id": "t0145",
+      "date": "2026-03-02",
+      "merchant": "ParentPay school meals",
+      "amount_gbp": -7.5,
+      "category": "school_meals"
+    },
+    {
+      "id": "t0146",
+      "date": "2026-03-03",
+      "merchant": "Aldi",
+      "amount_gbp": -54.09,
+      "category": "groceries"
+    },
+    {
+      "id": "t0147",
+      "date": "2026-03-03",
+      "merchant": "Ember Energy",
+      "amount_gbp": -112.0,
+      "category": "energy"
+    },
+    {
+      "id": "t0148",
+      "date": "2026-03-05",
+      "merchant": "Esso",
+      "amount_gbp": -29.3,
+      "category": "fuel"
+    },
+    {
+      "id": "t0149",
+      "date": "2026-03-06",
+      "merchant": "Brightcare Homecare Ltd",
+      "amount_gbp": 200.0,
+      "category": "income"
+    },
+    {
+      "id": "t0150",
+      "date": "2026-03-06",
+      "merchant": "United Utilities",
+      "amount_gbp": -38.0,
+      "category": "water"
+    },
+    {
+      "id": "t0151",
+      "date": "2026-03-07",
+      "merchant": "Tesco",
+      "amount_gbp": -53.58,
+      "category": "groceries"
+    },
+    {
+      "id": "t0152",
+      "date": "2026-03-09",
+      "merchant": "Kidzone after-school club",
+      "amount_gbp": -30.0,
+      "category": "childcare"
+    },
+    {
+      "id": "t0153",
+      "date": "2026-03-09",
+      "merchant": "ParentPay school meals",
+      "amount_gbp": -6.0,
+      "category": "school_meals"
+    },
+    {
+      "id": "t0154",
+      "date": "2026-03-10",
+      "merchant": "Aldi",
+      "amount_gbp": -52.7,
+      "category": "groceries"
+    },
+    {
+      "id": "t0155",
+      "date": "2026-03-12",
+      "merchant": "Esso",
+      "amount_gbp": -30.07,
+      "category": "fuel"
+    },
+    {
+      "id": "t0156",
+      "date": "2026-03-12",
+      "merchant": "Shield Car Insurance",
+      "amount_gbp": -548.0,
+      "category": "car_insurance"
+    },
+    {
+      "id": "t0157",
+      "date": "2026-03-13",
+      "merchant": "Brightcare Homecare Ltd",
+      "amount_gbp": 297.0,
+      "category": "income"
+    },
+    {
+      "id": "t0158",
+      "date": "2026-03-14",
+      "merchant": "Aldi",
+      "amount_gbp": -57.48,
+      "category": "groceries"
+    },
+    {
+      "id": "t0159",
+      "date": "2026-03-14",
+      "merchant": "DWP Universal Credit",
+      "amount_gbp": 780.0,
+      "category": "benefit"
+    },
+    {
+      "id": "t0160",
+      "date": "2026-03-16",
+      "merchant": "Kidzone after-school club",
+      "amount_gbp": -30.0,
+      "category": "childcare"
+    },
+    {
+      "id": "t0161",
+      "date": "2026-03-16",
+      "merchant": "ParentPay school meals",
+      "amount_gbp": -9.0,
+      "category": "school_meals"
+    },
+    {
+      "id": "t0162",
+      "date": "2026-03-17",
+      "merchant": "Lidl",
+      "amount_gbp": -54.79,
+      "category": "groceries"
+    },
+    {
+      "id": "t0163",
+      "date": "2026-03-19",
+      "merchant": "Esso",
+      "amount_gbp": -31.13,
+      "category": "fuel"
+    },
+    {
+      "id": "t0164",
+      "date": "2026-03-20",
+      "merchant": "Brightcare Homecare Ltd",
+      "amount_gbp": 259.0,
+      "category": "income"
+    },
+    {
+      "id": "t0165",
+      "date": "2026-03-20",
+      "merchant": "Tellmo Mobile",
+      "amount_gbp": -15.0,
+      "category": "mobile"
+    },
+    {
+      "id": "t0166",
+      "date": "2026-03-21",
+      "merchant": "Lidl",
+      "amount_gbp": -59.31,
+      "category": "groceries"
+    },
+    {
+      "id": "t0167",
+      "date": "2026-03-22",
+      "merchant": "Domino's",
+      "amount_gbp": -17.0,
+      "category": "takeaway"
+    },
+    {
+      "id": "t0168",
+      "date": "2026-03-22",
+      "merchant": "Fibrewave Broadband",
+      "amount_gbp": -27.0,
+      "category": "broadband"
+    },
+    {
+      "id": "t0169",
+      "date": "2026-03-23",
+      "merchant": "Kidzone after-school club",
+      "amount_gbp": -30.0,
+      "category": "childcare"
+    },
+    {
+      "id": "t0170",
+      "date": "2026-03-23",
+      "merchant": "ParentPay school meals",
+      "amount_gbp": -7.5,
+      "category": "school_meals"
+    },
+    {
+      "id": "t0171",
+      "date": "2026-03-24",
+      "merchant": "Aldi",
+      "amount_gbp": -52.64,
+      "category": "groceries"
+    },
+    {
+      "id": "t0172",
+      "date": "2026-03-25",
+      "merchant": "Home Bargains",
+      "amount_gbp": -24.16,
+      "category": "shopping"
+    },
+    {
+      "id": "t0173",
+      "date": "2026-03-26",
+      "merchant": "Shell",
+      "amount_gbp": -29.54,
+      "category": "fuel"
+    },
+    {
+      "id": "t0174",
+      "date": "2026-03-27",
+      "merchant": "Brightcare Homecare Ltd",
+      "amount_gbp": 215.0,
+      "category": "income"
+    },
+    {
+      "id": "t0175",
+      "date": "2026-03-28",
+      "merchant": "Aldi",
+      "amount_gbp": -75.34,
+      "category": "groceries"
+    },
+    {
+      "id": "t0176",
+      "date": "2026-03-28",
+      "merchant": "Northside Lettings",
+      "amount_gbp": -900.0,
+      "category": "rent"
+    },
+    {
+      "id": "t0177",
+      "date": "2026-03-29",
+      "merchant": "Domino's",
+      "amount_gbp": -20.8,
+      "category": "takeaway"
+    },
+    {
+      "id": "t0178",
+      "date": "2026-03-30",
+      "merchant": "HMRC Child Benefit",
+      "amount_gbp": 173.2,
+      "category": "benefit"
+    },
+    {
+      "id": "t0179",
+      "date": "2026-03-31",
+      "merchant": "Lidl",
+      "amount_gbp": -67.77,
+      "category": "groceries"
+    },
+    {
+      "id": "t0180",
+      "date": "2026-04-01",
+      "merchant": "B&M",
+      "amount_gbp": -13.67,
+      "category": "shopping"
+    },
+    {
+      "id": "t0181",
+      "date": "2026-04-02",
+      "merchant": "Shell",
+      "amount_gbp": -23.73,
+      "category": "fuel"
+    },
+    {
+      "id": "t0182",
+      "date": "2026-04-03",
+      "merchant": "Brightcare Homecare Ltd",
+      "amount_gbp": 246.0,
+      "category": "income"
+    },
+    {
+      "id": "t0183",
+      "date": "2026-04-03",
+      "merchant": "Ember Energy",
+      "amount_gbp": -86.0,
+      "category": "energy"
+    },
+    {
+      "id": "t0184",
+      "date": "2026-04-04",
+      "merchant": "Aldi",
+      "amount_gbp": -78.95,
+      "category": "groceries"
+    },
+    {
+      "id": "t0185",
+      "date": "2026-04-06",
+      "merchant": "United Utilities",
+      "amount_gbp": -40.6,
+      "category": "water"
+    },
+    {
+      "id": "t0186",
+      "date": "2026-04-07",
+      "merchant": "Tesco",
+      "amount_gbp": -68.98,
+      "category": "groceries"
+    },
+    {
+      "id": "t0187",
+      "date": "2026-04-09",
+      "merchant": "Cash machine",
+      "amount_gbp": -20.0,
+      "category": "cash"
+    },
+    {
+      "id": "t0188",
+      "date": "2026-04-09",
+      "merchant": "Esso",
+      "amount_gbp": -28.66,
+      "category": "fuel"
+    },
+    {
+      "id": "t0189",
+      "date": "2026-04-10",
+      "merchant": "Brightcare Homecare Ltd",
+      "amount_gbp": 210.0,
+      "category": "income"
+    },
+    {
+      "id": "t0190",
+      "date": "2026-04-11",
+      "merchant": "Aldi",
+      "amount_gbp": -65.33,
+      "category": "groceries"
+    },
+    {
+      "id": "t0191",
+      "date": "2026-04-12",
+      "merchant": "Just Eat",
+      "amount_gbp": -15.73,
+      "category": "takeaway"
+    },
+    {
+      "id": "t0192",
+      "date": "2026-04-13",
+      "merchant": "Kidzone after-school club",
+      "amount_gbp": -30.0,
+      "category": "childcare"
+    },
+    {
+      "id": "t0193",
+      "date": "2026-04-13",
+      "merchant": "ParentPay school meals",
+      "amount_gbp": -9.0,
+      "category": "school_meals"
+    },
+    {
+      "id": "t0194",
+      "date": "2026-04-14",
+      "merchant": "DWP Universal Credit",
+      "amount_gbp": 806.0,
+      "category": "benefit"
+    },
+    {
+      "id": "t0195",
+      "date": "2026-04-14",
+      "merchant": "Tesco",
+      "amount_gbp": -59.79,
+      "category": "groceries"
+    },
+    {
+      "id": "t0196",
+      "date": "2026-04-15",
+      "merchant": "B&M",
+      "amount_gbp": -18.49,
+      "category": "shopping"
+    },
+    {
+      "id": "t0197",
+      "date": "2026-04-15",
+      "merchant": "Manchester City Council",
+      "amount_gbp": -123.9,
+      "category": "council_tax"
+    },
+    {
+      "id": "t0198",
+      "date": "2026-04-16",
+      "merchant": "Esso",
+      "amount_gbp": -24.17,
+      "category": "fuel"
+    },
+    {
+      "id": "t0199",
+      "date": "2026-04-17",
+      "merchant": "Brightcare Homecare Ltd",
+      "amount_gbp": 221.5,
+      "category": "income"
+    },
+    {
+      "id": "t0200",
+      "date": "2026-04-18",
+      "merchant": "Tesco",
+      "amount_gbp": -57.6,
+      "category": "groceries"
+    },
+    {
+      "id": "t0201",
+      "date": "2026-04-20",
+      "merchant": "Kidzone after-school club",
+      "amount_gbp": -30.0,
+      "category": "childcare"
+    },
+    {
+      "id": "t0202",
+      "date": "2026-04-20",
+      "merchant": "ParentPay school meals",
+      "amount_gbp": -6.0,
+      "category": "school_meals"
+    },
+    {
+      "id": "t0203",
+      "date": "2026-04-20",
+      "merchant": "Tellmo Mobile",
+      "amount_gbp": -16.5,
+      "category": "mobile"
+    },
+    {
+      "id": "t0204",
+      "date": "2026-04-21",
+      "merchant": "Aldi",
+      "amount_gbp": -56.89,
+      "category": "groceries"
+    },
+    {
+      "id": "t0205",
+      "date": "2026-04-22",
+      "merchant": "Fibrewave Broadband",
+      "amount_gbp": -27.0,
+      "category": "broadband"
+    },
+    {
+      "id": "t0206",
+      "date": "2026-04-22",
+      "merchant": "Primark",
+      "amount_gbp": -17.55,
+      "category": "shopping"
+    },
+    {
+      "id": "t0207",
+      "date": "2026-04-23",
+      "merchant": "Shell",
+      "amount_gbp": -30.89,
+      "category": "fuel"
+    },
+    {
+      "id": "t0208",
+      "date": "2026-04-24",
+      "merchant": "Brightcare Homecare Ltd",
+      "amount_gbp": 341.5,
+      "category": "income"
+    },
+    {
+      "id": "t0209",
+      "date": "2026-04-25",
+      "merchant": "Tesco",
+      "amount_gbp": -48.47,
+      "category": "groceries"
+    },
+    {
+      "id": "t0210",
+      "date": "2026-04-27",
+      "merchant": "HMRC Child Benefit",
+      "amount_gbp": 173.2,
+      "category": "benefit"
+    },
+    {
+      "id": "t0211",
+      "date": "2026-04-27",
+      "merchant": "Kidzone after-school club",
+      "amount_gbp": -30.0,
+      "category": "childcare"
+    },
+    {
+      "id": "t0212",
+      "date": "2026-04-27",
+      "merchant": "ParentPay school meals",
+      "amount_gbp": -7.5,
+      "category": "school_meals"
+    },
+    {
+      "id": "t0213",
+      "date": "2026-04-28",
+      "merchant": "Northside Lettings",
+      "amount_gbp": -900.0,
+      "category": "rent"
+    },
+    {
+      "id": "t0214",
+      "date": "2026-04-28",
+      "merchant": "Tesco",
+      "amount_gbp": -57.25,
+      "category": "groceries"
+    },
+    {
+      "id": "t0215",
+      "date": "2026-04-30",
+      "merchant": "Esso",
+      "amount_gbp": -25.18,
+      "category": "fuel"
+    },
+    {
+      "id": "t0216",
+      "date": "2026-05-01",
+      "merchant": "Brightcare Homecare Ltd",
+      "amount_gbp": 221.0,
+      "category": "income"
+    },
+    {
+      "id": "t0217",
+      "date": "2026-05-02",
+      "merchant": "Aldi",
+      "amount_gbp": -58.13,
+      "category": "groceries"
+    },
+    {
+      "id": "t0218",
+      "date": "2026-05-03",
+      "merchant": "Ember Energy",
+      "amount_gbp": -86.0,
+      "category": "energy"
+    },
+    {
+      "id": "t0219",
+      "date": "2026-05-04",
+      "merchant": "Kidzone after-school club",
+      "amount_gbp": -30.0,
+      "category": "childcare"
+    },
+    {
+      "id": "t0220",
+      "date": "2026-05-04",
+      "merchant": "ParentPay school meals",
+      "amount_gbp": -6.0,
+      "category": "school_meals"
+    },
+    {
+      "id": "t0221",
+      "date": "2026-05-05",
+      "merchant": "Aldi",
+      "amount_gbp": -47.73,
+      "category": "groceries"
+    },
+    {
+      "id": "t0222",
+      "date": "2026-05-06",
+      "merchant": "Primark",
+      "amount_gbp": -20.18,
+      "category": "shopping"
+    },
+    {
+      "id": "t0223",
+      "date": "2026-05-06",
+      "merchant": "United Utilities",
+      "amount_gbp": -40.6,
+      "category": "water"
+    },
+    {
+      "id": "t0224",
+      "date": "2026-05-07",
+      "merchant": "Shell",
+      "amount_gbp": -24.04,
+      "category": "fuel"
+    },
+    {
+      "id": "t0225",
+      "date": "2026-05-08",
+      "merchant": "Brightcare Homecare Ltd",
+      "amount_gbp": 362.5,
+      "category": "income"
+    },
+    {
+      "id": "t0226",
+      "date": "2026-05-09",
+      "merchant": "Lidl",
+      "amount_gbp": -57.86,
+      "category": "groceries"
+    },
+    {
+      "id": "t0227",
+      "date": "2026-05-11",
+      "merchant": "Kidzone after-school club",
+      "amount_gbp": -30.0,
+      "category": "childcare"
+    },
+    {
+      "id": "t0228",
+      "date": "2026-05-11",
+      "merchant": "ParentPay school meals",
+      "amount_gbp": -7.5,
+      "category": "school_meals"
+    },
+    {
+      "id": "t0229",
+      "date": "2026-05-12",
+      "merchant": "Aldi",
+      "amount_gbp": -46.15,
+      "category": "groceries"
+    },
+    {
+      "id": "t0230",
+      "date": "2026-05-14",
+      "merchant": "Cash machine",
+      "amount_gbp": -20.0,
+      "category": "cash"
+    },
+    {
+      "id": "t0231",
+      "date": "2026-05-14",
+      "merchant": "DWP Universal Credit",
+      "amount_gbp": 782.0,
+      "category": "benefit"
+    },
+    {
+      "id": "t0232",
+      "date": "2026-05-14",
+      "merchant": "Shell",
+      "amount_gbp": -24.06,
+      "category": "fuel"
+    },
+    {
+      "id": "t0233",
+      "date": "2026-05-15",
+      "merchant": "Brightcare Homecare Ltd",
+      "amount_gbp": 236.5,
+      "category": "income"
+    },
+    {
+      "id": "t0234",
+      "date": "2026-05-15",
+      "merchant": "Manchester City Council",
+      "amount_gbp": -123.9,
+      "category": "council_tax"
+    },
+    {
+      "id": "t0235",
+      "date": "2026-05-16",
+      "merchant": "Aldi",
+      "amount_gbp": -57.93,
+      "category": "groceries"
+    },
+    {
+      "id": "t0236",
+      "date": "2026-05-18",
+      "merchant": "Kidzone after-school club",
+      "amount_gbp": -30.0,
+      "category": "childcare"
+    },
+    {
+      "id": "t0237",
+      "date": "2026-05-18",
+      "merchant": "ParentPay school meals",
+      "amount_gbp": -9.0,
+      "category": "school_meals"
+    },
+    {
+      "id": "t0238",
+      "date": "2026-05-19",
+      "merchant": "Aldi",
+      "amount_gbp": -54.82,
+      "category": "groceries"
+    },
+    {
+      "id": "t0239",
+      "date": "2026-05-20",
+      "merchant": "Tellmo Mobile",
+      "amount_gbp": -16.5,
+      "category": "mobile"
+    },
+    {
+      "id": "t0240",
+      "date": "2026-05-21",
+      "merchant": "Esso",
+      "amount_gbp": -21.87,
+      "category": "fuel"
+    },
+    {
+      "id": "t0241",
+      "date": "2026-05-22",
+      "merchant": "Brightcare Homecare Ltd",
+      "amount_gbp": 370.5,
+      "category": "income"
+    },
+    {
+      "id": "t0242",
+      "date": "2026-05-22",
+      "merchant": "Fibrewave Broadband",
+      "amount_gbp": -27.0,
+      "category": "broadband"
+    },
+    {
+      "id": "t0243",
+      "date": "2026-05-23",
+      "merchant": "Aldi",
+      "amount_gbp": -79.07,
+      "category": "groceries"
+    },
+    {
+      "id": "t0244",
+      "date": "2026-05-25",
+      "merchant": "HMRC Child Benefit",
+      "amount_gbp": 173.2,
+      "category": "benefit"
+    },
+    {
+      "id": "t0245",
+      "date": "2026-05-26",
+      "merchant": "Cash machine",
+      "amount_gbp": -20.0,
+      "category": "cash"
+    },
+    {
+      "id": "t0246",
+      "date": "2026-05-26",
+      "merchant": "Tesco",
+      "amount_gbp": -67.68,
+      "category": "groceries"
+    },
+    {
+      "id": "t0247",
+      "date": "2026-05-28",
+      "merchant": "Esso",
+      "amount_gbp": -31.86,
+      "category": "fuel"
+    },
+    {
+      "id": "t0248",
+      "date": "2026-05-28",
+      "merchant": "Northside Lettings",
+      "amount_gbp": -900.0,
+      "category": "rent"
+    },
+    {
+      "id": "t0249",
+      "date": "2026-05-29",
+      "merchant": "Brightcare Homecare Ltd",
+      "amount_gbp": 245.0,
+      "category": "income"
+    },
+    {
+      "id": "t0250",
+      "date": "2026-05-30",
+      "merchant": "Aldi",
+      "amount_gbp": -73.72,
+      "category": "groceries"
+    },
+    {
+      "id": "t0251",
+      "date": "2026-06-01",
+      "merchant": "Kidzone after-school club",
+      "amount_gbp": -30.0,
+      "category": "childcare"
+    },
+    {
+      "id": "t0252",
+      "date": "2026-06-01",
+      "merchant": "ParentPay school meals",
+      "amount_gbp": -9.0,
+      "category": "school_meals"
+    },
+    {
+      "id": "t0253",
+      "date": "2026-06-02",
+      "merchant": "Aldi",
+      "amount_gbp": -46.3,
+      "category": "groceries"
+    },
+    {
+      "id": "t0254",
+      "date": "2026-06-03",
+      "merchant": "B&M",
+      "amount_gbp": -16.71,
+      "category": "shopping"
+    },
+    {
+      "id": "t0255",
+      "date": "2026-06-03",
+      "merchant": "Ember Energy",
+      "amount_gbp": -86.0,
+      "category": "energy"
+    },
+    {
+      "id": "t0256",
+      "date": "2026-06-04",
+      "merchant": "Shell",
+      "amount_gbp": -23.65,
+      "category": "fuel"
+    },
+    {
+      "id": "t0257",
+      "date": "2026-06-05",
+      "merchant": "Brightcare Homecare Ltd",
+      "amount_gbp": 330.5,
+      "category": "income"
+    },
+    {
+      "id": "t0258",
+      "date": "2026-06-06",
+      "merchant": "Aldi",
+      "amount_gbp": -56.16,
+      "category": "groceries"
+    },
+    {
+      "id": "t0259",
+      "date": "2026-06-06",
+      "merchant": "United Utilities",
+      "amount_gbp": -40.6,
+      "category": "water"
+    },
+    {
+      "id": "t0260",
+      "date": "2026-06-08",
+      "merchant": "Kidzone after-school club",
+      "amount_gbp": -30.0,
+      "category": "childcare"
+    },
+    {
+      "id": "t0261",
+      "date": "2026-06-08",
+      "merchant": "ParentPay school meals",
+      "amount_gbp": -9.0,
+      "category": "school_meals"
+    },
+    {
+      "id": "t0262",
+      "date": "2026-06-09",
+      "merchant": "Aldi",
+      "amount_gbp": -52.85,
+      "category": "groceries"
+    },
+    {
+      "id": "t0263",
+      "date": "2026-06-11",
+      "merchant": "Esso",
+      "amount_gbp": -29.11,
+      "category": "fuel"
+    },
+    {
+      "id": "t0264",
+      "date": "2026-06-12",
+      "merchant": "Brightcare Homecare Ltd",
+      "amount_gbp": 378.5,
+      "category": "income"
+    },
+    {
+      "id": "t0265",
+      "date": "2026-06-13",
+      "merchant": "Aldi",
+      "amount_gbp": -58.16,
+      "category": "groceries"
+    },
+    {
+      "id": "t0266",
+      "date": "2026-06-14",
+      "merchant": "DWP Universal Credit",
+      "amount_gbp": 799.0,
+      "category": "benefit"
+    },
+    {
+      "id": "t0267",
+      "date": "2026-06-14",
+      "merchant": "Domino's",
+      "amount_gbp": -15.68,
+      "category": "takeaway"
+    },
+    {
+      "id": "t0268",
+      "date": "2026-06-15",
+      "merchant": "Kidzone after-school club",
+      "amount_gbp": -30.0,
+      "category": "childcare"
+    },
+    {
+      "id": "t0269",
+      "date": "2026-06-15",
+      "merchant": "Manchester City Council",
+      "amount_gbp": -123.9,
+      "category": "council_tax"
+    },
+    {
+      "id": "t0270",
+      "date": "2026-06-15",
+      "merchant": "ParentPay school meals",
+      "amount_gbp": -9.0,
+      "category": "school_meals"
+    },
+    {
+      "id": "t0271",
+      "date": "2026-06-16",
+      "merchant": "Aldi",
+      "amount_gbp": -48.96,
+      "category": "groceries"
+    },
+    {
+      "id": "t0272",
+      "date": "2026-06-17",
+      "merchant": "Primark",
+      "amount_gbp": -22.29,
+      "category": "shopping"
+    },
+    {
+      "id": "t0273",
+      "date": "2026-06-18",
+      "merchant": "Shell",
+      "amount_gbp": -24.36,
+      "category": "fuel"
+    },
+    {
+      "id": "t0274",
+      "date": "2026-06-19",
+      "merchant": "Brightcare Homecare Ltd",
+      "amount_gbp": 278.0,
+      "category": "income"
+    },
+    {
+      "id": "t0275",
+      "date": "2026-06-20",
+      "merchant": "Lidl",
+      "amount_gbp": -48.65,
+      "category": "groceries"
+    },
+    {
+      "id": "t0276",
+      "date": "2026-06-20",
+      "merchant": "Tellmo Mobile",
+      "amount_gbp": -16.5,
+      "category": "mobile"
+    },
+    {
+      "id": "t0277",
+      "date": "2026-06-21",
+      "merchant": "Domino's",
+      "amount_gbp": -20.41,
+      "category": "takeaway"
+    },
+    {
+      "id": "t0278",
+      "date": "2026-06-22",
+      "merchant": "Fibrewave Broadband",
+      "amount_gbp": -27.0,
+      "category": "broadband"
+    },
+    {
+      "id": "t0279",
+      "date": "2026-06-22",
+      "merchant": "HMRC Child Benefit",
+      "amount_gbp": 173.2,
+      "category": "benefit"
+    },
+    {
+      "id": "t0280",
+      "date": "2026-06-22",
+      "merchant": "Kidzone after-school club",
+      "amount_gbp": -30.0,
+      "category": "childcare"
+    },
+    {
+      "id": "t0281",
+      "date": "2026-06-22",
+      "merchant": "ParentPay school meals",
+      "amount_gbp": -7.5,
+      "category": "school_meals"
+    },
+    {
+      "id": "t0282",
+      "date": "2026-06-23",
+      "merchant": "Lidl",
+      "amount_gbp": -59.17,
+      "category": "groceries"
+    },
+    {
+      "id": "t0283",
+      "date": "2026-06-25",
+      "merchant": "Esso",
+      "amount_gbp": -25.49,
+      "category": "fuel"
+    },
+    {
+      "id": "t0284",
+      "date": "2026-06-26",
+      "merchant": "Brightcare Homecare Ltd",
+      "amount_gbp": 208.0,
+      "category": "income"
+    },
+    {
+      "id": "t0285",
+      "date": "2026-06-27",
+      "merchant": "Tesco",
+      "amount_gbp": -48.15,
+      "category": "groceries"
+    },
+    {
+      "id": "t0286",
+      "date": "2026-06-28",
+      "merchant": "Northside Lettings",
+      "amount_gbp": -900.0,
+      "category": "rent"
+    },
+    {
+      "id": "t0287",
+      "date": "2026-06-29",
+      "merchant": "Kidzone after-school club",
+      "amount_gbp": -30.0,
+      "category": "childcare"
+    },
+    {
+      "id": "t0288",
+      "date": "2026-06-29",
+      "merchant": "ParentPay school meals",
+      "amount_gbp": -9.0,
+      "category": "school_meals"
+    },
+    {
+      "id": "t0289",
+      "date": "2026-06-30",
+      "merchant": "Tesco",
+      "amount_gbp": -53.6,
+      "category": "groceries"
+    },
+    {
+      "id": "t0290",
+      "date": "2026-07-02",
+      "merchant": "Cash machine",
+      "amount_gbp": -20.0,
+      "category": "cash"
+    },
+    {
+      "id": "t0291",
+      "date": "2026-07-02",
+      "merchant": "Esso",
+      "amount_gbp": -28.58,
+      "category": "fuel"
+    },
+    {
+      "id": "t0292",
+      "date": "2026-07-03",
+      "merchant": "Brightcare Homecare Ltd",
+      "amount_gbp": 190.5,
+      "category": "income"
+    },
+    {
+      "id": "t0293",
+      "date": "2026-07-03",
+      "merchant": "Ember Energy",
+      "amount_gbp": -86.0,
+      "category": "energy"
+    },
+    {
+      "id": "t0294",
+      "date": "2026-07-04",
+      "merchant": "Aldi",
+      "amount_gbp": -54.2,
+      "category": "groceries"
+    },
+    {
+      "id": "t0295",
+      "date": "2026-07-05",
+      "merchant": "Domino's",
+      "amount_gbp": -20.95,
+      "category": "takeaway"
+    },
+    {
+      "id": "t0296",
+      "date": "2026-07-06",
+      "merchant": "Kidzone after-school club",
+      "amount_gbp": -30.0,
+      "category": "childcare"
+    },
+    {
+      "id": "t0297",
+      "date": "2026-07-06",
+      "merchant": "ParentPay school meals",
+      "amount_gbp": -9.0,
+      "category": "school_meals"
+    },
+    {
+      "id": "t0298",
+      "date": "2026-07-06",
+      "merchant": "United Utilities",
+      "amount_gbp": -40.6,
+      "category": "water"
+    },
+    {
+      "id": "t0299",
+      "date": "2026-07-07",
+      "merchant": "Lidl",
+      "amount_gbp": -57.66,
+      "category": "groceries"
+    },
+    {
+      "id": "t0300",
+      "date": "2026-07-08",
+      "merchant": "B&M",
+      "amount_gbp": -10.69,
+      "category": "shopping"
+    },
+    {
+      "id": "t0301",
+      "date": "2026-07-09",
+      "merchant": "Shell",
+      "amount_gbp": -28.65,
+      "category": "fuel"
+    },
+    {
+      "id": "t0302",
+      "date": "2026-07-10",
+      "merchant": "Brightcare Homecare Ltd",
+      "amount_gbp": 254.0,
+      "category": "income"
+    },
+    {
+      "id": "t0303",
+      "date": "2026-07-11",
+      "merchant": "Tesco",
+      "amount_gbp": -50.32,
+      "category": "groceries"
+    },
+    {
+      "id": "t0304",
+      "date": "2026-07-13",
+      "merchant": "Kidzone after-school club",
+      "amount_gbp": -30.0,
+      "category": "childcare"
+    },
+    {
+      "id": "t0305",
+      "date": "2026-07-13",
+      "merchant": "ParentPay school meals",
+      "amount_gbp": -6.0,
+      "category": "school_meals"
+    },
+    {
+      "id": "t0306",
+      "date": "2026-07-14",
+      "merchant": "Aldi",
+      "amount_gbp": -56.58,
+      "category": "groceries"
+    },
+    {
+      "id": "t0307",
+      "date": "2026-07-14",
+      "merchant": "DWP Universal Credit",
+      "amount_gbp": 805.0,
+      "category": "benefit"
+    },
+    {
+      "id": "t0308",
+      "date": "2026-07-15",
+      "merchant": "Home Bargains",
+      "amount_gbp": -11.46,
+      "category": "shopping"
+    },
+    {
+      "id": "t0309",
+      "date": "2026-07-15",
+      "merchant": "Manchester City Council",
+      "amount_gbp": -123.9,
+      "category": "council_tax"
+    },
+    {
+      "id": "t0310",
+      "date": "2026-07-16",
+      "merchant": "Shell",
+      "amount_gbp": -22.27,
+      "category": "fuel"
+    },
+    {
+      "id": "t0311",
+      "date": "2026-07-17",
+      "merchant": "Brightcare Homecare Ltd",
+      "amount_gbp": 393.0,
+      "category": "income"
+    },
+    {
+      "id": "t0312",
+      "date": "2026-07-17",
+      "merchant": "Cash machine",
+      "amount_gbp": -20.0,
+      "category": "cash"
+    },
+    {
+      "id": "t0313",
+      "date": "2026-07-18",
+      "merchant": "Aldi",
+      "amount_gbp": -59.59,
+      "category": "groceries"
+    },
+    {
+      "id": "t0314",
+      "date": "2026-07-19",
+      "merchant": "Cash machine",
+      "amount_gbp": -20.0,
+      "category": "cash"
+    },
+    {
+      "id": "t0315",
+      "date": "2026-07-20",
+      "merchant": "HMRC Child Benefit",
+      "amount_gbp": 173.2,
+      "category": "benefit"
+    },
+    {
+      "id": "t0316",
+      "date": "2026-07-20",
+      "merchant": "Kidzone after-school club",
+      "amount_gbp": -30.0,
+      "category": "childcare"
+    },
+    {
+      "id": "t0317",
+      "date": "2026-07-20",
+      "merchant": "ParentPay school meals",
+      "amount_gbp": -9.0,
+      "category": "school_meals"
+    },
+    {
+      "id": "t0318",
+      "date": "2026-07-20",
+      "merchant": "Tellmo Mobile",
+      "amount_gbp": -16.5,
+      "category": "mobile"
+    },
+    {
+      "id": "t0319",
+      "date": "2026-07-21",
+      "merchant": "Aldi",
+      "amount_gbp": -49.82,
+      "category": "groceries"
+    },
+    {
+      "id": "t0320",
+      "date": "2026-07-22",
+      "merchant": "Fibrewave Broadband",
+      "amount_gbp": -27.0,
+      "category": "broadband"
+    },
+    {
+      "id": "t0321",
+      "date": "2026-07-23",
+      "merchant": "Esso",
+      "amount_gbp": -31.64,
+      "category": "fuel"
+    },
+    {
+      "id": "t0322",
+      "date": "2026-07-24",
+      "merchant": "Brightcare Homecare Ltd",
+      "amount_gbp": 239.5,
+      "category": "income"
+    },
+    {
+      "id": "t0323",
+      "date": "2026-07-25",
+      "merchant": "Aldi",
+      "amount_gbp": -82.39,
+      "category": "groceries"
+    },
+    {
+      "id": "t0324",
+      "date": "2026-07-28",
+      "merchant": "Aldi",
+      "amount_gbp": -78.02,
+      "category": "groceries"
+    },
+    {
+      "id": "t0325",
+      "date": "2026-07-28",
+      "merchant": "Northside Lettings",
+      "amount_gbp": -900.0,
+      "category": "rent"
+    },
+    {
+      "id": "t0326",
+      "date": "2026-07-29",
+      "merchant": "Home Bargains",
+      "amount_gbp": -9.19,
+      "category": "shopping"
+    },
+    {
+      "id": "t0327",
+      "date": "2026-07-30",
+      "merchant": "Shell",
+      "amount_gbp": -26.77,
+      "category": "fuel"
+    },
+    {
+      "id": "t0328",
+      "date": "2026-07-31",
+      "merchant": "Brightcare Homecare Ltd",
+      "amount_gbp": 243.5,
+      "category": "income"
+    },
+    {
+      "id": "t0329",
+      "date": "2026-08-01",
+      "merchant": "Aldi",
+      "amount_gbp": -74.23,
+      "category": "groceries"
+    },
+    {
+      "id": "t0330",
+      "date": "2026-08-02",
+      "merchant": "Cash machine",
+      "amount_gbp": -20.0,
+      "category": "cash"
+    },
+    {
+      "id": "t0331",
+      "date": "2026-08-03",
+      "merchant": "Ember Energy",
+      "amount_gbp": -86.0,
+      "category": "energy"
+    },
+    {
+      "id": "t0332",
+      "date": "2026-08-04",
+      "merchant": "Aldi",
+      "amount_gbp": -73.24,
+      "category": "groceries"
+    },
+    {
+      "id": "t0333",
+      "date": "2026-08-05",
+      "merchant": "Primark",
+      "amount_gbp": -16.85,
+      "category": "shopping"
+    },
+    {
+      "id": "t0334",
+      "date": "2026-08-06",
+      "merchant": "Shell",
+      "amount_gbp": -28.61,
+      "category": "fuel"
+    },
+    {
+      "id": "t0335",
+      "date": "2026-08-06",
+      "merchant": "United Utilities",
+      "amount_gbp": -40.6,
+      "category": "water"
+    },
+    {
+      "id": "t0336",
+      "date": "2026-08-07",
+      "merchant": "Brightcare Homecare Ltd",
+      "amount_gbp": 224.5,
+      "category": "income"
+    },
+    {
+      "id": "t0337",
+      "date": "2026-08-08",
+      "merchant": "Tesco",
+      "amount_gbp": -82.08,
+      "category": "groceries"
+    },
+    {
+      "id": "t0338",
+      "date": "2026-08-10",
+      "merchant": "Cash machine",
+      "amount_gbp": -20.0,
+      "category": "cash"
+    },
+    {
+      "id": "t0339",
+      "date": "2026-08-11",
+      "merchant": "Lidl",
+      "amount_gbp": -68.96,
+      "category": "groceries"
+    },
+    {
+      "id": "t0340",
+      "date": "2026-08-13",
+      "merchant": "Shell",
+      "amount_gbp": -26.36,
+      "category": "fuel"
+    },
+    {
+      "id": "t0341",
+      "date": "2026-08-14",
+      "merchant": "Brightcare Homecare Ltd",
+      "amount_gbp": 202.0,
+      "category": "income"
+    },
+    {
+      "id": "t0342",
+      "date": "2026-08-14",
+      "merchant": "DWP Universal Credit",
+      "amount_gbp": 810.0,
+      "category": "benefit"
+    },
+    {
+      "id": "t0343",
+      "date": "2026-08-15",
+      "merchant": "Aldi",
+      "amount_gbp": -77.34,
+      "category": "groceries"
+    },
+    {
+      "id": "t0344",
+      "date": "2026-08-15",
+      "merchant": "Manchester City Council",
+      "amount_gbp": -123.9,
+      "category": "council_tax"
+    },
+    {
+      "id": "t0345",
+      "date": "2026-08-17",
+      "merchant": "Cash machine",
+      "amount_gbp": -20.0,
+      "category": "cash"
+    },
+    {
+      "id": "t0346",
+      "date": "2026-08-17",
+      "merchant": "HMRC Child Benefit",
+      "amount_gbp": 173.2,
+      "category": "benefit"
+    },
+    {
+      "id": "t0347",
+      "date": "2026-08-18",
+      "merchant": "Aldi",
+      "amount_gbp": -76.59,
+      "category": "groceries"
+    },
+    {
+      "id": "t0348",
+      "date": "2026-08-20",
+      "merchant": "Esso",
+      "amount_gbp": -25.49,
+      "category": "fuel"
+    },
+    {
+      "id": "t0349",
+      "date": "2026-08-20",
+      "merchant": "Tellmo Mobile",
+      "amount_gbp": -16.5,
+      "category": "mobile"
+    },
+    {
+      "id": "t0350",
+      "date": "2026-08-21",
+      "merchant": "Brightcare Homecare Ltd",
+      "amount_gbp": 265.5,
+      "category": "income"
+    },
+    {
+      "id": "t0351",
+      "date": "2026-08-22",
+      "merchant": "Fibrewave Broadband",
+      "amount_gbp": -27.0,
+      "category": "broadband"
+    },
+    {
+      "id": "t0352",
+      "date": "2026-08-22",
+      "merchant": "Lidl",
+      "amount_gbp": -77.63,
+      "category": "groceries"
+    },
+    {
+      "id": "t0353",
+      "date": "2026-08-23",
+      "merchant": "Domino's",
+      "amount_gbp": -18.2,
+      "category": "takeaway"
+    },
+    {
+      "id": "t0354",
+      "date": "2026-08-25",
+      "merchant": "Lidl",
+      "amount_gbp": -73.64,
+      "category": "groceries"
+    },
+    {
+      "id": "t0355",
+      "date": "2026-08-27",
+      "merchant": "Esso",
+      "amount_gbp": -30.79,
+      "category": "fuel"
+    },
+    {
+      "id": "t0356",
+      "date": "2026-08-28",
+      "merchant": "Brightcare Homecare Ltd",
+      "amount_gbp": 187.5,
+      "category": "income"
+    },
+    {
+      "id": "t0357",
+      "date": "2026-08-28",
+      "merchant": "Northside Lettings",
+      "amount_gbp": -900.0,
+      "category": "rent"
+    },
+    {
+      "id": "t0358",
+      "date": "2026-08-29",
+      "merchant": "Aldi",
+      "amount_gbp": -83.25,
+      "category": "groceries"
+    },
+    {
+      "id": "t0359",
+      "date": "2026-09-01",
+      "merchant": "Aldi",
+      "amount_gbp": -77.97,
+      "category": "groceries"
+    },
+    {
+      "id": "t0360",
+      "date": "2026-09-02",
+      "merchant": "B&M",
+      "amount_gbp": -18.5,
+      "category": "shopping"
+    },
+    {
+      "id": "t0361",
+      "date": "2026-09-03",
+      "merchant": "Ember Energy",
+      "amount_gbp": -86.0,
+      "category": "energy"
+    },
+    {
+      "id": "t0362",
+      "date": "2026-09-03",
+      "merchant": "Esso",
+      "amount_gbp": -25.66,
+      "category": "fuel"
+    },
+    {
+      "id": "t0363",
+      "date": "2026-09-04",
+      "merchant": "Brightcare Homecare Ltd",
+      "amount_gbp": 349.5,
+      "category": "income"
+    },
+    {
+      "id": "t0364",
+      "date": "2026-09-05",
+      "merchant": "Lidl",
+      "amount_gbp": -48.35,
+      "category": "groceries"
+    },
+    {
+      "id": "t0365",
+      "date": "2026-09-06",
+      "merchant": "Just Eat",
+      "amount_gbp": -15.83,
+      "category": "takeaway"
+    },
+    {
+      "id": "t0366",
+      "date": "2026-09-06",
+      "merchant": "United Utilities",
+      "amount_gbp": -40.6,
+      "category": "water"
+    },
+    {
+      "id": "t0367",
+      "date": "2026-09-07",
+      "merchant": "Kidzone after-school club",
+      "amount_gbp": -30.0,
+      "category": "childcare"
+    },
+    {
+      "id": "t0368",
+      "date": "2026-09-07",
+      "merchant": "ParentPay school meals",
+      "amount_gbp": -6.0,
+      "category": "school_meals"
+    },
+    {
+      "id": "t0369",
+      "date": "2026-09-08",
+      "merchant": "Tesco",
+      "amount_gbp": -46.21,
+      "category": "groceries"
+    },
+    {
+      "id": "t0370",
+      "date": "2026-09-10",
+      "merchant": "Esso",
+      "amount_gbp": -22.84,
+      "category": "fuel"
+    },
+    {
+      "id": "t0371",
+      "date": "2026-09-11",
+      "merchant": "Brightcare Homecare Ltd",
+      "amount_gbp": 273.5,
+      "category": "income"
+    },
+    {
+      "id": "t0372",
+      "date": "2026-09-12",
+      "merchant": "Lidl",
+      "amount_gbp": -49.9,
+      "category": "groceries"
+    },
+    {
+      "id": "t0373",
+      "date": "2026-09-13",
+      "merchant": "Domino's",
+      "amount_gbp": -19.98,
+      "category": "takeaway"
+    },
+    {
+      "id": "t0374",
+      "date": "2026-09-14",
+      "merchant": "DWP Universal Credit",
+      "amount_gbp": 776.0,
+      "category": "benefit"
+    },
+    {
+      "id": "t0375",
+      "date": "2026-09-14",
+      "merchant": "HMRC Child Benefit",
+      "amount_gbp": 173.2,
+      "category": "benefit"
+    },
+    {
+      "id": "t0376",
+      "date": "2026-09-14",
+      "merchant": "Kidzone after-school club",
+      "amount_gbp": -30.0,
+      "category": "childcare"
+    },
+    {
+      "id": "t0377",
+      "date": "2026-09-14",
+      "merchant": "ParentPay school meals",
+      "amount_gbp": -9.0,
+      "category": "school_meals"
+    },
+    {
+      "id": "t0378",
+      "date": "2026-09-15",
+      "merchant": "Manchester City Council",
+      "amount_gbp": -123.9,
+      "category": "council_tax"
+    },
+    {
+      "id": "t0379",
+      "date": "2026-09-15",
+      "merchant": "Tesco",
+      "amount_gbp": -57.52,
+      "category": "groceries"
+    },
+    {
+      "id": "t0380",
+      "date": "2026-09-17",
+      "merchant": "Esso",
+      "amount_gbp": -25.94,
+      "category": "fuel"
+    },
+    {
+      "id": "t0381",
+      "date": "2026-09-18",
+      "merchant": "Brightcare Homecare Ltd",
+      "amount_gbp": 184.5,
+      "category": "income"
+    },
+    {
+      "id": "t0382",
+      "date": "2026-09-19",
+      "merchant": "Tesco",
+      "amount_gbp": -59.52,
+      "category": "groceries"
+    },
+    {
+      "id": "t0383",
+      "date": "2026-09-20",
+      "merchant": "Tellmo Mobile",
+      "amount_gbp": -16.5,
+      "category": "mobile"
+    },
+    {
+      "id": "t0384",
+      "date": "2026-09-21",
+      "merchant": "Kidzone after-school club",
+      "amount_gbp": -30.0,
+      "category": "childcare"
+    },
+    {
+      "id": "t0385",
+      "date": "2026-09-21",
+      "merchant": "ParentPay school meals",
+      "amount_gbp": -7.5,
+      "category": "school_meals"
+    },
+    {
+      "id": "t0386",
+      "date": "2026-09-22",
+      "merchant": "Aldi",
+      "amount_gbp": -55.54,
+      "category": "groceries"
+    },
+    {
+      "id": "t0387",
+      "date": "2026-09-22",
+      "merchant": "Fibrewave Broadband",
+      "amount_gbp": -27.0,
+      "category": "broadband"
+    },
+    {
+      "id": "t0388",
+      "date": "2026-09-23",
+      "merchant": "Home Bargains",
+      "amount_gbp": -24.04,
+      "category": "shopping"
+    },
+    {
+      "id": "t0389",
+      "date": "2026-09-24",
+      "merchant": "Esso",
+      "amount_gbp": -23.68,
+      "category": "fuel"
+    },
+    {
+      "id": "t0390",
+      "date": "2026-09-25",
+      "merchant": "Brightcare Homecare Ltd",
+      "amount_gbp": 385.5,
+      "category": "income"
+    },
+    {
+      "id": "t0391",
+      "date": "2026-09-26",
+      "merchant": "Tesco",
+      "amount_gbp": -56.31,
+      "category": "groceries"
+    },
+    {
+      "id": "t0392",
+      "date": "2026-09-27",
+      "merchant": "Just Eat",
+      "amount_gbp": -20.0,
+      "category": "takeaway"
+    },
+    {
+      "id": "t0393",
+      "date": "2026-09-28",
+      "merchant": "Kidzone after-school club",
+      "amount_gbp": -30.0,
+      "category": "childcare"
+    },
+    {
+      "id": "t0394",
+      "date": "2026-09-28",
+      "merchant": "Northside Lettings",
+      "amount_gbp": -900.0,
+      "category": "rent"
+    },
+    {
+      "id": "t0395",
+      "date": "2026-09-28",
+      "merchant": "ParentPay school meals",
+      "amount_gbp": -9.0,
+      "category": "school_meals"
+    },
+    {
+      "id": "t0396",
+      "date": "2026-09-29",
+      "merchant": "Aldi",
+      "amount_gbp": -52.69,
+      "category": "groceries"
+    },
+    {
+      "id": "t0397",
+      "date": "2026-09-30",
+      "merchant": "B&M",
+      "amount_gbp": -23.98,
+      "category": "shopping"
+    },
+    {
+      "id": "t0398",
+      "date": "2026-10-01",
+      "merchant": "Esso",
+      "amount_gbp": -25.33,
+      "category": "fuel"
+    },
+    {
+      "id": "t0399",
+      "date": "2026-10-02",
+      "merchant": "Brightcare Homecare Ltd",
+      "amount_gbp": 226.5,
+      "category": "income"
+    },
+    {
+      "id": "t0400",
+      "date": "2026-10-03",
+      "merchant": "Aldi",
+      "amount_gbp": -46.07,
+      "category": "groceries"
+    },
+    {
+      "id": "t0401",
+      "date": "2026-10-03",
+      "merchant": "Ember Energy",
+      "amount_gbp": -86.0,
+      "category": "energy"
+    },
+    {
+      "id": "t0402",
+      "date": "2026-10-05",
+      "merchant": "Kidzone after-school club",
+      "amount_gbp": -30.0,
+      "category": "childcare"
+    },
+    {
+      "id": "t0403",
+      "date": "2026-10-05",
+      "merchant": "ParentPay school meals",
+      "amount_gbp": -6.0,
+      "category": "school_meals"
+    },
+    {
+      "id": "t0404",
+      "date": "2026-10-06",
+      "merchant": "Tesco",
+      "amount_gbp": -59.35,
+      "category": "groceries"
+    },
+    {
+      "id": "t0405",
+      "date": "2026-10-06",
+      "merchant": "United Utilities",
+      "amount_gbp": -40.6,
+      "category": "water"
+    },
+    {
+      "id": "t0406",
+      "date": "2026-10-08",
+      "merchant": "Shell",
+      "amount_gbp": -25.35,
+      "category": "fuel"
+    },
+    {
+      "id": "t0407",
+      "date": "2026-10-09",
+      "merchant": "Brightcare Homecare Ltd",
+      "amount_gbp": 268.5,
+      "category": "income"
+    },
+    {
+      "id": "t0408",
+      "date": "2026-10-10",
+      "merchant": "Aldi",
+      "amount_gbp": -57.45,
+      "category": "groceries"
+    },
+    {
+      "id": "t0409",
+      "date": "2026-10-11",
+      "merchant": "Domino's",
+      "amount_gbp": -21.91,
+      "category": "takeaway"
+    },
+    {
+      "id": "t0410",
+      "date": "2026-10-12",
+      "merchant": "HMRC Child Benefit",
+      "amount_gbp": 173.2,
+      "category": "benefit"
+    },
+    {
+      "id": "t0411",
+      "date": "2026-10-12",
+      "merchant": "Kidzone after-school club",
+      "amount_gbp": -30.0,
+      "category": "childcare"
+    },
+    {
+      "id": "t0412",
+      "date": "2026-10-12",
+      "merchant": "ParentPay school meals",
+      "amount_gbp": -7.5,
+      "category": "school_meals"
+    },
+    {
+      "id": "t0413",
+      "date": "2026-10-13",
+      "merchant": "Aldi",
+      "amount_gbp": -55.69,
+      "category": "groceries"
+    },
+    {
+      "id": "t0414",
+      "date": "2026-10-14",
+      "merchant": "B&M",
+      "amount_gbp": -18.96,
+      "category": "shopping"
+    },
+    {
+      "id": "t0415",
+      "date": "2026-10-14",
+      "merchant": "DWP Universal Credit",
+      "amount_gbp": 806.0,
+      "category": "benefit"
+    },
+    {
+      "id": "t0416",
+      "date": "2026-10-15",
+      "merchant": "Manchester City Council",
+      "amount_gbp": -123.9,
+      "category": "council_tax"
+    },
+    {
+      "id": "t0417",
+      "date": "2026-10-15",
+      "merchant": "Shell",
+      "amount_gbp": -22.49,
+      "category": "fuel"
+    },
+    {
+      "id": "t0418",
+      "date": "2026-10-16",
+      "merchant": "Brightcare Homecare Ltd",
+      "amount_gbp": 358.5,
+      "category": "income"
+    },
+    {
+      "id": "t0419",
+      "date": "2026-10-17",
+      "merchant": "Aldi",
+      "amount_gbp": -51.29,
+      "category": "groceries"
+    },
+    {
+      "id": "t0420",
+      "date": "2026-10-19",
+      "merchant": "Kidzone after-school club",
+      "amount_gbp": -30.0,
+      "category": "childcare"
+    },
+    {
+      "id": "t0421",
+      "date": "2026-10-19",
+      "merchant": "ParentPay school meals",
+      "amount_gbp": -9.0,
+      "category": "school_meals"
+    },
+    {
+      "id": "t0422",
+      "date": "2026-10-20",
+      "merchant": "Lidl",
+      "amount_gbp": -56.29,
+      "category": "groceries"
+    },
+    {
+      "id": "t0423",
+      "date": "2026-10-20",
+      "merchant": "Tellmo Mobile",
+      "amount_gbp": -16.5,
+      "category": "mobile"
+    },
+    {
+      "id": "t0424",
+      "date": "2026-10-22",
+      "merchant": "Esso",
+      "amount_gbp": -25.34,
+      "category": "fuel"
+    },
+    {
+      "id": "t0425",
+      "date": "2026-10-22",
+      "merchant": "Fibrewave Broadband",
+      "amount_gbp": -27.0,
+      "category": "broadband"
+    },
+    {
+      "id": "t0426",
+      "date": "2026-10-23",
+      "merchant": "Brightcare Homecare Ltd",
+      "amount_gbp": 272.5,
+      "category": "income"
+    },
+    {
+      "id": "t0427",
+      "date": "2026-10-24",
+      "merchant": "Aldi",
+      "amount_gbp": -68.59,
+      "category": "groceries"
+    },
+    {
+      "id": "t0428",
+      "date": "2026-10-27",
+      "merchant": "Aldi",
+      "amount_gbp": -83.4,
+      "category": "groceries"
+    },
+    {
+      "id": "t0429",
+      "date": "2026-10-28",
+      "merchant": "Northside Lettings",
+      "amount_gbp": -900.0,
+      "category": "rent"
+    },
+    {
+      "id": "t0430",
+      "date": "2026-10-29",
+      "merchant": "Shell",
+      "amount_gbp": -29.98,
+      "category": "fuel"
+    },
+    {
+      "id": "t0431",
+      "date": "2026-10-30",
+      "merchant": "Brightcare Homecare Ltd",
+      "amount_gbp": 217.0,
+      "category": "income"
+    },
+    {
+      "id": "t0432",
+      "date": "2026-10-31",
+      "merchant": "Aldi",
+      "amount_gbp": -73.33,
+      "category": "groceries"
+    },
+    {
+      "id": "t0433",
+      "date": "2026-11-02",
+      "merchant": "Kidzone after-school club",
+      "amount_gbp": -30.0,
+      "category": "childcare"
+    },
+    {
+      "id": "t0434",
+      "date": "2026-11-02",
+      "merchant": "ParentPay school meals",
+      "amount_gbp": -7.5,
+      "category": "school_meals"
+    },
+    {
+      "id": "t0435",
+      "date": "2026-11-03",
+      "merchant": "Aldi",
+      "amount_gbp": -56.4,
+      "category": "groceries"
+    },
+    {
+      "id": "t0436",
+      "date": "2026-11-03",
+      "merchant": "Ember Energy",
+      "amount_gbp": -88.0,
+      "category": "energy"
+    },
+    {
+      "id": "t0437",
+      "date": "2026-11-04",
+      "merchant": "B&M",
+      "amount_gbp": -16.04,
+      "category": "shopping"
+    },
+    {
+      "id": "t0438",
+      "date": "2026-11-05",
+      "merchant": "Esso",
+      "amount_gbp": -25.23,
+      "category": "fuel"
+    },
+    {
+      "id": "t0439",
+      "date": "2026-11-06",
+      "merchant": "Brightcare Homecare Ltd",
+      "amount_gbp": 201.0,
+      "category": "income"
+    },
+    {
+      "id": "t0440",
+      "date": "2026-11-06",
+      "merchant": "United Utilities",
+      "amount_gbp": -40.6,
+      "category": "water"
+    }
+  ]
+}

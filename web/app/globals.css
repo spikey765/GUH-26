@@ -1,0 +1,104 @@
+@import "tailwindcss";
+@import "tw-animate-css";
+@import "shadcn/tailwind.css";
+
+@custom-variant dark (&:is(.dark *));
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --font-sans: var(--font-body);
+  --font-display: var(--font-display);
+  --color-ring: var(--ring);
+  --color-input: var(--input);
+  --color-border: var(--border);
+  --color-destructive: var(--destructive);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-accent: var(--accent);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-muted: var(--muted);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-secondary: var(--secondary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-primary: var(--primary);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-popover: var(--popover);
+  --color-card-foreground: var(--card-foreground);
+  --color-card: var(--card);
+  --color-ink: var(--ink);
+  --color-mist: var(--mist);
+  --color-safe: var(--safe);
+  --color-safe-soft: var(--safe-soft);
+  --color-tight: var(--tight);
+  --color-tight-soft: var(--tight-soft);
+  --color-maybe: var(--maybe);
+  --color-maybe-soft: var(--maybe-soft);
+  --color-line: var(--line);
+  --radius-sm: 6px;
+  --radius-md: 10px;
+  --radius-lg: 14px;
+  --radius-xl: 22px;
+}
+
+:root {
+  --radius: 14px;
+  --ink: #14213d;
+  --mist: #e9edf3;
+  --safe: #0f766e;
+  --safe-soft: #d5ece8;
+  --tight: #d7263d;
+  --tight-soft: #fbe3e6;
+  --maybe: #a0640c;
+  --maybe-soft: #f8ecd6;
+  --line: #d6dce6;
+
+  --background: #f6f8fb;
+  --foreground: var(--ink);
+  --card: #ffffff;
+  --card-foreground: var(--ink);
+  --popover: #ffffff;
+  --popover-foreground: var(--ink);
+  --primary: var(--ink);
+  --primary-foreground: #ffffff;
+  --secondary: var(--mist);
+  --secondary-foreground: var(--ink);
+  --muted: var(--mist);
+  --muted-foreground: #56627a;
+  --accent: var(--mist);
+  --accent-foreground: var(--ink);
+  --destructive: var(--tight);
+  --border: var(--line);
+  --input: var(--line);
+  --ring: #3b5b9a;
+}
+
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
+  }
+  html {
+    background: var(--mist);
+  }
+  body {
+    @apply bg-mist text-foreground font-sans antialiased;
+    font-feature-settings: "tnum" 1;
+  }
+  h1, h2, h3 {
+    font-family: var(--font-display);
+    letter-spacing: -0.01em;
+  }
+  :focus-visible {
+    outline: 2px solid var(--ring);
+    outline-offset: 2px;
+  }
+  @media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after {
+      animation-duration: 0.01ms !important;
+      transition-duration: 0.01ms !important;
+    }
+  }
+}
+
+.font-display {
+  font-family: var(--font-display);
+}
