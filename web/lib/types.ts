@@ -85,6 +85,7 @@ export type NewsItem = {
   why: string;
   source_name: string;
   source_url: string;
+  picture: "school" | "zap" | "flame" | "chart" | "map" | "clock" | "gift" | "calculator";
 };
 
 export type AgentEvent ={ tool: string; reason: string; created_at: string };

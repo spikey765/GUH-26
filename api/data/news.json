@@ -9,7 +9,11 @@
       "why": "You get Universal Credit and have school-age children.",
       "source_name": "GOV.UK",
       "source_url": "https://www.gov.uk/apply-free-school-meals",
-      "applies_if": {"benefit": "Universal Credit", "school_age_children": true}
+      "applies_if": {
+        "benefit": "Universal Credit",
+        "school_age_children": true
+      },
+      "picture": "school"
     },
     {
       "id": "price-cap-announce",
@@ -20,7 +24,10 @@
       "why": "You pay for energy by direct debit, so your payment could change in January.",
       "source_name": "Ofgem",
       "source_url": "https://www.ofgem.gov.uk/energy-price-cap",
-      "applies_if": {"energy_payment": "Direct debit"}
+      "applies_if": {
+        "energy_payment": "Direct debit"
+      },
+      "picture": "zap"
     },
     {
       "id": "warm-home-discount",
@@ -31,7 +38,10 @@
       "why": "You get Universal Credit.",
       "source_name": "GOV.UK",
       "source_url": "https://www.gov.uk/the-warm-home-discount-scheme",
-      "applies_if": {"benefit": "Universal Credit"}
+      "applies_if": {
+        "benefit": "Universal Credit"
+      },
+      "picture": "flame"
     },
     {
       "id": "boe-forecast",
@@ -41,7 +51,8 @@
       "summary": "The Bank of England's latest report says how fast it expects prices to rise next year. Food and energy prices matter most for your budget.",
       "why": "Most of your spending goes on food, energy and bills.",
       "source_name": "Bank of England",
-      "source_url": "https://www.bankofengland.co.uk/monetary-policy-report"
+      "source_url": "https://www.bankofengland.co.uk/monetary-policy-report",
+      "picture": "chart"
     },
     {
       "id": "manchester-help",
@@ -52,7 +63,10 @@
       "why": "You live in Manchester.",
       "source_name": "Manchester City Council",
       "source_url": "https://www.manchester.gov.uk/costofliving",
-      "applies_if": {"area": "Manchester"}
+      "applies_if": {
+        "area": "Manchester"
+      },
+      "picture": "map"
     },
     {
       "id": "uc-hours-change",
@@ -63,7 +77,11 @@
       "why": "You work zero-hours and get Universal Credit.",
       "source_name": "GOV.UK",
       "source_url": "https://www.gov.uk/universal-credit/how-your-earnings-affect-your-payments",
-      "applies_if": {"benefit": "Universal Credit", "contract_type": "Zero-hours"}
+      "applies_if": {
+        "benefit": "Universal Credit",
+        "contract_type": "Zero-hours"
+      },
+      "picture": "clock"
     },
     {
       "id": "christmas-budget",
@@ -73,7 +91,8 @@
       "summary": "MoneyHelper has a free planner. Write down who you're buying for and a limit for each, then stick to the total.",
       "why": "Your tightest weeks are around Christmas.",
       "source_name": "MoneyHelper",
-      "source_url": "https://www.moneyhelper.org.uk/en/everyday-money/budgeting/budget-planner"
+      "source_url": "https://www.moneyhelper.org.uk/en/everyday-money/budgeting/budget-planner",
+      "picture": "gift"
     },
     {
       "id": "benefits-check",
@@ -83,7 +102,8 @@
       "summary": "Free, private benefit calculators take about 10 minutes. Many families miss help they can get.",
       "why": "Your pay changes every week, so what you can get may change too.",
       "source_name": "GOV.UK",
-      "source_url": "https://www.gov.uk/benefits-calculators"
+      "source_url": "https://www.gov.uk/benefits-calculators",
+      "picture": "calculator"
     }
   ]
 }
