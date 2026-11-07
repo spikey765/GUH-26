@@ -1,41 +1,30 @@
 "use client";
 
-import { Check, ChevronRight, ExternalLink } from "lucide-react";
+import { useCallback } from "react";
+import { BadgeCheck, Check, ChevronRight, ExternalLink, History, TrendingUp, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { Sheet, SheetContent, SheetDescription, SheetHeader, SheetTitle } from "@/components/ui/sheet";
+import { Sheet, SheetClose, SheetContent, SheetDescription, SheetHeader, SheetTitle } from "@/components/ui/sheet";
+import { Carousel } from "@/components/carousel";
 import type { Warning } from "@/lib/types";
 import { dayNum, longDate, monthShort, pounds, shortDate, whenText } from "@/lib/format";
 import { cn } from "@/lib/utils";
 
 const LABELS = {
-  confirmed: { text: "Confirmed", help: "The company or regulator has announced it." },
-  forecast: { text: "Forecast", help: "A named expert's estimate. It could change." },
-  likely: { text: "Likely", help: "Based on what happened in past years." },
+  confirmed: { text: "Confirmed", short: "Officially announced", help: "The company or regulator has announced it.", icon: BadgeCheck, band: "bg-confirmed text-white" },
+  likely: { text: "Likely", short: "Based on past years", help: "Based on what happened in past years.", icon: History, band: "bg-likely text-ink" },
+  forecast: { text: "Forecast", short: "An expert's estimate", help: "A named expert's estimate. It could change.", icon: TrendingUp, band: "bg-forecast text-white" },
 } as const;
 
-export function LabelChip({ label }: { label: Warning["label"] }) {
+export function StatusBand({ label, className, children }: { label: Warning["label"]; className?: string; children?: React.ReactNode }) {
   const l = LABELS[label];
+  const Icon = l.icon;
   return (
-    <span
-      title={l.help}
-      className={cn(
-        "inline-flex items-center gap-1.5 rounded-full px-2 py-0.5 text-xs font-medium",
-        label === "confirmed" && "bg-ink text-white",
-        label === "forecast" && "bg-maybe-soft text-maybe",
-        label === "likely" && "border border-dashed border-ink/40 text-ink",
-      )}
-    >
-      <span
-        aria-hidden
-        className={cn(
-          "size-2 rounded-full",
-          label === "confirmed" && "bg-white",
-          label === "forecast" && "bg-[linear-gradient(90deg,var(--maybe)_50%,transparent_50%)] ring-1 ring-maybe",
-          label === "likely" && "ring-1 ring-ink",
-        )}
-      />
-      {l.text}
-    </span>
+    <div className={cn("flex items-center gap-2 px-4 py-2.5", l.band, className)}>
+      <Icon className="size-5 shrink-0" aria-hidden />
+      <p className="text-sm font-extrabold uppercase tracking-wider">{l.text}</p>
+      <p className="ml-auto text-xs font-medium opacity-90">{l.short}</p>
+      {children}
+    </div>
   );
 }
 
@@ -45,47 +34,83 @@ function inTight(w: Warning, tight: { start: string; end: string }[]) {
   return tight.some((t) => s <= t.end && e >= t.start);
 }
 
-export function WarningList({
+function SourceLink({ w }: { w: Warning }) {
+  if (!w.source_url)
+    return (
+      <p className="min-w-0 text-sm text-muted-foreground">
+        <span className="font-semibold text-ink">Based on your payments.</span> {w.source_name}
+      </p>
+    );
+  return (
+    <a
+      href={w.source_url}
+      target="_blank"
+      rel="noreferrer"
+      className="inline-flex min-w-0 items-center gap-1.5 rounded-full bg-primary/10 px-3 py-1.5 text-sm font-semibold text-primary hover:bg-primary/15"
+    >
+      <span className="truncate">Read the source: {w.source_name}</span>
+      <ExternalLink className="size-3.5 shrink-0" aria-hidden />
+    </a>
+  );
+}
+
+function WarningCard({ w, hot, onOpen }: { w: Warning; hot: boolean; onOpen: () => void }) {
+  return (
+    <article className="flex h-full flex-col overflow-hidden rounded-xl border bg-card shadow-sm">
+      <StatusBand label={w.label} />
+      <button onClick={onOpen} className="flex flex-1 items-start gap-4 px-4 py-4 text-left transition-colors hover:bg-mist/50">
+        <div className={cn("flex w-14 shrink-0 flex-col items-center rounded-md py-2", hot ? "bg-tight text-white" : "bg-mist text-ink")}>
+          <span className="font-display text-2xl font-bold leading-none">{dayNum(w.effective_date)}</span>
+          <span className="text-xs">{monthShort(w.effective_date)}</span>
+        </div>
+        <div className="min-w-0 flex-1">
+          <p className="font-display text-lg font-bold leading-tight">{w.title}</p>
+          <p className={cn("mt-1 font-semibold", w.good_news ? "text-safe" : hot ? "text-tight" : "text-ink")}>{w.headline || whenText(w.days_away)}</p>
+          <p className="mt-0.5 text-sm text-muted-foreground">{whenText(w.days_away)}</p>
+          {w.confirmed && (
+            <p className="mt-1.5 inline-flex items-center gap-1 text-sm font-medium text-safe">
+              <Check className="size-4" aria-hidden /> You said yes
+            </p>
+          )}
+        </div>
+      </button>
+      <div className="flex items-center justify-between gap-3 border-t px-4 py-3">
+        <SourceLink w={w} />
+        <button onClick={onOpen} className="inline-flex shrink-0 items-center text-sm font-semibold text-ink underline-offset-4 hover:underline">
+          Details <ChevronRight className="size-4" aria-hidden />
+        </button>
+      </div>
+    </article>
+  );
+}
+
+export function WarningCarousel({
+  label,
   warnings,
   tight,
   onOpen,
+  paused,
+  interval,
+  onActive,
+  focusId,
 }: {
+  label: string;
   warnings: Warning[];
   tight: { start: string; end: string }[];
   onOpen: (id: string) => void;
+  paused?: boolean;
+  interval?: number;
+  onActive?: (id: string) => void;
+  focusId?: string | null;
 }) {
+  const report = useCallback((i: number) => warnings[i] && onActive?.(warnings[i].id), [warnings, onActive]);
   if (!warnings.length) return <p className="px-5 text-sm text-muted-foreground">Nothing coming up that matches you.</p>;
   return (
-    <ul className="divide-y divide-line border-y">
-      {warnings.map((w) => {
-        const hot = w.in_window && !w.good_news && inTight(w, tight);
-        return (
-          <li key={w.id}>
-            <button onClick={() => onOpen(w.id)} className="flex w-full items-center gap-4 px-5 py-4 text-left transition-colors hover:bg-mist/60">
-              <div className={cn("flex w-12 shrink-0 flex-col items-center rounded-md py-1.5", hot ? "bg-tight text-white" : "bg-mist text-ink")}>
-                <span className="font-display text-xl font-bold leading-none">{dayNum(w.effective_date)}</span>
-                <span className="text-[11px]">{monthShort(w.effective_date)}</span>
-              </div>
-              <div className="min-w-0 flex-1">
-                <p className="font-semibold leading-tight">{w.title}</p>
-                <p className={cn("mt-0.5 text-sm", w.good_news ? "text-safe" : hot ? "text-tight" : "text-muted-foreground")}>
-                  {w.headline || whenText(w.days_away)}
-                </p>
-                <div className="mt-1.5 flex flex-wrap items-center gap-2">
-                  <LabelChip label={w.label} />
-                  {w.confirmed && (
-                    <span className="inline-flex items-center gap-1 text-xs font-medium text-safe">
-                      <Check className="size-3.5" aria-hidden /> You said yes
-                    </span>
-                  )}
-                </div>
-              </div>
-              <ChevronRight className="size-5 shrink-0 text-muted-foreground" aria-hidden />
-            </button>
-          </li>
-        );
-      })}
-    </ul>
+    <Carousel label={label} paused={paused} interval={interval} onIndexChange={onActive ? report : undefined} focus={focusId ? warnings.findIndex((w) => w.id === focusId) : null}>
+      {warnings.map((w) => (
+        <WarningCard key={w.id} w={w} hot={w.in_window && !w.good_news && inTight(w, tight)} onOpen={() => onOpen(w.id)} />
+      ))}
+    </Carousel>
   );
 }
 
@@ -112,14 +137,19 @@ export function WarningSheet({
   const w = warning;
   return (
     <Sheet open={open} onOpenChange={onOpenChange}>
-      <SheetContent side="bottom" className="mx-auto max-h-[92dvh] max-w-[440px] overflow-y-auto rounded-t-[22px] p-0">
+      <SheetContent side="bottom" showCloseButton={false} className="mx-auto max-h-[92dvh] max-w-[440px] overflow-y-auto rounded-t-[22px] p-0 no-scrollbar">
         {w && (
           <>
-            <SheetHeader className="border-b px-5 pb-4 pt-6">
-              <div className="flex items-center gap-2">
-                <LabelChip label={w.label} />
-                <span className="text-sm text-muted-foreground">{whenText(w.days_away)}</span>
-              </div>
+            <StatusBand label={w.label} className="sticky top-0 z-10 py-3 pl-5 pr-3">
+              <SheetClose
+                aria-label="Close"
+                className="ml-2 grid size-8 shrink-0 place-items-center rounded-full bg-black/10 transition-colors hover:bg-black/20 focus-visible:outline-2 focus-visible:outline-offset-2"
+              >
+                <X className="size-4" aria-hidden />
+              </SheetClose>
+            </StatusBand>
+            <SheetHeader className="border-b px-5 pb-4 pt-4">
+              <span className="text-sm text-muted-foreground">{whenText(w.days_away)}</span>
               <SheetTitle className="font-display text-2xl font-bold">{w.title}</SheetTitle>
               <SheetDescription className={cn("text-base", w.good_news ? "text-safe" : "text-ink")}>{w.headline}</SheetDescription>
             </SheetHeader>
@@ -149,13 +179,7 @@ export function WarningSheet({
               <section>
                 <h3 className="mb-1 text-sm font-semibold text-muted-foreground">Where this comes from</h3>
                 <p className="mb-1">{LABELS[w.label].help}</p>
-                {w.source_url ? (
-                  <a href={w.source_url} target="_blank" rel="noreferrer" className="inline-flex items-center gap-1 font-medium underline underline-offset-4">
-                    {w.source_name} <ExternalLink className="size-3.5" aria-hidden />
-                  </a>
-                ) : (
-                  <p className="font-medium">{w.source_name}</p>
-                )}
+                <SourceLink w={w} />
               </section>
 
               {w.matched_transactions.length > 0 && (

@@ -93,4 +93,16 @@ export type Simulation = {
   suggestion: { weekly_gbp: number; weeks: number; total_gbp: number; too_soon: boolean };
 };
 
-export type AgentEvent = { tool: string; reason: string; created_at: string };
+export type NewsItem = {
+  id: string;
+  kind: "advice" | "forecast" | "help" | "tip";
+  title: string;
+  date: string;
+  summary: string;
+  why: string;
+  source_name: string;
+  source_url: string;
+  picture: "school" | "zap" | "flame" | "chart" | "map" | "clock" | "gift" | "calculator";
+};
+
+export type AgentEvent ={ tool: string; reason: string; created_at: string };

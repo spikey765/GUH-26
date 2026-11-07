@@ -520,7 +520,7 @@ export function AboutForm({
         {after("benefits", p.benefits)}
       </fieldset>
 
-      <div className="fixed inset-x-0 bottom-0 z-10 mx-auto max-w-[440px] border-t bg-background/95 px-5 py-3 backdrop-blur sm:bottom-6 sm:rounded-b-[28px]">
+      <div className="fixed inset-x-0 bottom-0 z-10 mx-auto max-w-[440px] glass border-t border-white/60 px-5 py-3 shadow-[0_-8px_24px_-16px_rgba(20,33,61,0.25)] sm:bottom-6 sm:rounded-b-[28px]">
         {guessed && filled.length > 0 && (
           <div className="mb-2.5" aria-live="polite">
             <div className="flex justify-between text-xs font-medium">

@@ -25,6 +25,7 @@ DEFAULT_PROFILE = load("profile.json")
 TX = load("transactions.json")
 EVENTS = load("events.json")
 COUNCIL_TAX = load("council_tax.json")
+NEWS = load("news.json")["news"]
 TRANSACTIONS = TX["transactions"]
 
 app = FastAPI(title="Heads Up API")
@@ -158,6 +159,23 @@ async def get_forecast(user=Depends(current_user)):
 async def get_warnings(user=Depends(current_user)):
     _, _, _, warnings, _ = await state_for(user)
     return {"warnings": public(warnings)}
+
+
+PROFILE_MATCH = ("area", "contract_type")
+
+
+def news_applies(item, profile):
+    cond = item.get("applies_if", {})
+    if not F.applies({"applies_if": {k: v for k, v in cond.items() if k not in PROFILE_MATCH}}, profile, TRANSACTIONS):
+        return False
+    return all((profile.get(k) or "").lower() == cond[k].lower() for k in PROFILE_MATCH if k in cond)
+
+
+@app.get("/news")
+async def get_news(user=Depends(current_user)):
+    profile, _ = await profile_for(user)
+    items = [{k: v for k, v in n.items() if k != "applies_if"} for n in NEWS if news_applies(n, profile)]
+    return {"news": sorted(items, key=lambda n: n["date"], reverse=True)}
 
 
 def check_date(x):
