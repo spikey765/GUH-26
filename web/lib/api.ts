@@ -1,4 +1,4 @@
-import type { AgentEvent, Forecast, Guess, Profile, ProfileField, Simulation, Warning } from "./types";
+import type { AgentEvent, Forecast, Guess, NewsItem, Profile, ProfileField, Simulation, Warning } from "./types";
 
 const BASE = process.env.NEXT_PUBLIC_API_URL ?? "http://localhost:8000";
 
@@ -32,6 +32,7 @@ export const api = (token: string) => ({
   guessProfile: () => call<{ guesses: Record<ProfileField, Guess>; source: "claude" | "rules" }>(token, "/profile/guess", { method: "POST" }),
   forecast: () => call<Forecast>(token, "/forecast"),
   warnings: () => call<{ warnings: Warning[] }>(token, "/warnings"),
+  news: () => call<{ news: NewsItem[] }>(token, "/news"),
   simulate: (body: { amount_gbp: number; date: string; label: string }) =>
     call<Simulation>(token, "/simulate", { method: "POST", body: JSON.stringify(body) }),
   action: (body: { warning_id: string; confirmed: boolean; amount_gbp?: number; date?: string; label?: string; weekly_gbp?: number }) =>

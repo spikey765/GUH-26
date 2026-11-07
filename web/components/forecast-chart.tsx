@@ -1,11 +1,10 @@
 "use client";
 
-import { useId, useMemo } from "react";
+import { useId, useMemo, useState } from "react";
 import {
-  Area,
+  CartesianGrid,
   ComposedChart,
   Line,
-  ReferenceArea,
   ReferenceDot,
   ReferenceLine,
   ResponsiveContainer,
@@ -17,7 +16,61 @@ import {
 import type { Forecast, Warning } from "@/lib/types";
 import { longDate, pounds, shortDate } from "@/lib/format";
 
-type Marker = { date: string; id: string; title: string };
+function niceScale(min: number, max: number) {
+  const span = Math.max(1, max - min);
+  const step = [50, 100, 200, 250, 500, 1000].find((s) => span / s <= 5) ?? 1000;
+  const lo = Math.floor(min / step) * step;
+  let hi = Math.ceil(max / step) * step;
+  if (hi - max < step * 0.3) hi += step;
+  const ticks: number[] = [];
+  for (let v = lo; v <= hi; v += step) ticks.push(v);
+  return { lo, hi, ticks };
+}
+
+type Label = Warning["label"];
+
+type Marker = { date: string; id: string; title: string; label: Label };
+
+const LABEL_COLOUR: Record<Label, string> = { confirmed: "var(--confirmed)", likely: "var(--likely)", forecast: "var(--forecast)" };
+
+type PinProps = {
+  cx?: number;
+  cy?: number;
+  title: string;
+  label: Label;
+  active: boolean;
+  hovered: boolean;
+  picked: boolean;
+  faded: boolean;
+  onClick?: () => void;
+  onHover: (on: boolean) => void;
+};
+
+function Pin({ cx = 0, cy = 0, title, label, active, hovered, picked, faded, onClick, onHover }: PinProps) {
+  const filled = active || hovered || picked;
+  const colour = picked ? LABEL_COLOUR[label] : "var(--ink)";
+  return (
+    <g
+      onClick={onClick}
+      onMouseEnter={() => onHover(true)}
+      onMouseLeave={() => onHover(false)}
+      style={{ cursor: onClick ? "pointer" : "default", opacity: faded && !hovered ? 0.25 : 1, transition: "opacity 180ms ease" }}
+      role={onClick ? "button" : undefined}
+      aria-label={title}
+    >
+      <circle cx={cx} cy={cy} r={16} fill="transparent" />
+      <circle
+        cx={cx}
+        cy={cy}
+        r={hovered ? 10 : picked ? 7.5 : active ? 6 : 4.5}
+        fill={filled ? colour : "#fff"}
+        stroke={filled ? "#fff" : "var(--ink)"}
+        strokeWidth={filled ? 2.5 : 2}
+        style={{ transition: "r 180ms ease, fill 180ms ease" }}
+      />
+    </g>
+  );
+}
 
 function ChartTip({ active, payload }: TooltipProps<number, string>) {
   if (!active || !payload?.length) return null;
@@ -50,6 +103,9 @@ export function ForecastChart({
   extraMarker,
   height = 230,
   onMarker,
+  onMarkerHover,
+  activeId,
+  highlight = null,
 }: {
   forecast: Forecast;
   ghost?: Forecast;
@@ -57,8 +113,12 @@ export function ForecastChart({
   extraMarker?: { date: string; label: string };
   height?: number;
   onMarker?: (id: string) => void;
+  onMarkerHover?: (id: string | null) => void;
+  activeId?: string | null;
+  highlight?: Label | null;
 }) {
   const gid = useId().replace(/:/g, "");
+  const [hoverId, setHoverId] = useState<string | null>(null);
   const threshold = forecast.tight_threshold_gbp;
   const data = useMemo(
     () =>
@@ -72,56 +132,57 @@ export function ForecastChart({
     [forecast, ghost],
   );
 
-  const values = data.flatMap((d) => [d.band[0], d.band[1], d.ghost ?? d.balance]);
-  const yMax = Math.max(...values, threshold) + 60;
-  const yMin = Math.min(...values, 0) - 40;
+  const values = data.flatMap((d) => [d.balance, d.ghost ?? d.balance]);
+  const { lo: yMin, hi: yMax, ticks: yTicks } = niceScale(Math.min(...values, 0), Math.max(...values, threshold));
   const balances = data.map((d) => d.balance);
   const bMax = Math.max(...balances);
   const bMin = Math.min(...balances);
   const clamp = (n: number) => Math.min(1, Math.max(0, n));
   const split = bMax === bMin ? (bMax >= threshold ? 1 : 0) : clamp((bMax - threshold) / (bMax - bMin));
-  const fillSplit = clamp((bMax - threshold) / (bMax - yMin));
 
   const markers: Marker[] = warnings
     .filter((w) => w.in_window && !w.good_news)
-    .map((w) => ({ date: w.effective_date, id: w.id, title: w.title }));
+    .map((w) => ({ date: w.effective_date, id: w.id, title: w.title, label: w.label }));
+  const hover = (id: string | null) => {
+    setHoverId(id);
+    onMarkerHover?.(id);
+  };
   const byDate = new Map(data.map((d) => [d.date, d.balance]));
   const ticks = data.filter((_, i) => i % 14 === 0).map((d) => d.date);
 
   return (
     <div style={{ height }} className="w-full" role="img" aria-label={`Balance for the next 60 days. Lowest is ${pounds(forecast.worst_day.balance)} on ${longDate(forecast.worst_day.date)}.`}>
       <ResponsiveContainer>
-        <ComposedChart data={data} margin={{ top: 12, right: 8, bottom: 0, left: 0 }}>
+        <ComposedChart data={data} margin={{ top: 16, right: 12, bottom: 0, left: 0 }}>
           <defs>
             <linearGradient id={`stroke-${gid}`} x1="0" y1="0" x2="0" y2="1">
               <stop offset={split} stopColor="var(--safe)" />
               <stop offset={split} stopColor="var(--tight)" />
             </linearGradient>
-            <linearGradient id={`fill-${gid}`} x1="0" y1="0" x2="0" y2="1">
-              <stop offset={0} stopColor="var(--safe)" stopOpacity={0.22} />
-              <stop offset={fillSplit} stopColor="var(--safe)" stopOpacity={0.08} />
-              <stop offset={fillSplit} stopColor="var(--tight)" stopOpacity={0.18} />
-              <stop offset={1} stopColor="var(--tight)" stopOpacity={0.32} />
-            </linearGradient>
           </defs>
-          {forecast.tight_weeks.map((t) => (
-            <ReferenceArea key={t.start} x1={t.start} x2={t.end} fill="var(--tight)" fillOpacity={0.07} strokeOpacity={0} ifOverflow="hidden" />
-          ))}
-          <XAxis dataKey="date" ticks={ticks} tickFormatter={shortDate} tick={{ fontSize: 12, fill: "#56627a" }} axisLine={false} tickLine={false} />
-          <YAxis domain={[yMin, yMax]} hide />
-          <ReferenceLine y={threshold} stroke="var(--tight)" strokeDasharray="4 4" strokeOpacity={0.6} label={{ value: "£50", position: "insideTopLeft", fontSize: 11, fill: "var(--tight)" }} />
-          <ReferenceLine y={0} stroke="var(--line)" />
-          <Area dataKey="band" stroke="none" fill="var(--ink)" fillOpacity={0.06} isAnimationActive={false} activeDot={false} />
+          <CartesianGrid vertical={false} stroke="var(--line)" strokeOpacity={0.7} />
+          <XAxis dataKey="date" ticks={ticks} tickFormatter={shortDate} tick={{ fontSize: 11, fill: "#56627a" }} axisLine={false} tickLine={false} tickMargin={6} />
+          <YAxis
+            domain={[yMin, yMax]}
+            ticks={yTicks}
+            tickFormatter={(v: number) => pounds(v)}
+            tick={{ fontSize: 11, fill: "#56627a" }}
+            axisLine={false}
+            tickLine={false}
+            width={48}
+          />
+          <ReferenceLine y={0} stroke="#56627a" strokeOpacity={0.5} />
+          <ReferenceLine y={threshold} stroke="var(--tight)" strokeDasharray="4 4" strokeOpacity={0.7} label={{ value: "£50 safety line", position: "insideBottomRight", fontSize: 10, fill: "var(--tight)" }} />
           {ghost && <Line dataKey="ghost" stroke="#8a94a8" strokeDasharray="4 4" strokeWidth={1.5} dot={false} isAnimationActive={false} activeDot={false} />}
-          <Area
+          <Line
             dataKey="balance"
             type="monotone"
             stroke={`url(#stroke-${gid})`}
-            strokeWidth={3}
-            fill={`url(#fill-${gid})`}
-            baseValue={yMin}
+            strokeWidth={2.5}
+            strokeLinecap="round"
+            dot={false}
             animationDuration={500}
-            activeDot={{ r: 5, stroke: "#fff", strokeWidth: 2, fill: "var(--ink)" }}
+            activeDot={{ r: 4, stroke: "#56627a", strokeWidth: 1.5, fill: "#fff" }}
           />
           {markers.map((m) => (
             <ReferenceDot
@@ -129,17 +190,26 @@ export function ForecastChart({
               x={m.date}
               y={byDate.get(m.date) ?? 0}
               r={6}
-              fill="var(--ink)"
-              stroke="#fff"
-              strokeWidth={2}
-              onClick={() => onMarker?.(m.id)}
-              style={{ cursor: onMarker ? "pointer" : "default" }}
+              shape={(p: { cx?: number; cy?: number }) => (
+                <Pin
+                  cx={p.cx}
+                  cy={p.cy}
+                  title={m.title}
+                  label={m.label}
+                  picked={highlight === m.label}
+                  faded={highlight !== null && highlight !== m.label}
+                  active={m.id === activeId}
+                  hovered={m.id === hoverId}
+                  onClick={onMarker ? () => onMarker(m.id) : undefined}
+                  onHover={(on) => hover(on ? m.id : null)}
+                />
+              )}
             />
           ))}
           {extraMarker && byDate.has(extraMarker.date) && (
             <ReferenceDot x={extraMarker.date} y={byDate.get(extraMarker.date)!} r={7} fill="var(--tight)" stroke="#fff" strokeWidth={2} />
           )}
-          <Tooltip content={<ChartTip />} cursor={{ stroke: "var(--ink)", strokeOpacity: 0.2 }} />
+          <Tooltip content={<ChartTip />} cursor={false} />
         </ComposedChart>
       </ResponsiveContainer>
     </div>

@@ -76,4 +76,15 @@ export type Simulation = {
   suggestion: { weekly_gbp: number; weeks: number; worst_after_saving: { date: string; balance: number } };
 };
 
-export type AgentEvent = { tool: string; reason: string; created_at: string };
+export type NewsItem = {
+  id: string;
+  kind: "advice" | "forecast" | "help" | "tip";
+  title: string;
+  date: string;
+  summary: string;
+  why: string;
+  source_name: string;
+  source_url: string;
+};
+
+export type AgentEvent ={ tool: string; reason: string; created_at: string };

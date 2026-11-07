@@ -1,0 +1,89 @@
+{
+  "news": [
+    {
+      "id": "free-school-meals-uc",
+      "kind": "advice",
+      "title": "Free school meals for every family on Universal Credit",
+      "date": "2026-11-04",
+      "summary": "Since September 2026, every child in England whose family gets Universal Credit can have free school meals. Ask your school if your children are signed up.",
+      "why": "You get Universal Credit and have school-age children.",
+      "source_name": "GOV.UK",
+      "source_url": "https://www.gov.uk/apply-free-school-meals",
+      "applies_if": {"benefit": "Universal Credit", "school_age_children": true}
+    },
+    {
+      "id": "price-cap-announce",
+      "kind": "forecast",
+      "title": "New energy price cap is announced in late November",
+      "date": "2026-11-03",
+      "summary": "Ofgem sets the most energy firms can charge from January to March. We'll update your 60 days when it's out.",
+      "why": "You pay for energy by direct debit, so your payment could change in January.",
+      "source_name": "Ofgem",
+      "source_url": "https://www.ofgem.gov.uk/energy-price-cap",
+      "applies_if": {"energy_payment": "Direct debit"}
+    },
+    {
+      "id": "warm-home-discount",
+      "kind": "advice",
+      "title": "Warm Home Discount: £150 off your electricity bill",
+      "date": "2026-11-02",
+      "summary": "If you get Universal Credit, you should get £150 off this winter without applying. If it hasn't arrived by March, contact your energy supplier.",
+      "why": "You get Universal Credit.",
+      "source_name": "GOV.UK",
+      "source_url": "https://www.gov.uk/the-warm-home-discount-scheme",
+      "applies_if": {"benefit": "Universal Credit"}
+    },
+    {
+      "id": "boe-forecast",
+      "kind": "forecast",
+      "title": "Bank of England updates its view on prices",
+      "date": "2026-11-05",
+      "summary": "The Bank of England's latest report says how fast it expects prices to rise next year. Food and energy prices matter most for your budget.",
+      "why": "Most of your spending goes on food, energy and bills.",
+      "source_name": "Bank of England",
+      "source_url": "https://www.bankofengland.co.uk/monetary-policy-report"
+    },
+    {
+      "id": "manchester-help",
+      "kind": "help",
+      "title": "Help with food and bills in Manchester",
+      "date": "2026-10-30",
+      "summary": "Manchester City Council has one page that lists help with food, energy and emergency costs, and how to ask for it.",
+      "why": "You live in Manchester.",
+      "source_name": "Manchester City Council",
+      "source_url": "https://www.manchester.gov.uk/costofliving",
+      "applies_if": {"area": "Manchester"}
+    },
+    {
+      "id": "uc-hours-change",
+      "kind": "tip",
+      "title": "Hours went down? Your Universal Credit can go up",
+      "date": "2026-10-28",
+      "summary": "Universal Credit looks at what you earned each month. In a month with fewer shifts, your payment the next month should be higher.",
+      "why": "You work zero-hours and get Universal Credit.",
+      "source_name": "GOV.UK",
+      "source_url": "https://www.gov.uk/universal-credit/how-your-earnings-affect-your-payments",
+      "applies_if": {"benefit": "Universal Credit", "contract_type": "Zero-hours"}
+    },
+    {
+      "id": "christmas-budget",
+      "kind": "tip",
+      "title": "Plan Christmas spending before December",
+      "date": "2026-10-25",
+      "summary": "MoneyHelper has a free planner. Write down who you're buying for and a limit for each, then stick to the total.",
+      "why": "Your tightest weeks are around Christmas.",
+      "source_name": "MoneyHelper",
+      "source_url": "https://www.moneyhelper.org.uk/en/everyday-money/budgeting/budget-planner"
+    },
+    {
+      "id": "benefits-check",
+      "kind": "advice",
+      "title": "Check you're getting every benefit you can",
+      "date": "2026-10-20",
+      "summary": "Free, private benefit calculators take about 10 minutes. Many families miss help they can get.",
+      "why": "Your pay changes every week, so what you can get may change too.",
+      "source_name": "GOV.UK",
+      "source_url": "https://www.gov.uk/benefits-calculators"
+    }
+  ]
+}

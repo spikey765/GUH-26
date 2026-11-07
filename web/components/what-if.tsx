@@ -82,7 +82,7 @@ export function WhatIf({
         if (!o) setSim(null);
       }}
     >
-      <DialogContent className="max-h-[92dvh] max-w-[400px] overflow-y-auto rounded-[22px]">
+      <DialogContent className="max-h-[92dvh] max-w-[400px] overflow-y-auto rounded-[22px] no-scrollbar">
         <DialogHeader>
           <DialogTitle className="font-display text-2xl font-bold">What if?</DialogTitle>
           <DialogDescription>Add a cost that might happen and see if you would cope.</DialogDescription>

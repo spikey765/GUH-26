@@ -1,21 +1,30 @@
 "use client";
 
-import { useCallback, useEffect, useMemo, useState } from "react";
-import { Menu } from "lucide-react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import { ArrowLeft, Menu } from "lucide-react";
 import { useAuth } from "@/components/auth-provider";
 import { Login } from "@/components/login";
 import { AboutForm } from "@/components/about-form";
 import { ForecastChart } from "@/components/forecast-chart";
-import { WarningList, WarningSheet } from "@/components/warnings";
+import { WarningCarousel, WarningSheet } from "@/components/warnings";
+import { NewsCarousel } from "@/components/news";
 import { WhatIf } from "@/components/what-if";
 import { Button } from "@/components/ui/button";
 import { Sheet, SheetContent, SheetDescription, SheetHeader, SheetTitle } from "@/components/ui/sheet";
 import { api, ApiError } from "@/lib/api";
-import type { AgentEvent, Forecast, Profile, Warning } from "@/lib/types";
+import type { AgentEvent, Forecast, NewsItem, Profile, Warning } from "@/lib/types";
 import { longDate, pounds } from "@/lib/format";
 import { cn } from "@/lib/utils";
 
 type View = "loading" | "about" | "home";
+type Label = Warning["label"];
+
+const TABS: { id: Label | null; text: string }[] = [
+  { id: null, text: "All" },
+  { id: "confirmed", text: "Confirmed" },
+  { id: "likely", text: "Likely" },
+  { id: "forecast", text: "Forecast" },
+];
 
 export default function Page() {
   const { ready, token, signOut } = useAuth();
@@ -29,8 +38,16 @@ function App({ token, signOut }: { token: string; signOut: () => Promise<void> }
   const [view, setView] = useState<View>("loading");
   const [profile, setProfile] = useState<Profile | null>(null);
   const [forecast, setForecast] = useState<Forecast | null>(null);
+  const forecastRef = useRef<Forecast | null>(null);
+  useEffect(() => {
+    forecastRef.current = forecast;
+  }, [forecast]);
   const [warnings, setWarnings] = useState<Warning[]>([]);
+  const [news, setNews] = useState<NewsItem[]>([]);
   const [openId, setOpenId] = useState<string | null>(null);
+  const [activeId, setActiveId] = useState<string | null>(null);
+  const [pointId, setPointId] = useState<string | null>(null);
+  const [highlight, setHighlight] = useState<Label | null>(null);
   const [busy, setBusy] = useState(false);
   const [whatIf, setWhatIf] = useState(false);
   const [menu, setMenu] = useState(false);
@@ -50,14 +67,21 @@ function App({ token, signOut }: { token: string; signOut: () => Promise<void> }
   );
 
   const loadHome = useCallback(async () => {
-    const [f, w] = await Promise.all([client.forecast(), client.warnings()]);
+    const [f, w, n] = await Promise.all([client.forecast(), client.warnings(), client.news()]);
     setForecast(f);
     setWarnings(w.warnings);
+    setNews(n.news);
   }, [client]);
 
   useEffect(() => {
     window.scrollTo(0, 0);
   }, [view]);
+
+  useEffect(() => {
+    const back = () => setView((v) => (v === "about" && forecastRef.current ? "home" : v));
+    window.addEventListener("popstate", back);
+    return () => window.removeEventListener("popstate", back);
+  }, []);
 
   useEffect(() => {
     (async () => {
@@ -136,8 +160,14 @@ function App({ token, signOut }: { token: string; signOut: () => Promise<void> }
   if (view === "about")
     return (
       <main>
-        <header className="px-5 pb-4 pt-8">
-          <p className="font-display text-sm font-bold text-ink/60">Heads Up</p>
+        <header className="px-5 pb-4 pt-6">
+          {forecast ? (
+            <Button variant="ghost" className="-ml-3 mb-1 gap-1 px-3 text-ink" onClick={() => history.back()}>
+              <ArrowLeft className="size-4" aria-hidden /> Back to your 60 days
+            </Button>
+          ) : (
+            <p className="pt-2 font-display text-sm font-bold text-ink/60">Heads Up</p>
+          )}
           <h1 className="mt-1 font-display text-3xl font-bold">About you</h1>
           <p className="mt-2 text-[15px] text-muted-foreground">This helps us show only the changes that affect you. You can change it any time.</p>
         </header>
@@ -159,6 +189,8 @@ function App({ token, signOut }: { token: string; signOut: () => Promise<void> }
   const soon = warnings.filter((w) => w.in_window);
   const later = warnings.filter((w) => !w.in_window);
   const open = warnings.find((w) => w.id === openId) ?? null;
+  const hold = !!open || whatIf || menu || log !== null || pointId !== null;
+  const plotted = warnings.filter((w) => w.in_window && !w.good_news);
 
   return (
     <main className="pb-28">
@@ -170,14 +202,16 @@ function App({ token, signOut }: { token: string; signOut: () => Promise<void> }
       </header>
 
       <section className="px-5 pt-4">
+        <h1 className="font-display text-[28px] font-bold leading-[1.1]">Your current account forecast</h1>
+        <p className="mt-1 text-sm text-muted-foreground">What we expect your balance to be each day for the next 60 days.</p>
         {tight.length ? (
-          <h1 className="font-display text-[34px] font-bold leading-[1.05]">
+          <h2 className="mt-4 font-display text-xl font-bold leading-tight">
             Money gets tight from <span className="text-tight">{longDate(tight[0].start)}</span>
-          </h1>
+          </h2>
         ) : (
-          <h1 className="font-display text-[34px] font-bold leading-[1.05]">You stay above £50 for the next 60 days</h1>
+          <h2 className="mt-4 font-display text-xl font-bold leading-tight text-safe">You stay above £50 for the next 60 days</h2>
         )}
-        <p className="mt-2 text-[15px] text-muted-foreground">
+        <p className="mt-1 text-[15px] text-muted-foreground">
           You have {pounds(forecast.start_balance)} today. Lowest point:{" "}
           <span className={cn("font-semibold", forecast.worst_day.balance < 50 ? "text-tight" : "text-ink")}>
             {pounds(forecast.worst_day.balance)} on {longDate(forecast.worst_day.date)}
@@ -186,10 +220,39 @@ function App({ token, signOut }: { token: string; signOut: () => Promise<void> }
         </p>
       </section>
 
-      <section className="mt-4 px-2">
-        <ForecastChart forecast={forecast} warnings={warnings} onMarker={setOpenId} />
+      <div className="mt-4 flex gap-1 overflow-x-auto px-5 no-scrollbar" role="tablist" aria-label="Show changes on the graph">
+        {TABS.map((t) => {
+          const on = t.id === highlight;
+          const count = t.id ? plotted.filter((w) => w.label === t.id).length : plotted.length;
+          return (
+            <button
+              key={t.text}
+              type="button"
+              role="tab"
+              aria-selected={on}
+              onClick={() => setHighlight(t.id)}
+              className={cn(
+                "inline-flex shrink-0 items-center gap-1.5 rounded-full px-3 py-1.5 text-sm font-medium transition-colors",
+                on ? "bg-ink text-white" : "text-muted-foreground hover:bg-mist hover:text-ink",
+              )}
+            >
+              {t.id && (
+                <span
+                  aria-hidden
+                  className={cn("size-2.5 rounded-full ring-1 ring-white/60", t.id === "confirmed" ? "bg-confirmed" : t.id === "likely" ? "bg-likely" : "bg-forecast")}
+                />
+              )}
+              {t.text}
+              <span className={cn("rounded-full px-1.5 text-xs tabular-nums", on ? "bg-white/20" : "bg-mist")}>{count}</span>
+            </button>
+          );
+        })}
+      </div>
+
+      <section className="mt-2 px-2">
+        <ForecastChart forecast={forecast} warnings={warnings} highlight={highlight} onMarker={setOpenId} onMarkerHover={setPointId} activeId={activeId} height={260} />
         <p className="px-3 pt-1 text-xs text-muted-foreground">
-          The line is what we expect. The grey band shows good and bad weeks for pay. Dots are changes coming up. Tap one to see it.
+          The line is your expected balance. Dots are the changes in Coming up. Tap one to open it.
         </p>
       </section>
 
@@ -198,18 +261,24 @@ function App({ token, signOut }: { token: string; signOut: () => Promise<void> }
       </div>
 
       <section className="mt-7">
-        <h2 className="px-5 pb-2 font-display text-xl font-bold">Coming up</h2>
-        <WarningList warnings={soon} tight={tight} onOpen={setOpenId} />
+        <h2 className="px-5 pb-3 font-display text-xl font-bold">Coming up</h2>
+        <WarningCarousel label="Coming up" warnings={soon} tight={tight} onOpen={setOpenId} paused={hold} interval={6000} onActive={setActiveId} focusId={pointId} />
       </section>
 
       {later.length > 0 && (
         <section className="mt-7">
-          <h2 className="px-5 pb-2 font-display text-xl font-bold">Later this year</h2>
-          <WarningList warnings={later} tight={[]} onOpen={setOpenId} />
+          <h2 className="px-5 pb-3 font-display text-xl font-bold">Later this year</h2>
+          <WarningCarousel label="Later this year" warnings={later} tight={[]} onOpen={setOpenId} paused={hold} interval={6500} />
         </section>
       )}
 
-      <div className="fixed inset-x-0 bottom-0 z-10 mx-auto max-w-[440px] border-t bg-background/95 px-5 py-3 backdrop-blur sm:bottom-6 sm:rounded-b-[28px]">
+      <section className="mt-7">
+        <h2 className="px-5 font-display text-xl font-bold">Other news for you</h2>
+        <p className="px-5 pb-3 text-sm text-muted-foreground">Advice and forecasts picked because they match your answers.</p>
+        <NewsCarousel news={news} paused={hold} />
+      </section>
+
+      <div className="fixed inset-x-0 bottom-0 z-10 mx-auto max-w-[440px] glass border-t border-white/60 px-5 py-3 shadow-[0_-8px_24px_-16px_rgba(20,33,61,0.25)] sm:bottom-6 sm:rounded-b-[28px]">
         <Button className="h-12 w-full text-base" onClick={() => setWhatIf(true)}>
           What if?
         </Button>
@@ -244,7 +313,7 @@ function App({ token, signOut }: { token: string; signOut: () => Promise<void> }
             <SheetDescription className="sr-only">Settings and account</SheetDescription>
           </SheetHeader>
           <nav className="flex flex-col gap-1 px-4">
-            <Button variant="ghost" className="justify-start" onClick={() => { setMenu(false); setView("about"); }}>
+            <Button variant="ghost" className="justify-start" onClick={() => { setMenu(false); history.pushState({ view: "about" }, ""); setView("about"); }}>
               About you
             </Button>
             <Button variant="ghost" className="justify-start" onClick={openLog}>
@@ -261,7 +330,7 @@ function App({ token, signOut }: { token: string; signOut: () => Promise<void> }
       </Sheet>
 
       <Sheet open={log !== null} onOpenChange={(o) => !o && setLog(null)}>
-        <SheetContent side="bottom" className="mx-auto max-h-[80dvh] max-w-[440px] overflow-y-auto rounded-t-[22px]">
+        <SheetContent side="bottom" className="mx-auto max-h-[80dvh] max-w-[440px] overflow-y-auto rounded-t-[22px] no-scrollbar">
           <SheetHeader>
             <SheetTitle className="font-display text-xl">What the AI did</SheetTitle>
             <SheetDescription>Every time the app asks the AI something, it shows here with the reason.</SheetDescription>

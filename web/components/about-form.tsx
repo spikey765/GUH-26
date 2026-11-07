@@ -227,7 +227,7 @@ export function AboutForm({
         {ev("benefits")}
       </fieldset>
 
-      <div className="fixed inset-x-0 bottom-0 z-10 mx-auto max-w-[440px] border-t bg-background/95 px-5 py-3 backdrop-blur sm:bottom-6 sm:rounded-b-[28px]">
+      <div className="fixed inset-x-0 bottom-0 z-10 mx-auto max-w-[440px] glass border-t border-white/60 px-5 py-3 shadow-[0_-8px_24px_-16px_rgba(20,33,61,0.25)] sm:bottom-6 sm:rounded-b-[28px]">
         {err && <p role="alert" className="mb-2 text-sm text-tight">{err}</p>}
         <Button type="submit" className="h-12 w-full text-base" disabled={busy !== null}>
           {busy === "save" ? "Saving" : pending.length ? `Check ${pending.length} more` : "Save and see my 60 days"}
